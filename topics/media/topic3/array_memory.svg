@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 430">
+<rect width="1100" height="430" rx="30" fill="#f8fbff"/>
+<g font-family="Arial,sans-serif">
+<text x="550" y="50" text-anchor="middle" font-size="31" font-weight="700" fill="#17233c">Array: Indexed Values in Contiguous Logical Positions</text>
+<g text-anchor="middle">
+<text x="170" y="115" font-size="17" fill="#64748b">index 0</text><text x="330" y="115" font-size="17" fill="#64748b">index 1</text><text x="490" y="115" font-size="17" fill="#64748b">index 2</text><text x="650" y="115" font-size="17" fill="#64748b">index 3</text><text x="810" y="115" font-size="17" fill="#64748b">index 4</text><text x="970" y="115" font-size="17" fill="#64748b">index 5</text>
+<g fill="#fff" stroke="#3563a8" stroke-width="3">
+<rect x="100" y="135" width="140" height="95" rx="12"/><rect x="260" y="135" width="140" height="95" rx="12"/><rect x="420" y="135" width="140" height="95" rx="12"/><rect x="580" y="135" width="140" height="95" rx="12"/><rect x="740" y="135" width="140" height="95" rx="12"/><rect x="900" y="135" width="140" height="95" rx="12"/>
+</g>
+<g font-size="27" font-weight="700" fill="#173a75"><text x="170" y="193">18</text><text x="330" y="193">24</text><text x="490" y="193">31</text><text x="650" y="193">42</text><text x="810" y="193">56</text><text x="970" y="193">63</text></g>
+</g>
+<path d="M490 290 V245" stroke="#bd7a27" stroke-width="4"/>
+<polygon points="490,235 482,250 498,250" fill="#bd7a27"/>
+<text x="490" y="325" text-anchor="middle" font-size="21" font-weight="700" fill="#8b591d">Direct access by index</text>
+<text x="550" y="375" text-anchor="middle" font-size="18" fill="#526176">Knowing the index lets the programme identify the logical position without walking through earlier elements.</text>
+</g></svg>

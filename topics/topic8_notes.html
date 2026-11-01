@@ -1,0 +1,445 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IS 237 Topic 8 Notes</title><link rel="stylesheet" href="notes.css"></head><body>
+<header class="note-header"><div><div class="eyebrow">IS 237 · Topic 8</div><h1>Graphs and Graph Algorithms</h1><p class="lead">Represent relationships between entities, traverse networks systematically, and find paths using structures already learned in the course.</p></div><button class="print-btn" onclick="window.print()">Print / Save as PDF</button></header>
+
+<section class="callout"><strong>Central idea.</strong> A graph models <em>relationships</em>. Vertices represent entities; edges represent connections. Once the graph is represented, algorithms such as BFS, DFS and Dijkstra tell us how to explore or optimise paths through those relationships.</section>
+
+<h2>8.1 Why graphs matter</h2>
+<p>Many real systems cannot be described naturally as a simple sequence or hierarchy. A road network contains many alternative routes. A social network allows one person to connect to several others. A computer network can contain cycles and multiple paths. A dependency network can contain direction. These situations are naturally modelled using graphs.</p>
+<p>Graphs therefore appear in:</p>
+<ul>
+<li>road and transport networks;</li>
+<li>social networks;</li>
+<li>communication and computer networks;</li>
+<li>web links and recommendation systems;</li>
+<li>course prerequisites and task dependencies;</li>
+<li>maps and routing systems;</li>
+<li>biological interaction networks;</li>
+<li>knowledge graphs and AI systems.</li>
+</ul>
+
+<h2>8.2 Where graph theory came from</h2>
+<p>One of the best-known starting points of graph theory is Leonhard Euler's 1736 solution to the <strong>Seven Bridges of Königsberg</strong> problem. Instead of reasoning about the exact geography of the city, Euler abstracted each land region as a point and each bridge as a connection. This change from physical detail to structural relationships is exactly the kind of abstraction used throughout computer science.</p>
+<img src="media/topic8/graph_origins.svg" alt="Origins of graph theory">
+
+<h2>8.3 Basic graph terminology</h2>
+<p>A graph is commonly written:</p>
+<div class="formula">G = (V, E)</div>
+<p>where <strong>V</strong> is the set of vertices and <strong>E</strong> is the set of edges.</p>
+<ul>
+<li><strong>Vertex (node):</strong> an entity in the graph.</li>
+<li><strong>Edge:</strong> a relationship between two vertices.</li>
+<li><strong>Adjacent vertices:</strong> vertices connected directly by an edge.</li>
+<li><strong>Incident edge:</strong> an edge touching a vertex.</li>
+<li><strong>Degree:</strong> number of edges incident to a vertex in an undirected graph.</li>
+<li><strong>Indegree:</strong> number of directed edges entering a vertex.</li>
+<li><strong>Outdegree:</strong> number of directed edges leaving a vertex.</li>
+<li><strong>Walk:</strong> a sequence of adjacent vertices/edges where repetition may occur.</li>
+<li><strong>Path:</strong> a route through adjacent vertices; in a simple path, vertices are not repeated.</li>
+<li><strong>Cycle:</strong> a path that returns to its starting vertex.</li>
+<li><strong>Connected graph:</strong> every pair of vertices has a path between them in an undirected graph.</li>
+<li><strong>Connected component:</strong> a maximal connected subgraph.</li>
+</ul>
+
+<h2>8.4 Graph types</h2>
+<img src="media/topic8/graph_types.svg" alt="Graph types">
+<h3>8.4.1 Undirected graph</h3>
+<p>An edge <code>{A,B}</code> has no direction. If A is connected to B, B is connected to A.</p>
+
+<h3>8.4.2 Directed graph</h3>
+<p>An edge <code>(A,B)</code> points from A to B. A connection from A to B does not imply a connection from B to A.</p>
+
+<h3>8.4.3 Weighted graph</h3>
+<p>An edge carries a numeric weight such as distance, cost, travel time, risk or capacity.</p>
+
+<h3>8.4.4 Unweighted graph</h3>
+<p>Edges are treated as having equal cost, often interpreted as one step.</p>
+
+<h3>8.4.5 Simple graph</h3>
+<p>A simple graph has no self-loops and no duplicate parallel edges between the same pair of vertices.</p>
+
+<h2>8.5 Trees are special graphs</h2>
+<p>A tree is a special kind of undirected graph that is connected and contains no cycles. This connects Topic 7 directly to graph theory: every tree is a graph, but not every graph is a tree.</p>
+
+<h2>8.6 Graph representation</h2>
+<p>Before running graph algorithms, the graph must be represented in memory. Two core representations are the <strong>adjacency matrix</strong> and the <strong>adjacency list</strong>.</p>
+<img src="media/topic8/representations.svg" alt="Graph representations">
+
+<h2>8.7 Adjacency matrix</h2>
+<p>For <code>V</code> vertices, an adjacency matrix uses a V × V table. For an unweighted graph:</p>
+<pre><code>matrix[i][j] = 1   if edge i→j exists
+matrix[i][j] = 0   otherwise</code></pre>
+
+<h3>Add an undirected edge in a matrix</h3>
+<pre><code>ALGORITHM AddUndirectedEdgeMatrix(M, u, v)
+    M[u][v] ← 1
+    M[v][u] ← 1</code></pre>
+
+<h3>Add a directed edge</h3>
+<pre><code>ALGORITHM AddDirectedEdgeMatrix(M, u, v)
+    M[u][v] ← 1</code></pre>
+
+<h3>Advantages</h3>
+<ul>
+<li>checking whether a particular edge exists is O(1);</li>
+<li>simple representation;</li>
+<li>often suitable for dense graphs.</li>
+</ul>
+
+<h3>Limitations</h3>
+<ul>
+<li>space is O(V²), even when very few edges exist;</li>
+<li>enumerating neighbours of one vertex usually scans an entire row.</li>
+</ul>
+
+<h2>8.8 Adjacency list</h2>
+<p>An adjacency list stores, for each vertex, the collection of vertices directly connected to it.</p>
+<pre><code>A → B, C
+B → A, D, E
+C → A, F
+...</code></pre>
+
+<h3>Add an undirected edge</h3>
+<pre><code>ALGORITHM AddUndirectedEdgeList(adj, u, v)
+    adj[u].append(v)
+    adj[v].append(u)</code></pre>
+
+<h3>Add a directed edge</h3>
+<pre><code>ALGORITHM AddDirectedEdgeList(adj, u, v)
+    adj[u].append(v)</code></pre>
+
+<h3>Advantages</h3>
+<ul>
+<li>space is O(V + E);</li>
+<li>efficient for sparse graphs;</li>
+<li>enumerating neighbours is proportional to the vertex degree.</li>
+</ul>
+
+<h3>Limitations</h3>
+<ul>
+<li>checking a particular edge may require scanning a neighbour list;</li>
+<li>the representation is less visually uniform than a matrix.</li>
+</ul>
+
+<h2>8.9 Matrix vs list</h2>
+<table><thead><tr><th>Concern</th><th>Adjacency Matrix</th><th>Adjacency List</th></tr></thead><tbody>
+<tr><td>Space</td><td>O(V²)</td><td>O(V + E)</td></tr>
+<tr><td>Check edge (u,v)</td><td>O(1)</td><td>O(deg(u)) typically</td></tr>
+<tr><td>Enumerate neighbours</td><td>O(V)</td><td>O(deg(u))</td></tr>
+<tr><td>Sparse graphs</td><td>Often wasteful</td><td>Very suitable</td></tr>
+<tr><td>Dense graphs</td><td>Often attractive</td><td>Still valid</td></tr>
+</tbody></table>
+
+<h2>8.10 Graph traversal</h2>
+<p>Traversal means systematically visiting reachable vertices while avoiding infinite repetition caused by cycles. Therefore graph traversal normally keeps a <strong>visited set</strong>.</p>
+<p>The two fundamental traversals are:</p>
+<ul><li><strong>Breadth-First Search (BFS)</strong> — expands outward level by level;</li><li><strong>Depth-First Search (DFS)</strong> — follows one route deeply before backtracking.</li></ul>
+<img src="media/topic8/bfs_dfs.svg" alt="BFS and DFS">
+
+<h2>8.11 Breadth-First Search (BFS)</h2>
+<p>BFS uses a <strong>Queue</strong>. The queue stores discovered vertices whose neighbours have not yet been completely explored.</p>
+
+<h3>BFS pseudocode</h3>
+<pre><code>ALGORITHM BFS(adj, start)
+    create empty set visited
+    create empty queue Q
+
+    add start to visited
+    Q.enqueue(start)
+
+    WHILE Q is not empty
+        u ← Q.dequeue()
+        process u
+
+        FOR each vertex v in adj[u]
+            IF v not in visited
+                add v to visited
+                Q.enqueue(v)</code></pre>
+
+<h3>Why mark visited when enqueuing?</h3>
+<p>If a vertex is marked only when it is removed from the queue, the same vertex may be added several times by different neighbours. Marking it as soon as it is discovered prevents duplicate frontier entries.</p>
+
+<h2>8.12 BFS example</h2>
+<p>For the graph:</p>
+<pre><code>A: B, C
+B: A, D, E
+C: A, F
+D: B
+E: B, G
+F: C, G
+G: E, F</code></pre>
+<p>with neighbours processed alphabetically, BFS from A visits:</p>
+<div class="formula">A → B → C → D → E → F → G</div>
+<p>The queue evolves roughly as:</p>
+<pre><code>[A]
+[B, C]
+[C, D, E]
+[D, E, F]
+[E, F]
+[F, G]
+[G]
+[]</code></pre>
+
+<h2>8.13 BFS complexity</h2>
+<p>With an adjacency list, each vertex is processed once and each edge is examined a constant number of times:</p>
+<div class="formula">O(V + E)</div>
+<p>With an adjacency matrix, BFS may scan a full row for each visited vertex:</p>
+<div class="formula">O(V²)</div>
+
+<h2>8.14 BFS and shortest paths in unweighted graphs</h2>
+<p>BFS discovers vertices in nondecreasing number of edges from the start. Therefore the first time a vertex is discovered gives a shortest path by <strong>edge count</strong> in an unweighted graph.</p>
+
+<h3>BFS with predecessor tracking</h3>
+<pre><code>ALGORITHM BFSShortestPaths(adj, start)
+    create queue Q
+    distance[start] ← 0
+    predecessor[start] ← null
+    mark start visited
+    Q.enqueue(start)
+
+    WHILE Q not empty
+        u ← Q.dequeue()
+
+        FOR each v in adj[u]
+            IF v not visited
+                mark v visited
+                distance[v] ← distance[u] + 1
+                predecessor[v] ← u
+                Q.enqueue(v)</code></pre>
+
+<h2>8.15 Reconstructing a path</h2>
+<pre><code>ALGORITHM ReconstructPath(predecessor, start, target)
+    IF target was never discovered
+        RETURN NO_PATH
+
+    path ← empty list
+    current ← target
+
+    WHILE current ≠ null
+        prepend current to path
+        current ← predecessor[current]
+
+    RETURN path</code></pre>
+
+<h2>8.16 Depth-First Search (DFS)</h2>
+<p>DFS follows one branch as far as possible before backtracking. It can be implemented using recursion or an explicit Stack.</p>
+
+<h3>Recursive DFS</h3>
+<pre><code>ALGORITHM DFSRecursive(adj, u, visited)
+    add u to visited
+    process u
+
+    FOR each vertex v in adj[u]
+        IF v not in visited
+            DFSRecursive(adj, v, visited)</code></pre>
+
+<h3>Driver</h3>
+<pre><code>ALGORITHM DFS(adj, start)
+    create empty set visited
+    DFSRecursive(adj, start, visited)</code></pre>
+
+<h2>8.17 Iterative DFS</h2>
+<pre><code>ALGORITHM DFSIterative(adj, start)
+    create empty set visited
+    create empty stack S
+    S.push(start)
+
+    WHILE S is not empty
+        u ← S.pop()
+
+        IF u not in visited
+            add u to visited
+            process u
+
+            FOR each neighbour v of u
+                IF v not in visited
+                    S.push(v)</code></pre>
+<p>The exact visit order can differ between recursive and iterative implementations depending on the order neighbours are pushed. The important property is depth-first exploration.</p>
+
+<h2>8.18 DFS example</h2>
+<p>Using the same graph and alphabetical recursive neighbours, DFS from A visits:</p>
+<div class="formula">A → B → D → E → G → F → C</div>
+<p>DFS goes deep, backtracks when necessary, and then explores remaining branches.</p>
+
+<h2>8.19 DFS complexity</h2>
+<p>With an adjacency list:</p>
+<div class="formula">O(V + E)</div>
+<p>Recursive DFS uses call-stack space proportional to the depth of exploration. Iterative DFS stores the frontier explicitly in a Stack.</p>
+
+<h2>8.20 BFS vs DFS</h2>
+<table><thead><tr><th>Feature</th><th>BFS</th><th>DFS</th></tr></thead><tbody>
+<tr><td>Frontier structure</td><td>Queue</td><td>Stack / recursion</td></tr>
+<tr><td>Exploration pattern</td><td>Level by level</td><td>Deep then backtrack</td></tr>
+<tr><td>Unweighted shortest edge-count path</td><td>Yes</td><td>Not guaranteed</td></tr>
+<tr><td>Connected components</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Cycle/structural analysis</td><td>Possible</td><td>Very natural</td></tr>
+<tr><td>Adjacency-list time</td><td>O(V + E)</td><td>O(V + E)</td></tr>
+</tbody></table>
+
+<h2>8.21 Traversing a disconnected graph</h2>
+<p>Starting BFS or DFS from one vertex visits only its connected component. To traverse the entire graph:</p>
+<pre><code>ALGORITHM TraverseAllComponents(adj)
+    visited ← empty set
+
+    FOR each vertex u
+        IF u not in visited
+            DFSRecursive(adj, u, visited)</code></pre>
+<p>Each new DFS/BFS start identifies another connected component.</p>
+
+<h2>8.22 Cycle intuition</h2>
+<p>Cycles are important because they create alternative routes and can cause infinite traversal if visited tracking is omitted. In an undirected graph, DFS can detect a cycle when it reaches a previously visited neighbour that is not the current vertex's parent.</p>
+<pre><code>ALGORITHM HasCycleUndirected(adj, u, parent, visited)
+    add u to visited
+
+    FOR each v in adj[u]
+        IF v not in visited
+            IF HasCycleUndirected(adj, v, u, visited)
+                RETURN true
+
+        ELSE IF v ≠ parent
+            RETURN true
+
+    RETURN false</code></pre>
+
+<h2>8.23 Directed graphs and indegree/outdegree</h2>
+<p>In a directed graph:</p>
+<ul>
+<li><strong>outdegree(v)</strong> counts edges leaving v;</li>
+<li><strong>indegree(v)</strong> counts edges entering v.</li>
+</ul>
+<p>These quantities matter in dependency networks, citation networks, web links and scheduling.</p>
+
+<h2>8.24 Weighted shortest paths</h2>
+<p>BFS is correct for shortest paths when each edge has the same cost. When edges have different non-negative weights, choosing the path with the fewest edges can be wrong. We then need an algorithm that considers accumulated cost.</p>
+
+<h2>8.25 Dijkstra's algorithm</h2>
+<img src="media/topic8/dijkstra.svg" alt="Dijkstra weighted shortest path">
+<p>Dijkstra's algorithm finds shortest paths from one source in a graph with <strong>non-negative edge weights</strong>.</p>
+<p>The main idea is:</p>
+<ol>
+<li>give the source distance 0 and all others infinity;</li>
+<li>repeatedly choose the unsettled vertex with the smallest tentative distance;</li>
+<li>relax its outgoing edges;</li>
+<li>once a vertex is settled, its shortest distance is final under Dijkstra's assumptions.</li>
+</ol>
+
+<h2>8.26 Relaxation</h2>
+<p>For an edge u → v with weight w:</p>
+<pre><code>IF distance[u] + w < distance[v]
+    distance[v] ← distance[u] + w
+    predecessor[v] ← u</code></pre>
+<p>Relaxation asks whether reaching v through u gives a cheaper path than the best route known so far.</p>
+
+<h2>8.27 Dijkstra pseudocode</h2>
+<pre><code>ALGORITHM Dijkstra(adj, source)
+    FOR each vertex v
+        distance[v] ← ∞
+        predecessor[v] ← null
+
+    distance[source] ← 0
+
+    create min-priority queue PQ
+    PQ.insert(source, priority = 0)
+
+    WHILE PQ is not empty
+        u ← PQ.extractMin()
+
+        IF u is already settled
+            CONTINUE
+
+        mark u settled
+
+        FOR each edge (u, v, weight) in adj[u]
+            newDistance ← distance[u] + weight
+
+            IF newDistance < distance[v]
+                distance[v] ← newDistance
+                predecessor[v] ← u
+                PQ.insert(v, priority = newDistance)
+
+    RETURN distance, predecessor</code></pre>
+
+<h2>8.28 Why a heap appears again</h2>
+<p>The min-priority queue in Dijkstra is naturally implemented with a min-heap. This connects Topic 7 to graph algorithms. A good data structure improves the graph algorithm's performance because the next smallest tentative distance can be selected efficiently.</p>
+
+<h2>8.29 Dijkstra complexity</h2>
+<p>With an adjacency list and binary heap priority queue, a common complexity is:</p>
+<div class="formula">O((V + E) log V)</div>
+<p>It is often simplified to O(E log V) for connected sparse graphs where E dominates V.</p>
+
+<h2>8.30 Important limitation of Dijkstra</h2>
+<p>Dijkstra's algorithm assumes <strong>non-negative edge weights</strong>. Negative-weight edges can invalidate the “settled means final” logic. Other algorithms are required for graphs containing negative edge weights.</p>
+
+<h2>8.31 BFS vs Dijkstra</h2>
+<table><thead><tr><th>Problem</th><th>BFS</th><th>Dijkstra</th></tr></thead><tbody>
+<tr><td>Unweighted graph</td><td>Excellent</td><td>Works but unnecessary</td></tr>
+<tr><td>All edges equal cost</td><td>Excellent</td><td>More machinery than needed</td></tr>
+<tr><td>Different non-negative weights</td><td>Not generally correct</td><td>Correct</td></tr>
+<tr><td>Frontier structure</td><td>Queue</td><td>Min-priority queue / heap</td></tr>
+</tbody></table>
+
+<h2>8.32 Graph density</h2>
+<p>A graph is <strong>sparse</strong> when E is much smaller than V² and <strong>dense</strong> when many possible edges are present. Density influences representation choice:</p>
+<ul>
+<li>sparse graph → adjacency list is usually memory-efficient;</li>
+<li>dense graph → matrix cost may be acceptable and edge lookup is simple.</li>
+</ul>
+
+<h2>8.33 Common graph mistakes</h2>
+<ul>
+<li><strong>Forgetting visited tracking.</strong> Cycles can make traversals repeat indefinitely.</li>
+<li><strong>Using binary search ideas on arbitrary graph structure.</strong> Graph adjacency is not a sorted linear interval.</li>
+<li><strong>Assuming DFS finds shortest paths.</strong> It does not guarantee shortest edge-count paths.</li>
+<li><strong>Using BFS on weighted unequal costs.</strong> Fewest edges may not mean lowest total weight.</li>
+<li><strong>Using Dijkstra with negative weights.</strong> Its correctness assumption is violated.</li>
+<li><strong>Confusing degree with path length.</strong> Degree counts incident edges; path length counts route edges or weights.</li>
+<li><strong>Forgetting edge direction.</strong> In directed graphs, A→B does not imply B→A.</li>
+</ul>
+
+<h2>8.34 Real-world applications</h2>
+<ul>
+<li><strong>Navigation:</strong> intersections/places as vertices and roads as weighted edges.</li>
+<li><strong>Social networks:</strong> people/accounts as vertices and relationships as edges.</li>
+<li><strong>Communication networks:</strong> routers/devices as vertices and links as edges.</li>
+<li><strong>Recommendation:</strong> users, items and interactions can form graphs.</li>
+<li><strong>Web search:</strong> pages and hyperlinks form a directed graph.</li>
+<li><strong>Project planning:</strong> tasks and dependencies form directed structures.</li>
+<li><strong>AI and knowledge graphs:</strong> entities and semantic relationships are graph-structured.</li>
+</ul>
+
+<h2>8.35 How previous topics reappear</h2>
+<table><thead><tr><th>Earlier concept</th><th>Graph connection</th></tr></thead><tbody>
+<tr><td>Arrays / linked structures</td><td>Used inside adjacency lists and matrices</td></tr>
+<tr><td>Queue</td><td>BFS frontier</td></tr>
+<tr><td>Stack / recursion</td><td>DFS frontier and call stack</td></tr>
+<tr><td>Big-O</td><td>O(V+E), O(V²), O((V+E)logV)</td></tr>
+<tr><td>Heap</td><td>Min-priority queue in Dijkstra</td></tr>
+<tr><td>Abstraction</td><td>Physical systems become vertices and edges</td></tr>
+</tbody></table>
+
+<h2>8.36 Choosing a graph algorithm</h2>
+<ul>
+<li><strong>Need to visit reachable vertices level by level?</strong> BFS.</li>
+<li><strong>Need to explore deeply, detect structure or components?</strong> DFS.</li>
+<li><strong>Need shortest path by edge count in an unweighted graph?</strong> BFS.</li>
+<li><strong>Need shortest total cost with non-negative weights?</strong> Dijkstra.</li>
+<li><strong>Need compact storage for a sparse graph?</strong> Adjacency list.</li>
+<li><strong>Need constant-time direct edge existence check and graph is not too large?</strong> Adjacency matrix.</li>
+</ul>
+
+<h2>8.37 Course-level perspective</h2>
+<p>This final topic brings together the main idea of IS 237: <strong>the representation of data determines the algorithms that become natural and efficient</strong>. Graph traversal is not an isolated technique. BFS depends on queues, DFS depends on stacks/recursion, and Dijkstra depends on priority queues/heaps.</p>
+
+<h2>Topic summary</h2>
+<ul>
+<li>A graph G=(V,E) models entities and relationships.</li>
+<li>Graphs may be directed/undirected and weighted/unweighted.</li>
+<li>Adjacency matrices use O(V²) space; adjacency lists use O(V+E).</li>
+<li>BFS uses a queue and visits level by level.</li>
+<li>DFS uses recursion or a stack and explores deeply before backtracking.</li>
+<li>BFS and DFS are O(V+E) with adjacency lists.</li>
+<li>BFS finds shortest edge-count paths in unweighted graphs.</li>
+<li>Dijkstra finds shortest paths for non-negative weighted graphs and commonly uses a min-heap.</li>
+<li>Visited tracking prevents repeated processing in cyclic graphs.</li>
+<li>The right representation and algorithm depend on graph density and the application's dominant operation.</li>
+</ul>
+</body></html>

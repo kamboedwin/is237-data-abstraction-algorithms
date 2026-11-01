@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IS 237 Topic 1 Notes</title><link rel="stylesheet" href="notes.css"></head>
+<body>
+<header class="note-header">
+<div><div class="eyebrow">IS 237 · Topic 1</div><h1>Problem Solving and Introduction to Algorithms</h1>
+<p class="lead">From a real problem to a precise, testable and efficient procedure.</p></div>
+<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+</header>
+
+<section class="callout"><strong>Learning philosophy.</strong> In this topic, we do not begin by memorising pseudocode. We begin with a problem, understand why a procedure is needed, watch the procedure work, then formalise it.</section>
+
+<h2>1.1 Why problem solving comes before programming</h2>
+<p>A computer programme is only one possible expression of a solution. Before writing code, a problem solver must understand <em>what is being solved</em>, what information is available, what result is required, what constraints exist and how success will be recognised. A beautifully written programme that solves the wrong problem is still a failed solution.</p>
+<p>In computer science, problem solving is the process of transforming a vague real-world need into a sequence of clear decisions and operations that can be carried out reliably. This is especially important in data science and artificial intelligence, where the same task can often be approached in several ways and the choice of representation and procedure affects speed, memory use, accuracy and maintainability.</p>
+<img src="media/topic1/problem_to_algorithm.svg" alt="Problem to algorithm cycle">
+
+<h3>A practical problem-solving cycle</h3>
+<ol>
+<li><strong>Understand the problem.</strong> What exactly is being asked? Who needs the result? What counts as a correct answer?</li>
+<li><strong>Identify inputs and outputs.</strong> What information is given, and what must be produced?</li>
+<li><strong>Identify constraints and assumptions.</strong> How large can the input become? Is it already sorted? Can values repeat? Is memory limited?</li>
+<li><strong>Choose a representation.</strong> Decide how the relevant information will be organised. Later in this course this becomes the choice of data structure.</li>
+<li><strong>Design a procedure.</strong> Describe a finite sequence of steps that transforms the input into the required output.</li>
+<li><strong>Verify and test.</strong> Ask whether the procedure is correct for normal, boundary and unusual cases.</li>
+<li><strong>Analyse efficiency.</strong> Ask how the amount of work and memory grow as the problem gets larger.</li>
+<li><strong>Refine.</strong> Improve clarity, correctness, efficiency or suitability.</li>
+</ol>
+
+<h2>1.2 What is an algorithm?</h2>
+<p>An <strong>algorithm</strong> is a finite, well-defined sequence of steps for solving a class of problems or carrying out a computation. The idea is broader than programming: an algorithm can first be expressed in ordinary language, a flowchart, pseudocode or mathematical notation and later implemented in a programming language.</p>
+<p>The word <em>algorithm</em> is historically associated with the Latinised name of the Persian mathematician <strong>Muḥammad ibn Mūsā al-Khwārizmī</strong>, whose works helped transmit systematic methods of calculation. Modern computer science extends this general idea: a procedure should be precise enough that its steps can be followed consistently.</p>
+<img src="media/topic1/algorithm_characteristics.svg" alt="Characteristics of an algorithm">
+
+<h3>Algorithm versus programme</h3>
+<table><thead><tr><th>Algorithm</th><th>Programme</th></tr></thead><tbody>
+<tr><td>A language-independent procedure or method.</td><td>An implementation written in a programming language.</td></tr>
+<tr><td>Focuses on logic and steps.</td><td>Includes syntax, data types, libraries and machine-specific details.</td></tr>
+<tr><td>Can be expressed using pseudocode or diagrams.</td><td>Must obey the rules of the chosen programming language.</td></tr>
+</tbody></table>
+<p>This distinction matters because good algorithmic thinking lets you reason about a solution before implementation details distract you.</p>
+
+<h2>1.3 Solution design: from idea to procedure</h2>
+<p>Solution design is the process of organising the reasoning that connects the problem to an implementable procedure. A common mistake is to start coding immediately. A stronger approach is to first create an abstract plan.</p>
+
+<h3>Example: finding the largest value</h3>
+<p>Suppose the values are <code>[4, 9, 2, 7, 5]</code>. A human can see that 9 is the largest. But a computer must be given a repeatable procedure that also works for thousands or millions of values.</p>
+<p>One useful idea is to keep a <strong>current maximum</strong>. Begin with the first item as the best candidate seen so far. Compare every later item with it. If a larger value is found, replace the current maximum. At the end, the remembered value is the largest.</p>
+<pre><code>ALGORITHM FindMaximum(A)
+    maximum ← A[0]
+    FOR each remaining value x in A
+        IF x &gt; maximum
+            maximum ← x
+    RETURN maximum</code></pre>
+<p>Notice the important progression: the problem came first, then the idea of “remember the best seen so far”, and only after that did we write pseudocode.</p>
+
+<h3>Decomposition</h3>
+<p>Large problems become manageable when divided into smaller subproblems. For example, a student-results system may need to read scores, validate them, compute totals, assign classifications, sort records and generate a report. Each subproblem can be designed and verified separately before the pieces are combined.</p>
+
+<h3>Pattern recognition and reuse</h3>
+<p>Experienced problem solvers recognise recurring patterns. “Keep the best item seen so far” appears in maximum/minimum problems. “Repeat until the target is found” appears in search problems. “Divide a problem into smaller instances” appears in recursive algorithms and divide-and-conquer methods. Recognising a pattern reduces the amount of reasoning needed for a new problem.</p>
+
+<h2>1.4 Representing an algorithm</h2>
+<p>There is no single mandatory representation. The best representation depends on the audience and the stage of design.</p>
+<table><thead><tr><th>Representation</th><th>Useful when…</th><th>Limitation</th></tr></thead><tbody>
+<tr><td>Natural language</td><td>Explaining an idea to beginners or non-programmers.</td><td>Can become ambiguous.</td></tr>
+<tr><td>Flowchart</td><td>Showing decisions and control flow visually.</td><td>Large algorithms can become cluttered.</td></tr>
+<tr><td>Pseudocode</td><td>Expressing logic precisely without programming syntax.</td><td>Conventions vary.</td></tr>
+<tr><td>Programme code</td><td>Executing and testing the solution on a computer.</td><td>Implementation details can hide the main idea.</td></tr>
+</tbody></table>
+
+<h2>1.5 Programme verification and correctness</h2>
+<p>An algorithm should not merely produce the correct answer for one example. We need confidence that it produces the correct result for the whole class of valid inputs for which it was designed.</p>
+<img src="media/topic1/verification_cycle.svg" alt="Verification cycle">
+
+<h3>Specification</h3>
+<p>A specification states what a procedure should accomplish. A useful informal specification has a <strong>precondition</strong> and a <strong>postcondition</strong>. For binary search, for example, a precondition is that the data must already be sorted. The postcondition states what is returned when the target exists or does not exist.</p>
+
+<h3>Tracing</h3>
+<p>A trace follows the algorithm one step at a time and records important state changes. Tracing is especially useful before coding because it exposes missing steps and incorrect assumptions.</p>
+
+<h3>Testing</h3>
+<p>Good test cases are chosen deliberately. Use:</p>
+<ul>
+<li><strong>Typical cases</strong> — ordinary inputs.</li>
+<li><strong>Boundary cases</strong> — smallest or largest allowed input, first/last position, zero or one element where allowed.</li>
+<li><strong>Special cases</strong> — repeated values, negative values, already sorted data, reverse-sorted data, or an absent search key.</li>
+<li><strong>Invalid cases</strong> — when the specification says the procedure should reject or handle them safely.</li>
+</ul>
+
+<h3>Testing is evidence, not a proof</h3>
+<p>Passing several tests increases confidence but does not prove that every possible case is correct. For important algorithms, reasoning about an <strong>invariant</strong> can help. An invariant is a statement that remains true throughout a repeated process. In the maximum-finding algorithm, after each comparison, the variable <code>maximum</code> stores the largest value among all elements examined so far. When every element has been examined, this invariant explains why the final result is the maximum of the whole array.</p>
+
+<h2>1.6 Problem-solving strategies</h2>
+<p>Different problems favour different strategies. At this stage we focus on recognising the ideas; later topics will develop them formally.</p>
+<div class="cards">
+<div><h3>Brute force</h3><p>Try a direct or exhaustive approach. It may be simple and reliable but can become expensive for large inputs.</p></div>
+<div><h3>Divide and conquer</h3><p>Split the problem into smaller parts, solve them and combine the results. Merge sort and quicksort will later use this idea.</p></div>
+<div><h3>Decrease and conquer</h3><p>Solve a smaller version of the problem and extend the result. Binary search repeatedly reduces the search space.</p></div>
+<div><h3>Greedy choice</h3><p>Make a locally attractive choice at each step. This is useful for some optimisation problems but does not always produce a global optimum.</p></div>
+<div><h3>Backtracking</h3><p>Build a candidate solution, undo a choice when it cannot lead to success, and try another path.</p></div>
+<div><h3>Transform and conquer</h3><p>Change the representation or organisation of data so the problem becomes easier to solve.</p></div>
+</div>
+
+<h2>1.7 Why algorithm efficiency matters</h2>
+<p>Two algorithms may produce exactly the same correct answer but require very different amounts of time or memory. With five values, the difference may be invisible. With five million values, it may determine whether a system responds immediately or takes hours.</p>
+<p>Instead of relying only on seconds measured on one computer, algorithm analysis studies how the required work grows as the input size <code>n</code> grows. This gives us a machine-independent way to compare the <em>shape of growth</em>.</p>
+<img src="media/topic1/growth_rates.svg" alt="Growth rates O1 On On2">
+
+<h3>First intuition for Big-O</h3>
+<table><thead><tr><th>Growth</th><th>Intuition</th><th>Example idea</th></tr></thead><tbody>
+<tr><td><strong>O(1)</strong></td><td>Work remains roughly constant even when the input grows.</td><td>Access an array item by a known index.</td></tr>
+<tr><td><strong>O(n)</strong></td><td>Work grows roughly in proportion to the number of items.</td><td>Scan every item once to find a maximum.</td></tr>
+<tr><td><strong>O(n²)</strong></td><td>Work can grow like all-pairs comparisons.</td><td>A nested loop comparing many pairs.</td></tr>
+</tbody></table>
+<p><strong>Important:</strong> Big-O is not “how many seconds the algorithm takes”. It describes the long-run growth of resource use as the input grows. We will study time and space complexity, best/worst/average cases, searching and sorting much more deeply later.</p>
+
+<h2>1.8 Time and space</h2>
+<p><strong>Time complexity</strong> estimates how the number of basic operations grows with input size. <strong>Space complexity</strong> estimates how extra memory requirements grow. Sometimes an algorithm saves time by using more memory, or saves memory by doing more work. Choosing an algorithm therefore involves trade-offs.</p>
+
+<h2>1.9 How this applies in real systems</h2>
+<ul>
+<li><strong>Search engines:</strong> algorithms organise and retrieve relevant information efficiently.</li>
+<li><strong>Navigation:</strong> route-finding procedures operate on graph-like representations of roads.</li>
+<li><strong>Banking:</strong> transaction systems require correct procedures, validation and efficient lookup.</li>
+<li><strong>Operating systems:</strong> scheduling algorithms decide which process should use the processor next.</li>
+<li><strong>Data science:</strong> sorting, searching, sampling and optimisation procedures appear inside data-processing pipelines.</li>
+<li><strong>AI:</strong> search, optimisation and learning procedures often operate over specialised data structures.</li>
+</ul>
+
+<h2>1.10 Data structures and algorithms belong together</h2>
+<p>A major theme of IS 237 is:</p>
+<div class="formula">Data Structure + Algorithm → Solution</div>
+<p>A data structure determines how information is organised; an algorithm determines the operations performed on it. The best algorithm can depend on the data structure, and the best data structure can depend on the operations that are most important. This is why the rest of the course alternates between structures and the algorithms that use them.</p>
+
+<h2>Topic summary</h2>
+<ul>
+<li>Problem solving begins before programming.</li>
+<li>An algorithm is a finite, precise procedure for a class of problems.</li>
+<li>Good solution design considers input, output, constraints, representation and verification.</li>
+<li>Correctness requires more than one successful example; tracing, tests and invariants build confidence.</li>
+<li>Problem-solving strategies provide reusable ways of thinking.</li>
+<li>Efficiency concerns how resource use grows as input size grows.</li>
+<li>Data structures organise information; algorithms operate on that organisation.</li>
+</ul>
+</body></html>

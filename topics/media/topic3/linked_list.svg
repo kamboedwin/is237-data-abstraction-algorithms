@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 430">
+<rect width="1100" height="430" rx="30" fill="#fbfcff"/>
+<defs><marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto"><path d="M0,0 L0,8 L11,4 z" fill="#355f9f"/></marker></defs>
+<g font-family="Arial,sans-serif">
+<text x="550" y="50" text-anchor="middle" font-size="31" font-weight="700" fill="#17233c">Singly Linked List: Nodes Connected by References</text>
+<text x="70" y="215" font-size="20" font-weight="700" fill="#173a75">head</text>
+<g fill="#fff" stroke="#3563a8" stroke-width="3">
+<rect x="150" y="135" width="185" height="130" rx="16"/><rect x="430" y="135" width="185" height="130" rx="16"/><rect x="710" y="135" width="185" height="130" rx="16"/>
+</g>
+<g stroke="#c9d7ea" stroke-width="2"><line x1="250" y1="135" x2="250" y2="265"/><line x1="530" y1="135" x2="530" y2="265"/><line x1="810" y1="135" x2="810" y2="265"/></g>
+<g font-size="16" fill="#64748b"><text x="175" y="165">data</text><text x="270" y="165">next</text><text x="455" y="165">data</text><text x="550" y="165">next</text><text x="735" y="165">data</text><text x="830" y="165">next</text></g>
+<g font-size="26" font-weight="700" fill="#173a75"><text x="200" y="220">18</text><text x="480" y="220">31</text><text x="760" y="220">56</text></g>
+<g stroke="#355f9f" stroke-width="4" fill="none" marker-end="url(#arr)"><line x1="95" y1="205" x2="140" y2="205"/><line x1="295" y1="205" x2="420" y2="205"/><line x1="575" y1="205" x2="700" y2="205"/></g>
+<text x="850" y="220" text-anchor="middle" font-size="20" font-weight="700" fill="#7b4c7a">null</text>
+<text x="550" y="335" text-anchor="middle" font-size="18" fill="#526176">Nodes do not need consecutive positions; each node stores data plus a reference to the next node.</text>
+<text x="550" y="375" text-anchor="middle" font-size="18" fill="#526176">To reach later nodes, traversal normally begins at head and follows references.</text>
+</g></svg>

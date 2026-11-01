@@ -1,0 +1,59 @@
+IS 237 — Assignment 3
+Arrays and Linked Lists: Representation Decision and Operation Trace
+
+Purpose
+Show that you can choose and justify a concrete data representation based on the operations a problem requires.
+
+Part A — Representation decision
+Choose ONE realistic application that maintains an ordered collection of data.
+
+Your report must:
+1. Describe the application and the collection being represented.
+2. Identify the important operations: access, traversal, insertion, deletion and/or update.
+3. Estimate whether the collection size is fixed, predictable or highly dynamic.
+4. Decide whether an array, dynamic array, singly linked list, doubly linked list or circular linked list is most appropriate.
+5. Justify the decision using at least four technical considerations.
+6. Identify one alternative representation and explain why it is less suitable for this application.
+
+Part B — Manual operation traces
+Using at least five initial values:
+1. Trace an array insertion into a middle position, showing every shift.
+2. Trace an array deletion from a middle position, showing every shift.
+3. Trace insertion at the head of a singly linked list.
+4. Trace insertion after a known linked-list node.
+5. Trace deletion of a linked-list node after its predecessor is known.
+6. State the time-complexity intuition for each operation and distinguish location cost from update cost.
+
+Part C — Comparison
+Create a table comparing array and linked-list behaviour for:
+- indexed access
+- traversal
+- insertion at beginning
+- insertion after a known position/node
+- deletion
+- memory overhead
+- growth flexibility
+
+Expected length
+4–6 pages excluding cover page.
+
+Programming code is optional. The emphasis is on diagrams, traces and justification.
+
+Suggested filename
+IS237_A3_RegistrationNumber.pdf
+
+Due date
+See current course announcements or instructions provided for your class.
+
+Submission
+Submit your completed assignment using the official IS 237 Assignment Submission Form:
+https://forms.gle/7BcZyLDVx41vRTUg8
+
+Before submitting:
+- confirm that you selected the correct assignment/topic;
+- use the required filename format where specified;
+- attach all required files;
+- follow the current deadline announced for the course.
+
+The "Mark Task Complete" button on the learning site records progress only and does not submit your work.
+

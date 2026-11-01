@@ -1,0 +1,348 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IS 237 Topic 4 Notes</title><link rel="stylesheet" href="notes.css"></head><body>
+<header class="note-header"><div><div class="eyebrow">IS 237 · Topic 4</div><h1>Stacks, Queues, Deques and Circular Queues</h1><p class="lead">Restricted-access ADTs whose simple rules make them powerful building blocks for algorithms and real systems.</p></div><button class="print-btn" onclick="window.print()">Print / Save as PDF</button></header>
+<section class="callout"><strong>Core idea.</strong> A stack and a queue may hold the same values, but restricting <em>where</em> insertion and removal occur creates completely different behaviour.</section>
+
+<h2>4.1 Why restricted data structures are useful</h2>
+<p>Arrays and linked lists allow many possible operations. Sometimes a problem becomes easier to reason about when we deliberately restrict those operations. A <strong>stack</strong> restricts ordinary insertion and removal to one end. A <strong>queue</strong> inserts at one end and removes from the other. A <strong>deque</strong> allows controlled operations at both ends.</p>
+<p>These are best understood first as <strong>Abstract Data Types</strong>. Their behaviour is defined independently of whether they are implemented using arrays or linked nodes.</p>
+
+<h2>4.2 Stack: Last In, First Out</h2>
+<p>A <strong>stack</strong> follows <strong>Last In, First Out (LIFO)</strong>. The most recently inserted item is the first item removed.</p>
+<img src="media/topic4/stack_lifo.svg" alt="Stack LIFO">
+<p>A physical stack of plates is a useful analogy: a plate placed on top is normally the first one removed. In computing, the rule appears in function calls, undo operations, parsing and depth-first exploration.</p>
+
+<h3>Where stacks came from</h3>
+<p>Stack-like organisation became important in early computing for evaluating expressions and managing nested procedure calls. The concept was formalised in the 1950s and became fundamental in compiler construction and runtime systems. Modern processors, programming languages and virtual machines still use stack-based ideas extensively.</p>
+
+<h2>4.3 Basic Stack ADT operations</h2>
+<ul><li><strong>push(value)</strong> — insert a value at the top;</li><li><strong>pop()</strong> — remove and return the top value;</li><li><strong>peek()/top()</strong> — inspect the top value without removing it;</li><li><strong>isEmpty()</strong> — report whether no values are stored;</li><li><strong>size()</strong> — return the number of values.</li></ul>
+
+<h3>ADT-level pseudocode</h3>
+<pre><code>ALGORITHM Push(stack, value)
+    add value at TOP
+
+ALGORITHM Pop(stack)
+    IF stack is empty
+        RETURN UNDERFLOW
+    value ← item at TOP
+    remove item at TOP
+    RETURN value
+
+ALGORITHM Peek(stack)
+    IF stack is empty
+        RETURN "empty"
+    RETURN item at TOP</code></pre>
+
+<h2>4.4 Array implementation of a stack</h2>
+<p>An array stack commonly keeps an integer <code>top</code>. If <code>top = -1</code>, the stack is empty. Otherwise <code>A[top]</code> is the current top.</p>
+<h3>Push</h3><pre><code>ALGORITHM ArrayStackPush(A, top, capacity, value)
+    IF top = capacity - 1
+        RETURN OVERFLOW
+    top ← top + 1
+    A[top] ← value
+    RETURN top</code></pre>
+<h3>Pop</h3><pre><code>ALGORITHM ArrayStackPop(A, top)
+    IF top = -1
+        RETURN UNDERFLOW
+    value ← A[top]
+    top ← top - 1
+    RETURN value, top</code></pre>
+<h3>Peek, isEmpty and size</h3><pre><code>ALGORITHM ArrayStackPeek(A, top)
+    IF top = -1
+        RETURN "empty"
+    RETURN A[top]
+
+ALGORITHM ArrayStackIsEmpty(top)
+    RETURN (top = -1)
+
+ALGORITHM ArrayStackSize(top)
+    RETURN top + 1</code></pre>
+<p>These operations are normally O(1). A fixed array may overflow; a dynamic array can resize when capacity is exhausted.</p>
+
+<h2>4.5 Linked implementation of a stack</h2>
+<img src="media/topic4/stack_queue_implementations.svg" alt="Stack and queue implementations">
+<p>A linked stack can treat the head node as the top. Push inserts at the head; pop removes the head.</p>
+<h3>Push</h3><pre><code>ALGORITHM LinkedStackPush(top, value)
+    newNode ← Node(value)
+    newNode.next ← top
+    top ← newNode
+    RETURN top</code></pre>
+<h3>Pop</h3><pre><code>ALGORITHM LinkedStackPop(top)
+    IF top = null
+        RETURN UNDERFLOW
+    value ← top.data
+    top ← top.next
+    RETURN value, top</code></pre>
+<h3>Peek, isEmpty and size</h3><pre><code>ALGORITHM LinkedStackPeek(top)
+    IF top = null
+        RETURN "empty"
+    RETURN top.data
+
+ALGORITHM LinkedStackIsEmpty(top)
+    RETURN (top = null)</code></pre>
+<p>If size is required frequently, a count can be maintained and updated during push/pop. Push and pop remain O(1).</p>
+
+<h2>4.6 Stack underflow and overflow</h2>
+<p><strong>Underflow</strong> occurs when pop or peek is attempted on an empty stack. <strong>Overflow</strong> occurs when a fixed-capacity stack cannot accept another value. A robust implementation must define how these conditions are handled.</p>
+
+<h2>4.7 Applications of stacks</h2>
+<ul><li>function calls and recursion;</li><li>undo and redo systems;</li><li>expression evaluation;</li><li>delimiter/bracket matching;</li><li>depth-first search;</li><li>browser back/forward history.</li></ul>
+
+<h2>4.8 Worked algorithm: balanced brackets</h2>
+<p>The next closing bracket must match the most recent unmatched opening bracket — exactly a LIFO relationship.</p>
+<pre><code>ALGORITHM AreBracketsBalanced(text)
+    create empty stack S
+
+    FOR each character c in text
+        IF c is an opening bracket
+            S.push(c)
+
+        ELSE IF c is a closing bracket
+            IF S.isEmpty()
+                RETURN false
+
+            open ← S.pop()
+
+            IF open does not match c
+                RETURN false
+
+    RETURN S.isEmpty()</code></pre>
+
+<h2>4.9 Queue: First In, First Out</h2>
+<p>A <strong>queue</strong> follows <strong>First In, First Out (FIFO)</strong>. New values join at the <strong>rear</strong>; removal occurs at the <strong>front</strong>.</p>
+<img src="media/topic4/queue_fifo.svg" alt="Queue FIFO">
+<p>The waiting-line analogy is useful: the person who arrived earliest is normally served first.</p>
+
+<h3>Where queues came from</h3>
+<p>Queueing concepts predate computers, but queues became fundamental in operating systems, communication systems, simulations and input/output processing because many tasks must wait for service.</p>
+
+<h2>4.10 Basic Queue ADT operations</h2>
+<ul><li><strong>enqueue(value)</strong> — insert at rear;</li><li><strong>dequeue()</strong> — remove and return the front value;</li><li><strong>front()/peek()</strong> — inspect the front;</li><li><strong>rear()</strong> — inspect the last item;</li><li><strong>isEmpty()</strong> — test whether empty;</li><li><strong>size()</strong> — return the number of waiting values.</li></ul>
+
+<h2>4.11 Simple linear array queue</h2>
+<p>A basic array queue can keep <code>front</code> and <code>rear</code> indexes.</p>
+<h3>Enqueue</h3><pre><code>ALGORITHM LinearQueueEnqueue(A, front, rear, capacity, value)
+    IF rear = capacity - 1
+        RETURN OVERFLOW
+    IF front = -1
+        front ← 0
+    rear ← rear + 1
+    A[rear] ← value
+    RETURN front, rear</code></pre>
+<h3>Dequeue</h3><pre><code>ALGORITHM LinearQueueDequeue(A, front, rear)
+    IF front = -1 OR front > rear
+        RETURN UNDERFLOW
+
+    value ← A[front]
+    front ← front + 1
+
+    IF front > rear
+        front ← -1
+        rear ← -1
+
+    RETURN value, front, rear</code></pre>
+<h3>Front and rear</h3><pre><code>ALGORITHM LinearQueueFront(A, front)
+    IF front = -1
+        RETURN "empty"
+    RETURN A[front]
+
+ALGORITHM LinearQueueRear(A, rear)
+    IF rear = -1
+        RETURN "empty"
+    RETURN A[rear]</code></pre>
+
+<h3>The false-overflow problem</h3>
+<p>After several dequeues, free positions may exist at the beginning of the array while <code>rear</code> has reached the final slot. Shifting after every dequeue is wasteful. A circular queue solves this by reusing earlier positions.</p>
+
+<h2>4.12 Circular queue</h2>
+<img src="media/topic4/circular_queue.svg" alt="Circular queue">
+<p>A circular queue treats the array as if the end connects logically to the beginning. Movement uses:</p>
+<div class="formula">(index + 1) mod capacity</div>
+<p>To keep empty and full states unambiguous, the following pseudocode maintains <code>front</code>, <code>rear</code> and <code>count</code>.</p>
+
+<h3>Enqueue</h3><pre><code>ALGORITHM CircularEnqueue(A, front, rear, count, capacity, value)
+    IF count = capacity
+        RETURN OVERFLOW
+
+    IF count = 0
+        front ← 0
+        rear ← 0
+    ELSE
+        rear ← (rear + 1) mod capacity
+
+    A[rear] ← value
+    count ← count + 1
+    RETURN front, rear, count</code></pre>
+
+<h3>Dequeue</h3><pre><code>ALGORITHM CircularDequeue(A, front, rear, count, capacity)
+    IF count = 0
+        RETURN UNDERFLOW
+
+    value ← A[front]
+
+    IF count = 1
+        front ← -1
+        rear ← -1
+    ELSE
+        front ← (front + 1) mod capacity
+
+    count ← count - 1
+    RETURN value, front, rear, count</code></pre>
+
+<h3>Front, rear, isEmpty, size</h3><pre><code>ALGORITHM CircularFront(A, front, count)
+    IF count = 0
+        RETURN "empty"
+    RETURN A[front]
+
+ALGORITHM CircularRear(A, rear, count)
+    IF count = 0
+        RETURN "empty"
+    RETURN A[rear]
+
+ALGORITHM CircularIsEmpty(count)
+    RETURN (count = 0)
+
+ALGORITHM CircularSize(count)
+    RETURN count</code></pre>
+<p>Enqueue and dequeue are O(1) because no shifting is required.</p>
+
+<h2>4.13 Linked implementation of a queue</h2>
+<p>A linked queue normally stores both <code>front</code> and <code>rear</code> references. Enqueue attaches after rear; dequeue removes front.</p>
+
+<h3>Enqueue</h3><pre><code>ALGORITHM LinkedQueueEnqueue(front, rear, value)
+    newNode ← Node(value)
+    newNode.next ← null
+
+    IF rear = null
+        front ← newNode
+        rear ← newNode
+        RETURN front, rear
+
+    rear.next ← newNode
+    rear ← newNode
+    RETURN front, rear</code></pre>
+
+<h3>Dequeue</h3><pre><code>ALGORITHM LinkedQueueDequeue(front, rear)
+    IF front = null
+        RETURN UNDERFLOW
+
+    value ← front.data
+    front ← front.next
+
+    IF front = null
+        rear ← null
+
+    RETURN value, front, rear</code></pre>
+
+<h3>Front, rear and isEmpty</h3><pre><code>ALGORITHM LinkedQueueFront(front)
+    IF front = null
+        RETURN "empty"
+    RETURN front.data
+
+ALGORITHM LinkedQueueRear(rear)
+    IF rear = null
+        RETURN "empty"
+    RETURN rear.data
+
+ALGORITHM LinkedQueueIsEmpty(front)
+    RETURN (front = null)</code></pre>
+<p>Maintaining both ends allows enqueue and dequeue to remain O(1).</p>
+
+<h2>4.14 Deque: double-ended queue</h2>
+<p>A <strong>deque</strong> (pronounced “deck”) allows insertion and deletion at both front and rear.</p>
+<img src="media/topic4/deque.svg" alt="Deque operations">
+<ul><li><code>insertFront(value)</code></li><li><code>insertRear(value)</code></li><li><code>deleteFront()</code></li><li><code>deleteRear()</code></li><li><code>getFront()</code></li><li><code>getRear()</code></li><li><code>isEmpty()</code></li></ul>
+
+<h2>4.15 Circular-array deque operations</h2>
+<h3>Insert at front</h3><pre><code>ALGORITHM DequeInsertFront(A, front, rear, count, capacity, value)
+    IF count = capacity
+        RETURN OVERFLOW
+
+    IF count = 0
+        front ← 0
+        rear ← 0
+    ELSE
+        front ← (front - 1 + capacity) mod capacity
+
+    A[front] ← value
+    count ← count + 1
+    RETURN front, rear, count</code></pre>
+
+<h3>Insert at rear</h3><pre><code>ALGORITHM DequeInsertRear(A, front, rear, count, capacity, value)
+    IF count = capacity
+        RETURN OVERFLOW
+
+    IF count = 0
+        front ← 0
+        rear ← 0
+    ELSE
+        rear ← (rear + 1) mod capacity
+
+    A[rear] ← value
+    count ← count + 1
+    RETURN front, rear, count</code></pre>
+
+<h3>Delete from front</h3><pre><code>ALGORITHM DequeDeleteFront(A, front, rear, count, capacity)
+    IF count = 0
+        RETURN UNDERFLOW
+
+    value ← A[front]
+
+    IF count = 1
+        front ← -1
+        rear ← -1
+    ELSE
+        front ← (front + 1) mod capacity
+
+    count ← count - 1
+    RETURN value, front, rear, count</code></pre>
+
+<h3>Delete from rear</h3><pre><code>ALGORITHM DequeDeleteRear(A, front, rear, count, capacity)
+    IF count = 0
+        RETURN UNDERFLOW
+
+    value ← A[rear]
+
+    IF count = 1
+        front ← -1
+        rear ← -1
+    ELSE
+        rear ← (rear - 1 + capacity) mod capacity
+
+    count ← count - 1
+    RETURN value, front, rear, count</code></pre>
+
+<h3>Get front/rear</h3><pre><code>ALGORITHM DequeGetFront(A, front, count)
+    IF count = 0
+        RETURN "empty"
+    RETURN A[front]
+
+ALGORITHM DequeGetRear(A, rear, count)
+    IF count = 0
+        RETURN "empty"
+    RETURN A[rear]</code></pre>
+
+<h2>4.16 Types of deque</h2>
+<ul><li><strong>General deque:</strong> insertion and deletion at both ends.</li><li><strong>Input-restricted deque:</strong> insertion allowed at one end, deletion at both.</li><li><strong>Output-restricted deque:</strong> deletion allowed at one end, insertion at both.</li></ul>
+
+<h2>4.17 Stack, queue and deque comparison</h2>
+<table><thead><tr><th>Structure</th><th>Insertion</th><th>Removal</th><th>Behaviour</th><th>Typical use</th></tr></thead><tbody><tr><td>Stack</td><td>Top</td><td>Top</td><td>LIFO</td><td>Undo, calls, DFS</td></tr><tr><td>Queue</td><td>Rear</td><td>Front</td><td>FIFO</td><td>Scheduling, BFS, service requests</td></tr><tr><td>Deque</td><td>Front or rear</td><td>Front or rear</td><td>Double-ended</td><td>Sliding windows, flexible buffering</td></tr></tbody></table>
+
+<h2>4.18 Applications of queues</h2>
+<ul><li>CPU/task scheduling;</li><li>print spooling;</li><li>message processing;</li><li>breadth-first search;</li><li>customer/service simulation;</li><li>producer-consumer buffers.</li></ul>
+
+<h2>4.19 Applications of deques</h2>
+<ul><li>sliding-window maximum/minimum algorithms;</li><li>work-stealing schedulers;</li><li>palindrome checking;</li><li>flexible buffering where either oldest or newest values may be removed.</li></ul>
+
+<h2>4.20 Choosing an implementation</h2>
+<table><thead><tr><th>ADT</th><th>Array-style implementation</th><th>Linked implementation</th></tr></thead><tbody><tr><td>Stack</td><td>Simple top index; compact; may need resize</td><td>Push/pop at head; dynamic nodes</td></tr><tr><td>Queue</td><td>Circular array avoids shifts; fixed capacity unless resized</td><td>front/rear references; dynamic nodes</td></tr><tr><td>Deque</td><td>Circular array supports both ends</td><td>Doubly linked list naturally supports both ends</td></tr></tbody></table>
+
+<h2>4.21 Common misconceptions</h2>
+<ul><li><strong>“Stack means an array.”</strong> Stack is an ADT; array and linked-list implementations are both possible.</li><li><strong>“Queue dequeue should shift all elements.”</strong> Circular indexing avoids shifting.</li><li><strong>“Circular queue means data physically forms a circle.”</strong> It is a logical indexing interpretation.</li><li><strong>“Deque and queue are identical.”</strong> A deque allows both ends; an ordinary queue has FIFO restrictions.</li><li><strong>“All implementations have the same practical trade-offs.”</strong> Capacity, reference overhead, locality and resizing differ.</li></ul>
+
+<h2>4.22 Connection to recursion</h2>
+<p>Topic 5 studies recursion and iteration. The connection is direct: recursive function calls are managed using a <strong>call stack</strong>. A call pushes a frame; a return pops it. LIFO explains why the most recent unfinished call returns first.</p>
+
+<h2>Topic summary</h2>
+<ul><li>Stack = LIFO; core operations are push, pop and peek.</li><li>Queue = FIFO; core operations are enqueue, dequeue, front and rear.</li><li>Stacks and queues can be implemented with arrays or linked structures.</li><li>Circular queues reuse freed array positions using modulo arithmetic.</li><li>Deque operations work at both ends; circular arrays or doubly linked lists are natural implementations.</li><li>Pseudocode must preserve each ADT's behavioural rules and the chosen representation's invariants.</li></ul>
+</body></html>

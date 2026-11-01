@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 500">
+<rect width="1100" height="500" rx="30" fill="#f8fbff"/>
+<g font-family="Arial,sans-serif">
+<text x="550" y="48" text-anchor="middle" font-size="31" font-weight="700" fill="#17233c">Arrays and Linked Lists Solve Different Representation Problems</text>
+<rect x="70" y="90" width="445" height="330" rx="24" fill="#eef5ff" stroke="#3563a8" stroke-width="3"/>
+<text x="292" y="132" text-anchor="middle" font-size="26" font-weight="700" fill="#173a75">Array</text>
+<text x="105" y="175" font-size="18" fill="#314158">✓ direct indexed access</text><text x="105" y="215" font-size="18" fill="#314158">✓ compact logical layout</text><text x="105" y="255" font-size="18" fill="#314158">✓ good cache locality in typical implementations</text><text x="105" y="295" font-size="18" fill="#314158">△ insert/delete may require shifting</text><text x="105" y="335" font-size="18" fill="#314158">△ fixed-size arrays cannot simply expand in place</text><text x="105" y="375" font-size="18" fill="#314158">Best when indexing is important</text>
+<rect x="585" y="90" width="445" height="330" rx="24" fill="#eef8f4" stroke="#2b765e" stroke-width="3"/>
+<text x="807" y="132" text-anchor="middle" font-size="26" font-weight="700" fill="#1d654e">Linked List</text>
+<text x="620" y="175" font-size="18" fill="#314158">✓ flexible node-by-node growth</text><text x="620" y="215" font-size="18" fill="#314158">✓ local relinking can insert/delete efficiently</text><text x="620" y="255" font-size="18" fill="#314158">△ no direct indexed access</text><text x="620" y="295" font-size="18" fill="#314158">△ extra reference storage</text><text x="620" y="335" font-size="18" fill="#314158">△ traversal follows links</text><text x="620" y="375" font-size="18" fill="#314158">Best when structural changes dominate</text>
+<text x="550" y="465" text-anchor="middle" font-size="18" font-weight="700" fill="#526176">There is no universally “better” structure — the right choice depends on the operations the problem needs most.</text>
+</g></svg>

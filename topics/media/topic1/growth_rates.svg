@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430">
+<rect width="1000" height="430" rx="28" fill="#f8fbff"/>
+<g font-family="Arial, sans-serif">
+<text x="500" y="48" text-anchor="middle" font-size="29" font-weight="700" fill="#17233c">How Work Grows as Input Size Increases</text>
+<line x1="115" y1="350" x2="900" y2="350" stroke="#334" stroke-width="2"/><line x1="115" y1="350" x2="115" y2="90" stroke="#334" stroke-width="2"/>
+<text x="505" y="397" text-anchor="middle" font-size="17" fill="#4e5c70">Input size n →</text>
+<text x="42" y="220" transform="rotate(-90 42 220)" text-anchor="middle" font-size="17" fill="#4e5c70">Approximate work →</text>
+<path d="M125 315 C300 315 650 315 880 315" fill="none" stroke="#2c7a7b" stroke-width="5"/>
+<path d="M125 330 L880 125" fill="none" stroke="#3457a4" stroke-width="5"/>
+<path d="M125 340 C320 335 510 300 650 220 C760 155 820 105 880 82" fill="none" stroke="#a54b4b" stroke-width="5"/>
+<g font-size="18" font-weight="700"><text x="730" y="305" fill="#2c7a7b">O(1)</text><text x="735" y="175" fill="#3457a4">O(n)</text><text x="780" y="95" fill="#a54b4b">O(n²)</text></g>
+<text x="500" y="80" text-anchor="middle" font-size="15" fill="#627086">Big-O describes growth, not a stopwatch time.</text>
+</g></svg>

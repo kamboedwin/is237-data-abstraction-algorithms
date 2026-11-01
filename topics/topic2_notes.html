@@ -1,0 +1,100 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IS 237 Topic 2 Notes</title><link rel="stylesheet" href="notes.css"></head><body>
+<header class="note-header"><div><div class="eyebrow">IS 237 · Topic 2</div><h1>Data Abstraction and Abstract Data Types</h1><p class="lead">How computer scientists manage complexity by separating <em>what a structure does</em> from <em>how it is built</em>.</p></div><button class="print-btn" onclick="window.print()">Print / Save as PDF</button></header>
+<section class="callout"><strong>Central idea.</strong> Abstraction lets us work with a useful model while deliberately hiding lower-level details that are not needed for the current task.</section>
+
+<h2>2.1 Why abstraction is necessary</h2>
+<p>Modern software systems contain too much detail for one person to reason about all at once. When you use a mobile phone, you press an icon without thinking about transistor states. When you call a library function, you use its documented behaviour without reading every line of its implementation. This ability to ignore unnecessary detail is called <strong>abstraction</strong>.</p>
+<p>In computer science, abstraction creates a level at which we can describe <strong>essential behaviour</strong> while hiding implementation details. It is not about pretending the details do not exist. It is about deciding which details matter at a particular moment.</p>
+<img src="media/topic2/abstraction_layers.svg" alt="Layers of abstraction">
+<h3>Everyday analogy: driving a car</h3>
+<p>A driver uses a steering wheel, pedals and dashboard controls. The driver does not need to know the exact combustion, electrical or transmission mechanism in order to operate the car. The controls form an interface; the engine and transmission provide an implementation. Similar controls can hide very different internal designs.</p>
+
+<h2>2.2 Where the idea came from</h2>
+<p>As programmes grew larger in the 1960s and 1970s, software engineering increasingly needed ways to control complexity and reduce the effects of change. Ideas such as <strong>information hiding</strong>, <strong>modularity</strong> and <strong>abstract data types</strong> became important because they allowed programmers to specify what a component should do without exposing all of its internal representation.</p>
+<p>The modern formulation of abstract data types developed strongly in the 1970s, including influential work by researchers such as <strong>Barbara Liskov</strong> and <strong>Stephen Zilles</strong>. The key principle remains highly relevant: clients should depend on a component's behaviour and interface rather than on unnecessary internal details.</p>
+
+<h2>2.3 What is an Abstract Data Type (ADT)?</h2>
+<p>An <strong>Abstract Data Type</strong> is a logical description of a collection of values together with the operations that may be performed on those values and the rules governing those operations. An ADT describes <strong>what</strong> operations mean. It does not require one particular physical representation.</p>
+<p>For example, a simple <strong>Student Registry ADT</strong> might offer:</p>
+<ul><li><code>add(student)</code> — insert a student record if allowed;</li><li><code>remove(registrationNumber)</code> — remove the corresponding record;</li><li><code>find(registrationNumber)</code> — return the matching student or indicate absence;</li><li><code>size()</code> — return the number of stored records;</li><li><code>isEmpty()</code> — report whether the registry contains no records.</li></ul>
+<p>That specification does not yet tell us whether the records are stored in an array, linked nodes, a tree, a hash table or another structure. Those are implementation decisions.</p>
+
+<h2>2.4 ADT versus data structure</h2>
+<img src="media/topic2/adt_vs_structure.svg" alt="ADT versus data structure">
+<table><thead><tr><th>Question</th><th>ADT</th><th>Data structure</th></tr></thead><tbody><tr><td>Main concern</td><td>What behaviour and operations are provided?</td><td>How are values organised in memory?</td></tr><tr><td>Level</td><td>Abstract / logical</td><td>Concrete / representational</td></tr><tr><td>Examples</td><td>List, Set, Map, Stack, Queue, Priority Queue</td><td>Array, linked nodes, binary search tree, heap, hash table</td></tr><tr><td>Can one ADT have several implementations?</td><td colspan="2"><strong>Yes.</strong> The same ADT can often be implemented using different data structures.</td></tr></tbody></table>
+<h3>Why students often confuse them</h3>
+<p>Some names are used informally for both an abstract behaviour and a common implementation. A stack, for example, is most usefully understood first as an ADT defined by LIFO behaviour. It can then be implemented using an array, linked structure or another suitable representation.</p>
+
+<h2>2.5 Interface versus implementation</h2>
+<img src="media/topic2/interface_implementation.svg" alt="Interface hides implementation">
+<p>The <strong>interface</strong> is the public set of operations that clients are allowed to use. The <strong>implementation</strong> is the internal representation and procedures that make those operations work.</p>
+<h3>Why separate them?</h3>
+<ul><li><strong>Change becomes safer.</strong> The internal representation can be improved without forcing every client to change.</li><li><strong>Complexity is reduced.</strong> Clients think about meaningful operations rather than low-level storage details.</li><li><strong>Testing becomes clearer.</strong> We can test whether each public operation satisfies its contract.</li><li><strong>Reuse improves.</strong> A well-defined ADT can be used in many applications.</li><li><strong>Team development becomes easier.</strong> Different programmers can work on clients and implementations as long as they agree on the interface.</li></ul>
+
+<h2>2.6 Contracts: what should an operation guarantee?</h2>
+<p>An ADT becomes useful when its operations have clear behavioural contracts. A contract may describe <strong>preconditions</strong>, <strong>postconditions</strong>, return values, invalid cases and effects on state.</p>
+<pre><code>Operation: add(student)
+
+Precondition:
+    student's registration number is valid
+
+Postcondition:
+    if the registration number was not already present,
+    the registry contains the student and size increases by 1
+
+Policy:
+    duplicate registration numbers are rejected</code></pre>
+
+<h2>2.7 Representation invariants</h2>
+<p>A <strong>representation invariant</strong> is a condition that must remain true for the internal state to represent a valid instance of the ADT. For a student registry, possible invariants include:</p>
+<ul><li>the stored count is never negative;</li><li>the count matches the number of actual records;</li><li>registration numbers are unique;</li><li>all internal references point to valid records or an accepted empty marker.</li></ul>
+<p>If an operation breaks the representation invariant, later operations may fail even if the error is not immediately visible.</p>
+
+<h2>2.8 Encapsulation</h2>
+<p><strong>Encapsulation</strong> means bundling state and the operations that manage that state while controlling direct access to the internal representation. In object-oriented programming this is often supported by classes and access controls such as private fields, but encapsulation is a broader design principle.</p>
+<img src="media/topic2/modular_design.svg" alt="Encapsulation and modular design">
+<h3>Why not expose internal state?</h3>
+<p>If clients can change internal data directly, they can accidentally violate invariants. If the internal size counter of a registry were publicly writable, a client could set the size to 200 even when only 15 records exist. Controlled operations allow the ADT to defend its own rules.</p>
+
+<h2>2.9 Information hiding and modular design</h2>
+<p><strong>Information hiding</strong> means hiding design decisions that clients do not need and that may change independently. <strong>Modular design</strong> divides a system into components with clear responsibilities and controlled interaction.</p>
+<p>A good module has <strong>high cohesion</strong>: its parts work toward one focused purpose. It also aims for <strong>low coupling</strong>: other modules depend on as little internal detail as possible.</p>
+<h3>Example: a grading system</h3>
+<p>Instead of one large programme, we might have separate modules for student-record management, assessment validation, grade computation and report generation. If the grading policy changes, a well-designed system allows that module to change without rewriting unrelated modules.</p>
+
+<h2>2.10 Designing an ADT step by step</h2>
+<ol><li><strong>Start from the problem.</strong> What concept deserves its own abstraction?</li><li><strong>Identify the logical state.</strong> What information must it represent?</li><li><strong>Identify client operations.</strong> What must users be able to ask it to do?</li><li><strong>Write contracts.</strong> Define normal behaviour, invalid cases and state changes.</li><li><strong>State invariants.</strong> What conditions must always hold internally?</li><li><strong>Separate public and private responsibilities.</strong></li><li><strong>Choose an implementation.</strong> Select a data structure according to important operations.</li><li><strong>Test through the interface.</strong> Verify behaviour without depending on private details.</li></ol>
+
+<h2>2.11 Worked design: Dataset Collection ADT</h2>
+<pre><code>ADT DatasetCollection
+
+Operations:
+    add(record)
+    remove(recordID)
+    get(recordID)
+    contains(recordID)
+    size()
+    isEmpty()
+
+Rules:
+    recordID values are unique
+    size() equals the number of stored records
+    remove() does not corrupt remaining records</code></pre>
+<p>At this stage, we intentionally avoid committing to an array, linked list, tree or hash table. The choice can be made later based on expected operations and performance requirements.</p>
+
+<h2>2.12 Choosing an implementation: behaviour first, performance second</h2>
+<p>Once the ADT is clear, we can ask which concrete representation best supports its important operations. If random access by position is frequent, one representation may be preferable. If insertions and removals dominate, another may be better. If fast key lookup is essential, a hash-based representation may be attractive.</p>
+<p>This is why learning data structures is not about memorising names. It is about understanding the trade-offs that allow an ADT to be implemented appropriately for a problem.</p>
+
+<h2>2.13 Real applications</h2>
+<ul><li><strong>Database systems:</strong> clients issue queries without managing disk blocks directly.</li><li><strong>Machine-learning libraries:</strong> users call operations such as <code>fit()</code> and <code>predict()</code> without handling every internal numerical operation.</li><li><strong>Operating systems:</strong> file operations hide lower-level storage details.</li><li><strong>Web applications:</strong> service interfaces separate front-end clients from back-end implementation.</li><li><strong>Collections libraries:</strong> List, Set and Map interfaces allow concrete implementations to change.</li></ul>
+
+<h2>2.14 Strengths and possible costs</h2>
+<p>Abstraction provides clarity, modularity, maintainability and safer change. It can also introduce extra layers and design overhead. Good software engineering therefore aims for <strong>useful abstraction</strong>, not abstraction for its own sake.</p>
+
+<h2>2.15 Connection to the next topic</h2>
+<p>In Topic 3 we will examine two concrete data structures — <strong>arrays and linked lists</strong> — and see how the same logical operations behave differently depending on representation.</p>
+
+<h2>Topic summary</h2>
+<ul><li>Abstraction hides unnecessary detail and exposes essential behaviour.</li><li>An ADT specifies values, operations and behavioural rules.</li><li>A data structure is a concrete way to organise data in memory.</li><li>The interface describes what clients can do; the implementation describes how it is achieved.</li><li>Contracts define operation behaviour; representation invariants protect internal correctness.</li><li>Encapsulation controls access to state.</li><li>Modular design improves maintainability by separating responsibilities.</li><li>One ADT may have several implementations chosen according to design and performance needs.</li></ul>
+</body></html>

@@ -1,0 +1,69 @@
+IS 237 — Assignment 6
+Searching, Sorting and Algorithm Efficiency
+
+Purpose
+Demonstrate that you can trace searching and sorting algorithms, analyse their efficiency and justify an algorithm for a problem.
+
+Part A — Searching
+Use the array:
+[4, 9, 13, 18, 27, 31, 44, 52, 63, 75]
+
+1. Trace linear search for 44.
+2. Trace linear search for 80.
+3. Trace binary search for 44.
+4. Trace binary search for 80.
+5. Count comparisons in each trace.
+6. Explain the precondition that makes binary search valid.
+7. Compare best, average and worst-case behaviour.
+
+Part B — Quadratic sorting
+Using [29, 10, 14, 37, 13]:
+1. Trace Bubble Sort pass by pass.
+2. Trace Selection Sort pass by pass.
+3. Trace Insertion Sort pass by pass.
+4. Count comparisons and data movements/swaps where practical.
+5. State stability, in-place behaviour and best/average/worst time complexity for each.
+
+Part C — Divide-and-conquer sorting
+Using [38, 27, 43, 3, 9, 82, 10]:
+1. Draw the Merge Sort split tree.
+2. Show every merge step.
+3. Trace Quick Sort using the final element as pivot and the Lomuto partition method.
+4. Show each pivot's final position after partition.
+5. Compare Merge Sort and Quick Sort in time, extra space, stability and worst-case behaviour.
+
+Part D — Visual comparison
+Explain, in your own words, why Selection Sort and Quick Sort behave differently as n grows. Use a diagram or trace, not only a complexity table.
+
+Part E — Algorithm selection
+For THREE realistic applications, choose an appropriate searching or sorting algorithm and justify each choice using:
+- input size
+- existing order
+- number of repeated searches
+- stability requirements
+- memory constraints
+- best/average/worst-case behaviour
+
+Expected length
+7–10 pages excluding cover page.
+
+Programming code is optional. Pseudocode, traces and explanations are compulsory.
+
+Suggested filename
+IS237_A6_RegistrationNumber.pdf
+
+Due date
+See current course announcements or instructions provided for your class.
+
+Submission
+Submit your completed assignment using the official IS 237 Assignment Submission Form:
+https://forms.gle/7BcZyLDVx41vRTUg8
+
+Before submitting:
+- confirm that you selected the correct assignment/topic;
+- use the required filename format where specified;
+- attach all required files;
+- follow the current deadline announced for the course.
+
+The "Mark Task Complete" button on the learning site records progress only and does not submit your work.
+

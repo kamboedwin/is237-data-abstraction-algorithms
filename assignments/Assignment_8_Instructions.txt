@@ -1,0 +1,88 @@
+IS 237 — Assignment 8
+Graphs and Graph Algorithms
+
+Purpose
+Demonstrate that you can represent graphs, trace BFS/DFS and reason about shortest paths and graph-algorithm complexity.
+
+Part A — Graph representation
+Use the undirected graph:
+A-B, A-C, B-D, B-E, C-F, E-G, F-G
+
+1. Draw the graph.
+2. Write its adjacency list.
+3. Write its adjacency matrix.
+4. Give the degree of every vertex.
+5. State whether the graph is connected.
+6. Identify at least one cycle.
+7. Compare the storage implications of the two representations.
+
+Part B — Breadth-First Search
+Starting at A:
+1. Trace BFS step by step.
+2. Show the queue after each major step.
+3. Show the visited set.
+4. Give the final visitation order.
+5. Record predecessor and distance values.
+6. Reconstruct the shortest unweighted path from A to G.
+7. Give BFS time complexity for adjacency-list and matrix representations.
+
+Part C — Depth-First Search
+Starting at A and processing neighbours alphabetically:
+1. Trace recursive DFS.
+2. Draw the call stack at one deep point.
+3. Give the final visitation order.
+4. Trace an iterative stack-based DFS.
+5. Explain why its exact order may differ if neighbour push order changes.
+6. Compare DFS with BFS.
+
+Part D — Weighted shortest path
+Use this weighted undirected graph:
+A-B:4
+A-C:2
+B-C:1
+B-D:5
+C-D:8
+C-E:10
+D-E:2
+D-F:6
+E-F:3
+
+1. Trace Dijkstra's algorithm from A.
+2. Show tentative distances after each settled vertex.
+3. Show predecessor updates.
+4. Give the final shortest distance to every vertex.
+5. Reconstruct the shortest path from A to F.
+6. Explain where a min-priority queue/heap is used.
+7. State why negative edge weights are a problem for Dijkstra.
+
+Part E — Application decision
+For THREE realistic applications:
+1. define what vertices and edges represent;
+2. state whether the graph is directed/undirected and weighted/unweighted;
+3. choose adjacency matrix or adjacency list;
+4. choose BFS, DFS or Dijkstra where appropriate;
+5. justify the choice using correctness and complexity.
+
+Expected length
+8–12 pages excluding cover page.
+
+Programming code is optional. Graph diagrams, traces and pseudocode-based explanations are compulsory.
+
+Suggested filename
+IS237_A8_RegistrationNumber.pdf
+
+Due date
+See current course announcements or instructions provided for your class.
+
+Submission
+Submit your completed assignment using the official IS 237 Assignment Submission Form:
+https://forms.gle/7BcZyLDVx41vRTUg8
+
+Before submitting:
+- confirm that you selected the correct assignment/topic;
+- use the required filename format where specified;
+- attach all required files;
+- follow the current deadline announced for the course.
+
+The "Mark Task Complete" button on the learning site records progress only and does not submit your work.
+

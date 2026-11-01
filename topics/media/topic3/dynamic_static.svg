@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 410">
+<rect width="1100" height="410" rx="30" fill="#fbfcff"/>
+<g font-family="Arial,sans-serif" text-anchor="middle">
+<text x="550" y="48" font-size="31" font-weight="700" fill="#17233c">Static and Dynamic Organisation</text>
+<rect x="90" y="95" width="420" height="235" rx="22" fill="#eef5ff" stroke="#3563a8" stroke-width="3"/>
+<text x="300" y="138" font-size="25" font-weight="700" fill="#173a75">Static-style capacity</text>
+<text x="300" y="180" font-size="17" fill="#526176">Capacity chosen in advance</text><text x="300" y="215" font-size="17" fill="#526176">Simple predictable layout</text><text x="300" y="250" font-size="17" fill="#526176">May waste unused space or need replacement</text><text x="300" y="285" font-size="17" fill="#526176">Classic fixed-size array idea</text>
+<rect x="590" y="95" width="420" height="235" rx="22" fill="#eef8f4" stroke="#2b765e" stroke-width="3"/>
+<text x="800" y="138" font-size="25" font-weight="700" fill="#1d654e">Dynamic organisation</text>
+<text x="800" y="180" font-size="17" fill="#526176">Structure grows/shrinks during execution</text><text x="800" y="215" font-size="17" fill="#526176">Allocates or links storage as needed</text><text x="800" y="250" font-size="17" fill="#526176">Often more flexible</text><text x="800" y="285" font-size="17" fill="#526176">Linked structures are a classic example</text>
+<text x="550" y="375" font-size="17" fill="#526176">Dynamic arrays combine indexed access with resizable capacity by occasionally allocating a larger backing array.</text>
+</g></svg>

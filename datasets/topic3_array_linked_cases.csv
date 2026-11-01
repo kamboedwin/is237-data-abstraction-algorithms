@@ -1,0 +1,9 @@
+case_id,scenario,dominant_operation,size_change,index_access_needed,suggested_representation,reason
+1,Image pixel row,frequent indexed access,fixed,yes,array,positions are central and data is regularly accessed by index
+2,Student scores for analysis,scan and random access,moderate,yes,dynamic array,indexing and compact iteration are useful
+3,Undo-history nodes,insert and remove at known end,growing,no,linked list or stack abstraction,structural changes dominate
+4,Round-robin participant cycle,repeated next traversal,growing,no,circular linked list,cyclic traversal matches the problem
+5,Navigation history with previous and next,move both directions,growing,no,doubly linked list,two-way navigation is required
+6,Small fixed lookup table,index access,fixed,yes,array,fixed capacity and direct position access fit well
+7,Frequent insertion after known current record,local insertion,growing,no,linked list,relinking avoids shifting
+8,Machine-learning feature vector,indexed numeric processing,fixed or moderate,yes,array,compact indexed representation is appropriate

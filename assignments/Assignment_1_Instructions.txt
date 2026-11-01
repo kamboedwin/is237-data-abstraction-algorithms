@@ -1,0 +1,46 @@
+IS 237 — Assignment 1
+Problem-Solving and Algorithm Design Case Study
+
+Purpose
+Demonstrate that you can move from a real problem to a clear algorithmic solution before writing programme code.
+
+Task
+Choose ONE everyday, university, community, data-science or AI-related problem that can be solved by a step-by-step computational procedure.
+
+Your report must include:
+1. Problem statement: what is the problem and why does it matter?
+2. Inputs and outputs.
+3. Constraints and assumptions.
+4. Decomposition into smaller subproblems.
+5. Proposed problem-solving strategy and why it fits.
+6. A flowchart OR structured pseudocode for the main algorithm.
+7. A manual trace using at least one example input.
+8. At least four test cases: typical, boundary, special, and (where meaningful) invalid.
+9. A short correctness explanation: why should the procedure produce the required result?
+10. A first efficiency discussion: what is the input size n, and does the work appear constant, linear, quadratic, or another growth pattern?
+11. One possible improvement or alternative approach.
+
+Expected length
+3–5 pages excluding cover page and references/appendices.
+
+Important
+The emphasis is on reasoning, not on programming syntax. You may include code only after your algorithm has been clearly explained.
+
+Suggested filename
+IS237_A1_RegistrationNumber.pdf
+
+Due date
+See current course announcements or instructions provided for your class.
+
+Submission
+Submit your completed assignment using the official IS 237 Assignment Submission Form:
+https://forms.gle/7BcZyLDVx41vRTUg8
+
+Before submitting:
+- confirm that you selected the correct assignment/topic;
+- use the required filename format where specified;
+- attach all required files;
+- follow the current deadline announced for the course.
+
+The "Mark Task Complete" button on the learning site records progress only and does not submit your work.
+

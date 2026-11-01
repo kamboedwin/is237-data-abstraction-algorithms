@@ -1,0 +1,11 @@
+case_id,problem,natural_style,key_reason,main_risk_or_tradeoff
+1,Compute factorial of a small integer,Either,definition is naturally recursive but iteration is simple,recursive stack depth
+2,Traverse a binary tree,Recursion,subtrees have the same structure as the whole tree,deep tree can overflow stack
+3,Scan an array for a value,Iteration,simple linear repetition,recursive form adds call overhead
+4,Binary search in a sorted array,Either,problem shrinks by half each step,recursive version uses call stack
+5,Depth first search,Either,stack based exploration maps naturally to recursion,large graphs may require explicit stack
+6,Merge sort,Recursion,divide into smaller subarrays and combine,call overhead and auxiliary memory
+7,Quick sort,Recursion,partition then solve smaller subarrays,bad pivots can create deep recursion
+8,Naive Fibonacci,Recursion,definition is elegant,repeated subproblems cause exponential time
+9,Memoised Fibonacci,Recursion,reuse cached subproblem results,O(n) memory
+10,Count from 1 to one million,Iteration,simple loop state,recursion depth would be impractical

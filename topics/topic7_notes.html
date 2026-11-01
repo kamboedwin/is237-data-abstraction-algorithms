@@ -1,0 +1,497 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IS 237 Topic 7 Notes</title><link rel="stylesheet" href="notes.css"></head><body>
+<header class="note-header"><div><div class="eyebrow">IS 237 · Topic 7</div><h1>Trees, Binary Search Trees, Heaps and Hash Tables</h1><p class="lead">Non-linear and key-based data structures that organise data for ordered search, priority access and fast lookup.</p></div><button class="print-btn" onclick="window.print()">Print / Save as PDF</button></header>
+
+<section class="callout"><strong>Central idea.</strong> Arrays and linked lists organise data linearly. Trees introduce hierarchy, heaps organise priority, and hash tables map keys directly toward storage locations. Their different structures make different operations efficient.</section>
+
+<h2>7.1 Why move beyond linear structures?</h2>
+<p>In an array or linked list, values form a sequence. Many real problems are not naturally sequential. File systems, organisational structures, expression syntax and classification systems are hierarchical. Priority-based systems need the most important item quickly. Key-value systems need rapid lookup without scanning every record.</p>
+<p>This topic introduces three families of structures designed around these needs:</p>
+<ul><li><strong>Trees and Binary Search Trees (BSTs)</strong> for hierarchy and ordered search;</li><li><strong>Heaps</strong> for efficient access to the minimum or maximum priority item;</li><li><strong>Hash tables</strong> for fast key-based lookup.</li></ul>
+
+<h2>7.2 What is a tree?</h2>
+<p>A <strong>tree</strong> is a hierarchical structure made of nodes connected by edges. Unlike a general graph, a rooted tree has one distinguished root and every non-root node has exactly one parent.</p>
+<img src="media/topic7/tree_anatomy.svg" alt="Tree terminology">
+
+<h3>Core terminology</h3>
+<ul><li><strong>Root:</strong> the topmost node.</li><li><strong>Parent:</strong> a node directly above another.</li><li><strong>Child:</strong> a node directly below another.</li><li><strong>Sibling:</strong> nodes with the same parent.</li><li><strong>Leaf:</strong> a node with no children.</li><li><strong>Internal node:</strong> a node with at least one child.</li><li><strong>Ancestor:</strong> any node on the path from the root to a node.</li><li><strong>Descendant:</strong> any node reachable below a node.</li><li><strong>Depth:</strong> number of edges from root to a node.</li><li><strong>Height:</strong> length of the longest downward path from a node to a leaf.</li><li><strong>Subtree:</strong> a node together with all descendants below it.</li></ul>
+
+<h2>7.3 Binary trees</h2>
+<p>A <strong>binary tree</strong> is a tree in which each node has at most two children, normally called <strong>left</strong> and <strong>right</strong>.</p>
+<p>Binary trees are important because many algorithms can make a decision at each node and continue into one of two subproblems. They also form the basis of binary search trees and binary heaps.</p>
+
+<h2>7.4 Common forms of binary tree</h2>
+<ul>
+<li><strong>Full binary tree:</strong> every node has either 0 or 2 children.</li>
+<li><strong>Perfect binary tree:</strong> every internal node has 2 children and all leaves are at the same depth.</li>
+<li><strong>Complete binary tree:</strong> all levels are full except possibly the final level, which is filled from left to right.</li>
+<li><strong>Balanced binary tree:</strong> height remains reasonably small, typically proportional to log n.</li>
+<li><strong>Skewed binary tree:</strong> most nodes fall repeatedly to one side, making the structure resemble a linked list.</li>
+</ul>
+<p>These descriptions are not interchangeable. A heap specifically requires the <strong>complete</strong> shape property, while BST efficiency depends strongly on keeping height small.</p>
+
+<h2>7.5 Tree traversals</h2>
+<p>A traversal defines the order in which tree nodes are visited. Four common traversals are essential.</p>
+
+<h3>7.5.1 Preorder: Root → Left → Right</h3>
+<pre><code>ALGORITHM Preorder(node)
+    IF node = null
+        RETURN
+
+    process node
+    Preorder(node.left)
+    Preorder(node.right)</code></pre>
+
+<h3>7.5.2 Inorder: Left → Root → Right</h3>
+<pre><code>ALGORITHM Inorder(node)
+    IF node = null
+        RETURN
+
+    Inorder(node.left)
+    process node
+    Inorder(node.right)</code></pre>
+
+<h3>7.5.3 Postorder: Left → Right → Root</h3>
+<pre><code>ALGORITHM Postorder(node)
+    IF node = null
+        RETURN
+
+    Postorder(node.left)
+    Postorder(node.right)
+    process node</code></pre>
+
+<h3>7.5.4 Level-order traversal</h3>
+<p>Level-order traversal visits nodes breadth-first and therefore uses a Queue ADT.</p>
+<pre><code>ALGORITHM LevelOrder(root)
+    IF root = null
+        RETURN
+
+    create empty queue Q
+    Q.enqueue(root)
+
+    WHILE Q is not empty
+        current ← Q.dequeue()
+        process current
+
+        IF current.left ≠ null
+            Q.enqueue(current.left)
+
+        IF current.right ≠ null
+            Q.enqueue(current.right)</code></pre>
+
+<h2>7.6 Traversal applications</h2>
+<ul><li><strong>Preorder:</strong> copying a tree, prefix expression output, serialisation.</li><li><strong>Inorder:</strong> sorted output from a BST.</li><li><strong>Postorder:</strong> deleting/freeing subtrees, postfix expression processing.</li><li><strong>Level-order:</strong> breadth-first processing by depth.</li></ul>
+
+<h2>7.7 Binary Search Tree (BST)</h2>
+<p>A <strong>Binary Search Tree</strong> is a binary tree with an ordering rule. For each node:</p>
+<ul><li>all keys in the left subtree are smaller;</li><li>all keys in the right subtree are larger;</li><li>each subtree must itself satisfy the same rule.</li></ul>
+<img src="media/topic7/bst_rule.svg" alt="BST rule">
+<p>Duplicate-key handling must be defined by the implementation. A system may reject duplicates, store counts, or use a consistent side rule.</p>
+
+<h2>7.8 Why BSTs are useful</h2>
+<p>A BST combines tree hierarchy with ordered search. At each node, one comparison determines which subtree can still contain the target. When the tree is balanced, this produces search behaviour similar to binary search: O(log n).</p>
+
+<h2>7.9 BST search</h2>
+<h3>Iterative version</h3>
+<pre><code>ALGORITHM BSTSearch(root, target)
+    current ← root
+
+    WHILE current ≠ null
+        IF target = current.key
+            RETURN current
+
+        IF target < current.key
+            current ← current.left
+        ELSE
+            current ← current.right
+
+    RETURN NOT_FOUND</code></pre>
+
+<h3>Recursive version</h3>
+<pre><code>ALGORITHM BSTSearchRecursive(node, target)
+    IF node = null
+        RETURN NOT_FOUND
+
+    IF target = node.key
+        RETURN node
+
+    IF target < node.key
+        RETURN BSTSearchRecursive(node.left, target)
+
+    RETURN BSTSearchRecursive(node.right, target)</code></pre>
+
+<h3>Complexity</h3>
+<p>The cost depends on tree height <code>h</code>: O(h). A balanced BST has h ≈ log n, while a highly skewed BST can have h ≈ n.</p>
+
+<h2>7.10 BST insertion</h2>
+<p>Insertion follows the same comparisons as search until a null child position is found.</p>
+<pre><code>ALGORITHM BSTInsert(root, key)
+    newNode ← Node(key)
+
+    IF root = null
+        RETURN newNode
+
+    parent ← null
+    current ← root
+
+    WHILE current ≠ null
+        parent ← current
+
+        IF key < current.key
+            current ← current.left
+        ELSE IF key > current.key
+            current ← current.right
+        ELSE
+            RETURN root   // duplicate policy: reject
+
+    IF key < parent.key
+        parent.left ← newNode
+    ELSE
+        parent.right ← newNode
+
+    RETURN root</code></pre>
+<p>Insertion is O(h): O(log n) in a balanced tree and O(n) in the worst skewed case.</p>
+
+<h2>7.11 BST deletion: why it is more difficult</h2>
+<p>Deletion must remove a key while preserving the BST ordering rule. There are three cases.</p>
+
+<h3>Case 1: deleting a leaf</h3>
+<p>A leaf can simply be disconnected from its parent.</p>
+
+<h3>Case 2: deleting a node with one child</h3>
+<p>The node is bypassed by connecting its parent directly to its only child.</p>
+
+<h3>Case 3: deleting a node with two children</h3>
+<p>The node cannot simply disappear because it separates two ordered subtrees. A common solution is to replace its key with its <strong>inorder successor</strong>—the smallest key in the right subtree—then delete that successor from its original location.</p>
+
+<h3>Find minimum</h3>
+<pre><code>ALGORITHM BSTMinimum(node)
+    current ← node
+
+    WHILE current.left ≠ null
+        current ← current.left
+
+    RETURN current</code></pre>
+
+<h3>Recursive BST deletion</h3>
+<pre><code>ALGORITHM BSTDelete(node, key)
+    IF node = null
+        RETURN null
+
+    IF key < node.key
+        node.left ← BSTDelete(node.left, key)
+
+    ELSE IF key > node.key
+        node.right ← BSTDelete(node.right, key)
+
+    ELSE
+        // key found
+
+        IF node.left = null
+            RETURN node.right
+
+        IF node.right = null
+            RETURN node.left
+
+        successor ← BSTMinimum(node.right)
+        node.key ← successor.key
+        node.right ← BSTDelete(node.right, successor.key)
+
+    RETURN node</code></pre>
+<p>Deletion remains O(h).</p>
+
+<h2>7.12 Balanced versus skewed BSTs</h2>
+<p>Insertion order strongly affects an ordinary BST. Inserting:</p>
+<pre><code>10, 20, 30, 40, 50</code></pre>
+<p>creates a right-skewed structure with height n − 1. Search then degrades toward O(n), similar to a linked list.</p>
+<p>Self-balancing trees such as AVL and Red-Black trees address this by restructuring the tree after updates. Their balancing algorithms are beyond the core scope here, but the reason they exist should be clear: they preserve logarithmic height.</p>
+
+<h2>7.13 BST traversal property</h2>
+<p>Inorder traversal of a BST produces keys in sorted order.</p>
+<pre><code>BST: 50, 30, 70, 20, 40, 60, 80
+Inorder output:
+20, 30, 40, 50, 60, 70, 80</code></pre>
+
+<h2>7.14 What is a heap?</h2>
+<p>A <strong>binary heap</strong> is a complete binary tree that also satisfies a heap-order property.</p>
+<ul><li><strong>Max-heap:</strong> each parent is greater than or equal to its children.</li><li><strong>Min-heap:</strong> each parent is less than or equal to its children.</li></ul>
+<img src="media/topic7/heap_array.svg" alt="Binary heap and array">
+
+<h2>7.15 Heap is not the same as BST</h2>
+<p>A heap guarantees only parent-child priority relationships. It does <strong>not</strong> guarantee that all values in the left subtree are smaller than the node or that inorder traversal is sorted. A heap is therefore excellent for accessing the highest or lowest priority item, but poor for arbitrary ordered search.</p>
+
+<h2>7.16 Array representation of a binary heap</h2>
+<p>Because a heap is complete, it can be stored compactly in an array without explicit child references. For zero-based indexing:</p>
+<pre><code>parent(i) = floor((i - 1) / 2)
+left(i)   = 2i + 1
+right(i)  = 2i + 2</code></pre>
+<p>This is an important example of a tree represented efficiently using an array.</p>
+
+<h2>7.17 Max-heap insertion</h2>
+<p>Insertion places the new value into the next available position to preserve completeness, then moves it upward until the heap-order property is restored. This is often called <strong>sift up</strong> or <strong>heapify up</strong>.</p>
+<pre><code>ALGORITHM MaxHeapInsert(H, value)
+    append value to H
+    i ← size(H) - 1
+
+    WHILE i > 0
+        p ← floor((i - 1) / 2)
+
+        IF H[p] ≥ H[i]
+            BREAK
+
+        SWAP H[p], H[i]
+        i ← p</code></pre>
+<p>The heap height is O(log n), so insertion is O(log n).</p>
+
+<h2>7.18 Max-heap peek</h2>
+<pre><code>ALGORITHM MaxHeapPeek(H)
+    IF size(H) = 0
+        RETURN "empty"
+
+    RETURN H[0]</code></pre>
+<p>Accessing the maximum is O(1) because it is always stored at the root.</p>
+
+<h2>7.19 Extract maximum</h2>
+<p>Removing the root would leave a hole. The final array value is moved to the root, the array shrinks, then the new root moves downward until heap order is restored.</p>
+<pre><code>ALGORITHM ExtractMax(H)
+    IF size(H) = 0
+        RETURN UNDERFLOW
+
+    maxValue ← H[0]
+    H[0] ← H[size(H) - 1]
+    remove last element from H
+
+    MaxHeapifyDown(H, 0)
+
+    RETURN maxValue</code></pre>
+
+<h2>7.20 Heapify down</h2>
+<pre><code>ALGORITHM MaxHeapifyDown(H, i)
+    n ← size(H)
+
+    WHILE true
+        left ← 2i + 1
+        right ← 2i + 2
+        largest ← i
+
+        IF left < n AND H[left] > H[largest]
+            largest ← left
+
+        IF right < n AND H[right] > H[largest]
+            largest ← right
+
+        IF largest = i
+            BREAK
+
+        SWAP H[i], H[largest]
+        i ← largest</code></pre>
+<p>Heapify down is O(log n).</p>
+
+<h2>7.21 Build a heap</h2>
+<p>A max-heap can be built from an unordered array by heapifying internal nodes from the bottom upward.</p>
+<pre><code>ALGORITHM BuildMaxHeap(H)
+    n ← size(H)
+
+    FOR i ← floor(n / 2) - 1 DOWNTO 0
+        MaxHeapifyDown(H, i)</code></pre>
+<p>Although each individual heapify can cost O(log n), the complete bottom-up build is O(n), because most nodes are near the leaves and move only a small distance.</p>
+
+<h2>7.22 Priority Queue using a heap</h2>
+<p>A <strong>priority queue</strong> is an ADT in which removal is based on priority rather than arrival time. A heap is a common implementation.</p>
+<ul><li><strong>insert:</strong> O(log n)</li><li><strong>peek highest/lowest priority:</strong> O(1)</li><li><strong>extract highest/lowest priority:</strong> O(log n)</li></ul>
+<p>Applications include CPU scheduling, event simulation, shortest-path algorithms and task prioritisation.</p>
+
+<h2>7.23 Heap sort</h2>
+<p>Heap sort uses a max-heap to repeatedly move the largest remaining value to the end of the array.</p>
+<pre><code>ALGORITHM HeapSort(A)
+    BuildMaxHeap(A)
+
+    FOR end ← length(A) - 1 DOWNTO 1
+        SWAP A[0], A[end]
+        reduce active heap size by 1
+        MaxHeapifyDown(A, 0)</code></pre>
+<ul><li>Best/average/worst time: O(n log n)</li><li>Extra space: O(1) for an in-place array implementation</li><li>Stable: no, standard form</li></ul>
+
+<h2>7.24 What is a hash table?</h2>
+<p>A <strong>hash table</strong> stores key-value entries in an array-like table. A <strong>hash function</strong> transforms a key into an array index or bucket.</p>
+<pre><code>index ← hash(key) mod tableSize</code></pre>
+<p>The goal is to distribute keys across the available buckets so lookup can jump near the desired record instead of scanning the whole collection.</p>
+
+<h2>7.25 A simple integer hash function</h2>
+<pre><code>ALGORITHM HashInteger(key, tableSize)
+    RETURN key mod tableSize</code></pre>
+<p>This simple function is useful for teaching, but real hash functions are designed more carefully to distribute typical keys well.</p>
+
+<h2>7.26 Hash collisions</h2>
+<p>A <strong>collision</strong> occurs when two different keys map to the same initial table index. Collisions are normal and must be resolved.</p>
+<img src="media/topic7/hash_collisions.svg" alt="Hash collisions">
+
+<h2>7.27 Separate chaining</h2>
+<p>Each table index stores a bucket containing zero or more entries, often represented by a linked list or dynamic collection.</p>
+
+<h3>Insert with chaining</h3>
+<pre><code>ALGORITHM HashInsertChaining(T, key, value)
+    index ← hash(key) mod length(T)
+
+    FOR each entry in T[index]
+        IF entry.key = key
+            entry.value ← value
+            RETURN
+
+    add (key, value) to T[index]</code></pre>
+
+<h3>Search with chaining</h3>
+<pre><code>ALGORITHM HashSearchChaining(T, key)
+    index ← hash(key) mod length(T)
+
+    FOR each entry in T[index]
+        IF entry.key = key
+            RETURN entry.value
+
+    RETURN NOT_FOUND</code></pre>
+
+<h3>Delete with chaining</h3>
+<pre><code>ALGORITHM HashDeleteChaining(T, key)
+    index ← hash(key) mod length(T)
+
+    locate key in T[index]
+
+    IF key exists
+        remove its entry
+        RETURN true
+
+    RETURN false</code></pre>
+
+<h2>7.28 Open addressing</h2>
+<p>Open addressing stores all entries directly inside the table array. If the first position is occupied, the algorithm probes alternative slots.</p>
+
+<h3>Linear probing</h3>
+<pre><code>index(i) = (hash(key) + i) mod tableSize</code></pre>
+
+<h3>Insertion using linear probing</h3>
+<pre><code>ALGORITHM HashInsertLinear(T, key, value)
+    start ← hash(key) mod length(T)
+
+    FOR i ← 0 TO length(T) - 1
+        index ← (start + i) mod length(T)
+
+        IF T[index] is EMPTY OR T[index] is DELETED
+            T[index] ← (key, value)
+            RETURN true
+
+        IF T[index].key = key
+            T[index].value ← value
+            RETURN true
+
+    RETURN false   // table full</code></pre>
+
+<h3>Search using linear probing</h3>
+<pre><code>ALGORITHM HashSearchLinear(T, key)
+    start ← hash(key) mod length(T)
+
+    FOR i ← 0 TO length(T) - 1
+        index ← (start + i) mod length(T)
+
+        IF T[index] is EMPTY
+            RETURN NOT_FOUND
+
+        IF T[index] is not DELETED
+           AND T[index].key = key
+            RETURN T[index].value
+
+    RETURN NOT_FOUND</code></pre>
+
+<h2>7.29 Why deletion in open addressing needs a marker</h2>
+<p>Simply replacing a deleted entry with EMPTY can break a probe chain and cause later searches to stop too early. A special <strong>DELETED</strong> marker—sometimes called a tombstone—preserves the search path.</p>
+<pre><code>ALGORITHM HashDeleteLinear(T, key)
+    locate key using the same probe sequence
+
+    IF found
+        T[index] ← DELETED
+        RETURN true
+
+    RETURN false</code></pre>
+
+<h2>7.30 Other open-addressing strategies</h2>
+<ul>
+<li><strong>Quadratic probing:</strong> probe offsets grow quadratically to reduce primary clustering.</li>
+<li><strong>Double hashing:</strong> use a second hash function to determine the probe step.</li>
+</ul>
+<p>These approaches change the probe sequence but preserve the basic idea of storing every entry directly in the table.</p>
+
+<h2>7.31 Load factor</h2>
+<p>The <strong>load factor</strong> measures how full a hash table is:</p>
+<div class="formula">α = number of stored entries / number of table slots</div>
+<p>As load factor rises, collisions and probe lengths usually increase. Hash tables therefore often resize when the load becomes too high.</p>
+
+<h2>7.32 Rehashing / resizing</h2>
+<p>When capacity grows, existing entries cannot simply remain at their old indexes because the table size participates in index calculation.</p>
+<pre><code>ALGORITHM Rehash(oldTable, newSize)
+    create empty newTable of newSize
+
+    FOR each active entry in oldTable
+        insert entry into newTable
+        using the new table size
+
+    RETURN newTable</code></pre>
+<p>A resize is expensive, but it happens occasionally. As with dynamic arrays, amortised analysis explains why average insertion can remain efficient.</p>
+
+<h2>7.33 Hash-table complexity</h2>
+<p>With a well-designed hash function and controlled load factor:</p>
+<ul><li>search average: O(1)</li><li>insert average: O(1)</li><li>delete average: O(1)</li></ul>
+<p>Worst-case behaviour can degrade to O(n) if many keys collide or probing becomes very long. Therefore O(1) is an expected/average claim, not an absolute guarantee.</p>
+
+<h2>7.34 BST vs Heap vs Hash Table</h2>
+<img src="media/topic7/structure_comparison.svg" alt="BST heap hash comparison">
+<table><thead><tr><th>Need</th><th>BST</th><th>Heap</th><th>Hash table</th></tr></thead><tbody>
+<tr><td>Search arbitrary key</td><td>O(log n) balanced</td><td>O(n) general search</td><td>O(1) average</td></tr>
+<tr><td>Minimum/maximum</td><td>O(log n) balanced</td><td>O(1) at root for chosen priority</td><td>No ordering advantage</td></tr>
+<tr><td>Insert</td><td>O(log n) balanced</td><td>O(log n)</td><td>O(1) average</td></tr>
+<tr><td>Delete arbitrary key</td><td>O(log n) balanced</td><td>O(n) to locate generally</td><td>O(1) average</td></tr>
+<tr><td>Sorted traversal</td><td>Yes, inorder</td><td>No</td><td>No</td></tr>
+<tr><td>Priority queue</td><td>Possible but not ideal</td><td>Excellent</td><td>Not natural</td></tr>
+</tbody></table>
+
+<h2>7.35 Common misconceptions</h2>
+<ul>
+<li><strong>“Every binary tree is a BST.”</strong> No. A BST must satisfy the ordering property.</li>
+<li><strong>“BST operations are always O(log n).”</strong> Ordinary BSTs can become skewed and degrade to O(n).</li>
+<li><strong>“A heap is fully sorted.”</strong> Only the parent-child heap property is guaranteed.</li>
+<li><strong>“Heap search is O(log n).”</strong> Searching for an arbitrary value can require O(n); the heap only exposes its highest/lowest priority efficiently.</li>
+<li><strong>“A hash collision means the hash table failed.”</strong> Collisions are expected and handled by the design.</li>
+<li><strong>“Hash table lookup is always O(1).”</strong> O(1) is average/expected with good distribution and suitable load.</li>
+<li><strong>“Deleting an open-addressed key means writing EMPTY.”</strong> That can break probe chains; a tombstone/deleted marker may be required.</li>
+</ul>
+
+<h2>7.36 Real applications</h2>
+<ul>
+<li><strong>Trees:</strong> file-system hierarchies, syntax trees, decision structures.</li>
+<li><strong>BSTs:</strong> ordered dictionaries, range-oriented lookup, maintaining sorted keys.</li>
+<li><strong>Heaps:</strong> priority queues, job scheduling, event simulation, top-priority retrieval.</li>
+<li><strong>Hash tables:</strong> dictionaries/maps, symbol tables, caches, database hash indexes, membership testing.</li>
+</ul>
+
+<h2>7.37 Choosing the structure</h2>
+<p>Ask which operation dominates:</p>
+<ul>
+<li>If you need <strong>ordered search and sorted traversal</strong>, prefer a balanced BST-style structure.</li>
+<li>If you repeatedly need the <strong>highest or lowest priority item</strong>, prefer a heap.</li>
+<li>If you mostly need <strong>fast exact key lookup</strong> and do not require natural ordering, prefer a hash table.</li>
+</ul>
+<p>Data structure choice is a decision about the operations the application values most.</p>
+
+<h2>7.38 Connection to graphs</h2>
+<p>Topic 8 introduces graphs. Trees are a special case of graphs, and several earlier structures return: breadth-first graph traversal uses a queue, depth-first traversal uses a stack or recursion, and priority-based graph algorithms often use heaps.</p>
+
+<h2>Topic summary</h2>
+<ul>
+<li>Trees represent hierarchical relationships; binary trees restrict each node to at most two children.</li>
+<li>Preorder, inorder, postorder and level-order traversals visit trees in different useful orders.</li>
+<li>BSTs maintain ordered left/right subtrees; operation cost is O(h), which is O(log n) when balanced but O(n) when skewed.</li>
+<li>BST deletion has three cases: leaf, one child and two children.</li>
+<li>Binary heaps are complete trees with min-heap or max-heap ordering and are compactly stored in arrays.</li>
+<li>Heap insertion and extraction are O(log n); root priority access is O(1).</li>
+<li>Hash tables map keys to table indexes and use collision-resolution strategies such as chaining or open addressing.</li>
+<li>Hash operations are O(1) on average when distribution and load factor are controlled.</li>
+<li>BSTs, heaps and hash tables solve different access problems; none is universally best.</li>
+</ul>
+</body></html>

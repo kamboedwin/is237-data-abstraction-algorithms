@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430">
+<rect width="1000" height="430" rx="28" fill="#f8fbff"/>
+<g font-family="Arial, sans-serif">
+<text x="500" y="55" text-anchor="middle" font-size="30" font-weight="700" fill="#17233c">Characteristics of a Useful Algorithm</text>
+<g fill="#fff" stroke="#2f5fa7" stroke-width="3">
+<rect x="70" y="95" width="260" height="110" rx="18"/><rect x="370" y="95" width="260" height="110" rx="18"/><rect x="670" y="95" width="260" height="110" rx="18"/>
+<rect x="145" y="250" width="300" height="110" rx="18"/><rect x="555" y="250" width="300" height="110" rx="18"/>
+</g>
+<g text-anchor="middle" fill="#17233c"><text x="200" y="135" font-size="22" font-weight="700">Definite</text><text x="200" y="170" font-size="16">Every step is unambiguous</text>
+<text x="500" y="135" font-size="22" font-weight="700">Finite</text><text x="500" y="170" font-size="16">Eventually terminates</text>
+<text x="800" y="135" font-size="22" font-weight="700">Effective</text><text x="800" y="170" font-size="16">Steps are executable</text>
+<text x="295" y="290" font-size="22" font-weight="700">Input / Output</text><text x="295" y="325" font-size="16">Transforms given data into results</text>
+<text x="705" y="290" font-size="22" font-weight="700">Correct &amp; General</text><text x="705" y="325" font-size="16">Works for the intended class of cases</text></g>
+</g></svg>

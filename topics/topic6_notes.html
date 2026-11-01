@@ -1,0 +1,359 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IS 237 Topic 6 Notes</title><link rel="stylesheet" href="notes.css"></head><body>
+<header class="note-header"><div><div class="eyebrow">IS 237 · Topic 6</div><h1>Searching, Sorting and Algorithm Efficiency</h1><p class="lead">How to compare algorithms by the work they perform, then apply that reasoning to searching and sorting.</p></div><button class="print-btn" onclick="window.print()">Print / Save as PDF</button></header>
+
+<section class="callout"><strong>Central idea.</strong> Two algorithms may produce the same correct answer but require very different amounts of time and memory as the input grows. Efficiency analysis helps us choose an appropriate algorithm before scale makes the difference obvious.</section>
+
+<h2>6.1 Why algorithm efficiency matters</h2>
+<p>For a list of ten values, almost any reasonable search or sorting algorithm feels fast. For one million values, the difference between checking every possible pair and repeatedly halving the problem becomes enormous. Algorithm analysis therefore asks a more useful question than “How many seconds did this run on my laptop?” It asks: <strong>How does the amount of work grow as the input size grows?</strong></p>
+<p>This gives us a machine-independent way to compare algorithms. Exact runtime still depends on processor speed, language, compiler, memory hierarchy and implementation quality, but growth rate usually determines whether an approach remains practical at larger scale.</p>
+
+<h2>6.2 Input size and the basic operation</h2>
+<p>We normally represent input size by <code>n</code>. What <code>n</code> means depends on the problem:</p>
+<ul><li>number of items in an array;</li><li>number of characters in a string;</li><li>number of records in a dataset;</li><li>later, number of vertices and edges in a graph.</li></ul>
+<p>We then identify a <strong>basic operation</strong> whose repetition dominates the running work, for example a comparison, swap, assignment or recursive call.</p>
+
+<h2>6.3 Time complexity and space complexity</h2>
+<p><strong>Time complexity</strong> describes how the number of significant operations grows with input size. <strong>Space complexity</strong> describes how additional memory requirements grow.</p>
+<p>An algorithm can trade one for the other. Memoisation, for example, spends more memory to avoid repeated recursive work. Merge sort uses extra temporary storage to achieve reliable O(n log n) sorting time. Algorithm selection therefore considers both time and memory.</p>
+
+<h2>6.4 Operation counting</h2>
+<p>Suppose an algorithm performs:</p>
+<pre><code>3n + 5</code></pre>
+<p>basic operations. For large <code>n</code>, the linear term dominates; the constant 5 becomes comparatively unimportant. We therefore describe the growth as <strong>linear</strong>, written O(n).</p>
+<p>If an algorithm performs:</p>
+<pre><code>2n² + 8n + 20</code></pre>
+<p>the quadratic term dominates for large <code>n</code>, so its growth is O(n²).</p>
+
+<h2>6.5 Asymptotic notation</h2>
+<p>Three related notations are useful:</p>
+<ul>
+<li><strong>Big-O, O(g(n))</strong>: an asymptotic upper bound. In introductory analysis it is commonly used to describe worst-case growth.</li>
+<li><strong>Big-Omega, Ω(g(n))</strong>: an asymptotic lower bound.</li>
+<li><strong>Big-Theta, Θ(g(n))</strong>: a tight asymptotic bound when growth is bounded above and below by the same order.</li>
+</ul>
+<p>In this course we focus mainly on Big-O because it is the most commonly used introductory language for algorithm growth, but students should know that Big-O is not the only asymptotic notation.</p>
+
+<h2>6.6 Common growth classes</h2>
+<img src="media/topic6/growth_classes.svg" alt="Common algorithm growth classes">
+<table><thead><tr><th>Growth</th><th>Name</th><th>Typical example</th><th>Intuition</th></tr></thead><tbody>
+<tr><td>O(1)</td><td>Constant</td><td>Array access by known index</td><td>Work does not grow with n</td></tr>
+<tr><td>O(log n)</td><td>Logarithmic</td><td>Binary search</td><td>Repeatedly discard a fixed fraction</td></tr>
+<tr><td>O(n)</td><td>Linear</td><td>Linear search</td><td>Visit items one by one</td></tr>
+<tr><td>O(n log n)</td><td>Linearithmic</td><td>Merge sort; average quicksort</td><td>Logarithmic levels with linear work per level</td></tr>
+<tr><td>O(n²)</td><td>Quadratic</td><td>Selection sort; bubble sort worst case</td><td>Nested comparisons over many pairs</td></tr>
+<tr><td>O(2ⁿ)</td><td>Exponential</td><td>Naive recursive Fibonacci</td><td>Branching recursive work grows rapidly</td></tr>
+<tr><td>O(n!)</td><td>Factorial</td><td>Enumerating all permutations</td><td>Extremely rapid combinatorial growth</td></tr>
+</tbody></table>
+
+<h2>6.7 Constants and lower-order terms</h2>
+<p>Big-O deliberately ignores constant multipliers and lower-order terms. O(2n) and O(100n + 50) are both O(n). This does <strong>not</strong> mean constants never matter in real programs. It means asymptotic notation focuses on how the dominant growth changes as <code>n</code> becomes large.</p>
+
+<h2>6.8 Best, average and worst cases</h2>
+<p>An algorithm may do different work for inputs of the same size.</p>
+<ul>
+<li><strong>Best case:</strong> the most favourable arrangement.</li>
+<li><strong>Average case:</strong> expected behaviour under an assumed distribution of inputs.</li>
+<li><strong>Worst case:</strong> the most expensive arrangement.</li>
+</ul>
+<p>For linear search, finding the target at the first position is O(1) best case, while finding it at the final position or not finding it at all is O(n) worst case.</p>
+
+<h2>6.9 Searching: the problem</h2>
+<p>Searching asks whether a target value exists in a collection and often where it occurs. The two core algorithms in this topic are <strong>linear search</strong> and <strong>binary search</strong>.</p>
+<img src="media/topic6/search_comparison.svg" alt="Linear versus binary search">
+
+<h2>6.10 Linear search</h2>
+<p>Linear search starts at one end and checks each element until the target is found or the collection ends.</p>
+<pre><code>ALGORITHM LinearSearch(A, target)
+    FOR i ← 0 TO length(A) - 1
+        IF A[i] = target
+            RETURN i
+
+    RETURN NOT_FOUND</code></pre>
+
+<h3>Complexity</h3>
+<ul><li>Best case: O(1)</li><li>Worst case: O(n)</li><li>Average case: O(n)</li><li>Extra space: O(1)</li></ul>
+
+<h3>When linear search is useful</h3>
+<ul><li>the data is unsorted;</li><li>the collection is small;</li><li>only one or a few searches are required;</li><li>the structure does not support efficient random access.</li></ul>
+
+<h2>6.11 Binary search</h2>
+<p>Binary search works by comparing the target with the middle item of a <strong>sorted</strong> collection. Each comparison eliminates roughly half of the remaining search interval.</p>
+
+<h3>Iterative binary search pseudocode</h3>
+<pre><code>ALGORITHM BinarySearch(A, target)
+    low ← 0
+    high ← length(A) - 1
+
+    WHILE low ≤ high
+        mid ← floor((low + high) / 2)
+
+        IF A[mid] = target
+            RETURN mid
+
+        IF target < A[mid]
+            high ← mid - 1
+        ELSE
+            low ← mid + 1
+
+    RETURN NOT_FOUND</code></pre>
+
+<h3>Recursive binary search</h3>
+<pre><code>ALGORITHM RecursiveBinarySearch(A, target, low, high)
+    IF low > high
+        RETURN NOT_FOUND
+
+    mid ← floor((low + high) / 2)
+
+    IF A[mid] = target
+        RETURN mid
+
+    IF target < A[mid]
+        RETURN RecursiveBinarySearch(A, target, low, mid - 1)
+
+    RETURN RecursiveBinarySearch(A, target, mid + 1, high)</code></pre>
+
+<h3>Complexity</h3>
+<ul><li>Best case: O(1)</li><li>Worst/average case: O(log n)</li><li>Iterative extra space: O(1)</li><li>Recursive extra space: O(log n)</li></ul>
+
+<h3>Important precondition</h3>
+<p>Binary search requires a sorted collection and is especially natural when the structure supports fast indexing, such as an array. On a linked list, repeatedly locating the middle node is not O(1), so the practical advantage is reduced.</p>
+
+<h2>6.12 Linear versus binary search</h2>
+<table><thead><tr><th>Feature</th><th>Linear search</th><th>Binary search</th></tr></thead><tbody>
+<tr><td>Data must be sorted?</td><td>No</td><td>Yes</td></tr>
+<tr><td>Worst-case time</td><td>O(n)</td><td>O(log n)</td></tr>
+<tr><td>Good for linked list?</td><td>Yes</td><td>Usually not ideal</td></tr>
+<tr><td>Setup cost</td><td>None</td><td>May require sorting first</td></tr>
+<tr><td>Repeated searches on sorted array</td><td>Usually inferior</td><td>Very attractive</td></tr>
+</tbody></table>
+
+<h2>6.13 Sorting: the problem</h2>
+<p>Sorting rearranges items into an order such as ascending or descending. Sorting can make later operations easier: binary search becomes possible, duplicates become visible, rankings can be produced, and data can be grouped for reporting.</p>
+<img src="media/topic6/sort_families.svg" alt="Five sorting algorithms">
+
+<h2>6.14 Properties used to describe sorting algorithms</h2>
+<ul>
+<li><strong>Stable:</strong> equal-key items preserve their original relative order.</li>
+<li><strong>In-place:</strong> uses only a small amount of additional memory beyond the input.</li>
+<li><strong>Adaptive:</strong> can benefit from data that is already partly sorted.</li>
+<li><strong>Comparison-based:</strong> order is determined by comparing pairs of values.</li>
+</ul>
+
+<h2>6.15 Bubble sort</h2>
+<p>Bubble sort repeatedly compares adjacent elements and swaps them when they are in the wrong order. Large values gradually move toward the end.</p>
+<pre><code>ALGORITHM BubbleSort(A)
+    n ← length(A)
+
+    FOR pass ← 0 TO n - 2
+        swapped ← false
+
+        FOR j ← 0 TO n - 2 - pass
+            IF A[j] > A[j + 1]
+                SWAP A[j], A[j + 1]
+                swapped ← true
+
+        IF swapped = false
+            BREAK
+
+    RETURN A</code></pre>
+
+<h3>Complexity and properties</h3>
+<ul><li>Best case with early-exit flag: O(n)</li><li>Average/worst case: O(n²)</li><li>Extra space: O(1)</li><li>Stable: yes, when only strictly greater elements are swapped</li><li>In-place: yes</li></ul>
+
+<h2>6.16 Selection sort</h2>
+<p>Selection sort divides the array into a sorted prefix and unsorted remainder. On each pass, it finds the minimum remaining value and places it into the next sorted position.</p>
+<pre><code>ALGORITHM SelectionSort(A)
+    n ← length(A)
+
+    FOR i ← 0 TO n - 2
+        minIndex ← i
+
+        FOR j ← i + 1 TO n - 1
+            IF A[j] < A[minIndex]
+                minIndex ← j
+
+        IF minIndex ≠ i
+            SWAP A[i], A[minIndex]
+
+    RETURN A</code></pre>
+
+<h3>Complexity and properties</h3>
+<ul><li>Best/average/worst time: O(n²)</li><li>Extra space: O(1)</li><li>In-place: yes</li><li>Stable in the standard swap-based version: usually no</li><li>Advantage: uses relatively few swaps</li></ul>
+
+<h2>6.17 Insertion sort</h2>
+<p>Insertion sort grows a sorted prefix. Each new value is moved left until it reaches the correct position among previously processed values.</p>
+<pre><code>ALGORITHM InsertionSort(A)
+    FOR i ← 1 TO length(A) - 1
+        key ← A[i]
+        j ← i - 1
+
+        WHILE j ≥ 0 AND A[j] > key
+            A[j + 1] ← A[j]
+            j ← j - 1
+
+        A[j + 1] ← key
+
+    RETURN A</code></pre>
+
+<h3>Complexity and properties</h3>
+<ul><li>Best case: O(n) when already sorted</li><li>Average/worst case: O(n²)</li><li>Extra space: O(1)</li><li>Stable: yes</li><li>Adaptive: yes; often effective for small or nearly sorted inputs</li></ul>
+
+<h2>6.18 Merge sort</h2>
+<img src="media/topic6/merge_sort.svg" alt="Merge sort process">
+<p>Merge sort uses divide and conquer:</p>
+<ol><li>divide the array into two halves;</li><li>recursively sort each half;</li><li>merge the two sorted halves.</li></ol>
+
+<h3>Merge sort pseudocode</h3>
+<pre><code>ALGORITHM MergeSort(A, left, right)
+    IF left ≥ right
+        RETURN
+
+    mid ← floor((left + right) / 2)
+
+    MergeSort(A, left, mid)
+    MergeSort(A, mid + 1, right)
+    Merge(A, left, mid, right)</code></pre>
+
+<h3>Merge operation</h3>
+<pre><code>ALGORITHM Merge(A, left, mid, right)
+    L ← copy of A[left ... mid]
+    R ← copy of A[mid + 1 ... right]
+
+    i ← 0
+    j ← 0
+    k ← left
+
+    WHILE i < length(L) AND j < length(R)
+        IF L[i] ≤ R[j]
+            A[k] ← L[i]
+            i ← i + 1
+        ELSE
+            A[k] ← R[j]
+            j ← j + 1
+        k ← k + 1
+
+    WHILE i < length(L)
+        A[k] ← L[i]
+        i ← i + 1
+        k ← k + 1
+
+    WHILE j < length(R)
+        A[k] ← R[j]
+        j ← j + 1
+        k ← k + 1</code></pre>
+
+<h3>Complexity and properties</h3>
+<ul><li>Best/average/worst time: O(n log n)</li><li>Extra array space: O(n)</li><li>Stable: yes, with a stable merge</li><li>Usually not in-place for the standard array implementation</li></ul>
+
+<h2>6.19 Why merge sort is O(n log n)</h2>
+<p>Repeated splitting creates approximately log₂n levels. At each level, all <code>n</code> elements participate in merging work. Therefore:</p>
+<div class="formula">n work per level × log n levels = O(n log n)</div>
+
+<h2>6.20 Quick sort</h2>
+<img src="media/topic6/quick_sort.svg" alt="Quick sort partition">
+<p>Quick sort also uses divide and conquer, but instead of merging sorted halves it first <strong>partitions</strong> the data around a pivot. Values are rearranged so that smaller/equal values lie on one side and larger values on the other. The pivot reaches its final sorted position after partitioning.</p>
+
+<h3>Quick sort pseudocode</h3>
+<pre><code>ALGORITHM QuickSort(A, low, high)
+    IF low < high
+        p ← Partition(A, low, high)
+        QuickSort(A, low, p - 1)
+        QuickSort(A, p + 1, high)</code></pre>
+
+<h3>Lomuto-style partition pseudocode</h3>
+<pre><code>ALGORITHM Partition(A, low, high)
+    pivot ← A[high]
+    i ← low - 1
+
+    FOR j ← low TO high - 1
+        IF A[j] ≤ pivot
+            i ← i + 1
+            SWAP A[i], A[j]
+
+    SWAP A[i + 1], A[high]
+    RETURN i + 1</code></pre>
+
+<h3>Complexity and properties</h3>
+<ul><li>Best/average time: O(n log n)</li><li>Worst time: O(n²)</li><li>Average recursive stack: O(log n); worst-case stack can reach O(n)</li><li>Usually in-place apart from recursion stack</li><li>Standard implementations are not stable</li></ul>
+
+<h2>6.21 Why quicksort can become O(n²)</h2>
+<p>If the pivot repeatedly produces one very large partition and one tiny partition, recursion has about <code>n</code> levels instead of log n. Each level may still perform substantial partition work. Good pivot strategies and randomisation reduce the chance of consistently poor partitions.</p>
+
+<h2>6.22 Sorting algorithm comparison</h2>
+<table><thead><tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Extra space</th><th>Stable?</th></tr></thead><tbody>
+<tr><td>Bubble</td><td>O(n)*</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>Yes</td></tr>
+<tr><td>Selection</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>No, standard form</td></tr>
+<tr><td>Insertion</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>Yes</td></tr>
+<tr><td>Merge</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes</td></tr>
+<tr><td>Quick</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n) avg stack</td><td>No, standard form</td></tr>
+</tbody></table>
+<p>*Bubble sort reaches O(n) best case only when implemented with an early-exit flag.</p>
+
+<h2>6.23 Why selection sort and quicksort feel so different</h2>
+<p>Selection sort performs roughly:</p>
+<div class="formula">n(n − 1) / 2 comparisons</div>
+<p>regardless of whether the array is already nearly sorted. Quicksort instead tries to create balanced partitions. When that works well, the problem depth is logarithmic. This is why an animation is especially useful: selection sort repeatedly scans the unsorted region, while quicksort reorganises the search space through partitions.</p>
+
+<h2>6.24 Stability: why equal values may matter</h2>
+<p>Suppose student records are already ordered by registration number and we then sort them by grade. A <strong>stable</strong> sort preserves the existing registration-number order among students who have the same grade. Stability therefore matters when records have multiple sort keys.</p>
+
+<h2>6.25 In-place sorting and memory</h2>
+<p>An in-place algorithm uses little extra memory. Selection, insertion and bubble sort are normally in-place. Standard merge sort on arrays requires temporary arrays, while quicksort usually rearranges data within the original array but uses recursion-stack space.</p>
+
+<h2>6.26 Choosing a sorting algorithm</h2>
+<ul>
+<li><strong>Small or nearly sorted data:</strong> insertion sort can be attractive.</li>
+<li><strong>Need guaranteed O(n log n) and stability:</strong> merge sort is attractive if extra memory is acceptable.</li>
+<li><strong>Fast general in-memory comparison sorting:</strong> quicksort is often attractive with good pivot handling.</li>
+<li><strong>Teaching/simple demonstrations:</strong> bubble and selection sort reveal comparison and movement strategies clearly.</li>
+<li><strong>Few writes are desirable:</strong> selection sort performs relatively few swaps even though comparisons remain quadratic.</li>
+</ul>
+
+<h2>6.27 Algorithm optimisation principles</h2>
+<p>Optimisation begins with the algorithmic idea, not micro-level syntax.</p>
+<ul>
+<li>choose the right data structure;</li>
+<li>avoid repeated work;</li>
+<li>stop early when a result is already known;</li>
+<li>reduce the remaining problem quickly;</li>
+<li>trade memory for time when appropriate;</li>
+<li>exploit properties of the input such as sortedness;</li>
+<li>measure real implementations after choosing a sound asymptotic strategy.</li>
+</ul>
+
+<h2>6.28 Common misconceptions</h2>
+<ul>
+<li><strong>“O(n²) is always slow.”</strong> For very small n it can be perfectly acceptable.</li>
+<li><strong>“O(n log n) is always faster than O(n²).”</strong> Asymptotically yes for sufficiently large n, but constants and small inputs still matter.</li>
+<li><strong>“Binary search is always better.”</strong> It requires sorted, efficiently indexed data; sorting once may only pay off if many searches follow.</li>
+<li><strong>“Quicksort is always O(n log n).”</strong> Its worst case is O(n²).</li>
+<li><strong>“Big-O tells exact runtime.”</strong> It describes growth, not wall-clock seconds.</li>
+<li><strong>“Selection sort gets faster when the input is already sorted.”</strong> Standard selection sort still performs its nested comparison pattern.</li>
+</ul>
+
+<h2>6.29 Real applications</h2>
+<ul>
+<li>searching IDs and records;</li>
+<li>ranking results;</li>
+<li>sorting transaction or sensor data by time;</li>
+<li>preparing data for binary search or duplicate detection;</li>
+<li>ordering model scores and predictions;</li>
+<li>indexing and information retrieval;</li>
+<li>data cleaning and grouped reporting.</li>
+</ul>
+
+<h2>6.30 Connection to advanced data structures</h2>
+<p>Topic 7 introduces trees, heaps and hash tables. These structures exist largely because they can support important operations more efficiently than simple linear structures. The Big-O reasoning developed here will allow us to compare BST search, heap operations and hash-table lookup meaningfully.</p>
+
+<h2>Topic summary</h2>
+<ul>
+<li>Algorithm analysis studies how work and memory grow with input size.</li>
+<li>Big-O describes asymptotic upper growth and commonly communicates worst-case behaviour.</li>
+<li>Linear search is O(n); binary search is O(log n) but requires sorted, efficiently indexed data.</li>
+<li>Bubble, selection and insertion sorts are simple quadratic methods with different practical behaviour.</li>
+<li>Merge sort gives reliable O(n log n) time using extra memory.</li>
+<li>Quicksort is O(n log n) on average but O(n²) in the worst case.</li>
+<li>Stability, in-place behaviour, input order and memory constraints matter in choosing a sort.</li>
+<li>The best algorithm is selected from the problem's requirements, not from a single complexity number.</li>
+</ul>
+</body></html>

@@ -1,0 +1,270 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IS 237 Topic 5 Notes</title><link rel="stylesheet" href="notes.css"></head><body>
+<header class="note-header"><div><div class="eyebrow">IS 237 · Topic 5</div><h1>Recursion and Iteration</h1><p class="lead">Two ways of expressing repeated computation — one through self-reference, the other through explicit looping.</p></div><button class="print-btn" onclick="window.print()">Print / Save as PDF</button></header>
+
+<section class="callout"><strong>Central question.</strong> When a problem repeats a pattern, should we express that repetition by calling the same method on a smaller problem, or by updating state inside a loop?</section>
+
+<h2>5.1 Why recursion belongs after stacks</h2>
+<p>Recursion often feels mysterious until the call stack is visible. Every active function call needs to remember information such as its parameters, local variables and where execution should continue after the call returns. Those records are stored as <strong>stack frames</strong>. Because the call stack is LIFO, the most recently called unfinished function returns first.</p>
+<img src="media/topic5/call_stack.svg" alt="Recursive calls use the call stack">
+
+<h2>5.2 Recursion and iteration: two forms of repetition</h2>
+<img src="media/topic5/recursion_iteration.svg" alt="Recursion versus iteration">
+<p><strong>Recursion</strong> occurs when a function solves a problem partly by calling itself, directly or indirectly, on a smaller or simpler instance. <strong>Iteration</strong> repeats operations using a loop such as <code>for</code> or <code>while</code>.</p>
+<p>Both can often express the same computation. Their difference is mainly <em>how progress and unfinished work are represented</em>.</p>
+
+<h2>5.3 Historical perspective</h2>
+<p>Recursive definitions long predate computers and appear naturally in mathematics. In programming, recursion became especially important with languages designed for symbolic processing and functional programming. Lisp, developed in the late 1950s, helped make recursive list and symbolic processing influential.</p>
+<p>Iteration has equally deep roots in algorithmic computation and procedural programming. Modern languages normally support both approaches because different problems are clearer in different forms.</p>
+
+<h2>5.4 Anatomy of a recursive method</h2>
+<img src="media/topic5/recursive_method.svg" alt="Designing a recursive method">
+<p>A correct recursive method normally has four conceptual parts:</p>
+<ol><li><strong>A smaller subproblem.</strong> Express the original task using a smaller instance of the same task.</li><li><strong>A base case.</strong> Define a case that can be answered directly.</li><li><strong>Progress toward the base case.</strong> Every recursive path must make the problem smaller or simpler.</li><li><strong>Combination.</strong> If necessary, combine the smaller result with current information.</li></ol>
+
+<h2>5.5 First example: factorial</h2>
+<pre><code>n! = n × (n - 1) × ... × 1
+0! = 1</code></pre>
+
+<h3>Recursive factorial</h3>
+<pre><code>ALGORITHM RecursiveFactorial(n)
+    IF n = 0
+        RETURN 1
+
+    RETURN n × RecursiveFactorial(n - 1)</code></pre>
+
+<h3>Iterative factorial</h3>
+<pre><code>ALGORITHM IterativeFactorial(n)
+    result ← 1
+
+    FOR i ← 2 TO n
+        result ← result × i
+
+    RETURN result</code></pre>
+
+<p>The recursive version stores unfinished multiplications in call frames. The iterative version stores progress explicitly in <code>result</code> and the loop variable. Both do O(n) multiplication work. Ordinary recursion uses O(n) call-stack space; iteration uses O(1) extra loop state.</p>
+
+<h2>5.6 Tracing factorial recursively</h2>
+<pre><code>factorial(4)
+= 4 × factorial(3)
+= 4 × 3 × factorial(2)
+= 4 × 3 × 2 × factorial(1)
+= 4 × 3 × 2 × 1 × factorial(0)
+= 4 × 3 × 2 × 1 × 1
+= 24</code></pre>
+<p>The <strong>descent</strong> creates calls. The <strong>unwinding</strong> phase returns values in reverse order.</p>
+
+<h2>5.7 Base cases and termination</h2>
+<p>A base case is not merely a syntax rule. It defines when the problem becomes simple enough to solve directly. Common errors include:</p>
+<ul><li>no base case;</li><li>a base case that cannot be reached;</li><li>a recursive step that does not make progress toward the base case.</li></ul>
+
+<h3>Incorrect example</h3>
+<pre><code>ALGORITHM BadCountdown(n)
+    IF n = 0
+        RETURN
+    print n
+    BadCountdown(n + 1)   // moves away from 0</code></pre>
+
+<h3>Correct version</h3>
+<pre><code>ALGORITHM Countdown(n)
+    IF n = 0
+        RETURN
+    print n
+    Countdown(n - 1)</code></pre>
+
+<h2>5.8 Recursive sum of an array</h2>
+<pre><code>ALGORITHM RecursiveSum(A, n)
+    IF n = 0
+        RETURN 0
+
+    RETURN A[n - 1] + RecursiveSum(A, n - 1)</code></pre>
+
+<h3>Iterative equivalent</h3>
+<pre><code>ALGORITHM IterativeSum(A)
+    total ← 0
+
+    FOR each value x in A
+        total ← total + x
+
+    RETURN total</code></pre>
+<p>For a simple linear scan, iteration is often clearer and uses less stack space.</p>
+
+<h2>5.9 Recursive linear search</h2>
+<pre><code>ALGORITHM RecursiveLinearSearch(A, target, index)
+    IF index = length(A)
+        RETURN NOT_FOUND
+
+    IF A[index] = target
+        RETURN index
+
+    RETURN RecursiveLinearSearch(A, target, index + 1)</code></pre>
+
+<h3>Iterative linear search</h3>
+<pre><code>ALGORITHM IterativeLinearSearch(A, target)
+    FOR i ← 0 TO length(A) - 1
+        IF A[i] = target
+            RETURN i
+
+    RETURN NOT_FOUND</code></pre>
+
+<h2>5.10 Recursive binary search</h2>
+<p>Binary search is important because each step discards half of the remaining sorted interval.</p>
+<pre><code>ALGORITHM RecursiveBinarySearch(A, target, low, high)
+    IF low > high
+        RETURN NOT_FOUND
+
+    mid ← floor((low + high) / 2)
+
+    IF A[mid] = target
+        RETURN mid
+
+    IF target < A[mid]
+        RETURN RecursiveBinarySearch(A, target, low, mid - 1)
+
+    RETURN RecursiveBinarySearch(A, target, mid + 1, high)</code></pre>
+
+<h3>Iterative binary search</h3>
+<pre><code>ALGORITHM IterativeBinarySearch(A, target)
+    low ← 0
+    high ← length(A) - 1
+
+    WHILE low ≤ high
+        mid ← floor((low + high) / 2)
+
+        IF A[mid] = target
+            RETURN mid
+
+        IF target < A[mid]
+            high ← mid - 1
+        ELSE
+            low ← mid + 1
+
+    RETURN NOT_FOUND</code></pre>
+<p>Both are O(log n) time on a sorted array. Recursive binary search uses O(log n) stack space; iterative binary search uses O(1) extra state.</p>
+
+<h2>5.11 Types of recursion</h2>
+
+<h3>5.11.1 Direct recursion</h3>
+<p>A function directly calls itself.</p>
+<pre><code>ALGORITHM Countdown(n)
+    IF n = 0
+        RETURN
+    print n
+    Countdown(n - 1)</code></pre>
+
+<h3>5.11.2 Indirect or mutual recursion</h3>
+<p>Function A calls B, and B eventually calls A.</p>
+<pre><code>ALGORITHM IsEven(n)
+    IF n = 0
+        RETURN true
+    RETURN IsOdd(n - 1)
+
+ALGORITHM IsOdd(n)
+    IF n = 0
+        RETURN false
+    RETURN IsEven(n - 1)</code></pre>
+
+<h3>5.11.3 Tail recursion</h3>
+<p>The recursive call is the final action. No additional computation waits after it returns.</p>
+
+<h3>5.11.4 Non-tail recursion</h3>
+<p>Additional work remains after the call. Ordinary factorial is non-tail because multiplication by <code>n</code> is still pending.</p>
+
+<h3>5.11.5 Multiple or tree recursion</h3>
+<p>A call makes more than one recursive call. Naive Fibonacci is a classic example.</p>
+<img src="media/topic5/recursion_tree.svg" alt="Fibonacci recursion tree">
+
+<h2>5.12 Fibonacci: a warning about repeated recursive work</h2>
+<pre><code>ALGORITHM RecursiveFibonacci(n)
+    IF n ≤ 1
+        RETURN n
+
+    RETURN RecursiveFibonacci(n - 1)
+         + RecursiveFibonacci(n - 2)</code></pre>
+<p>This definition is elegant, but it repeats many subproblems. Its time grows exponentially, commonly bounded as O(2<sup>n</sup>).</p>
+
+<h3>Iterative Fibonacci</h3>
+<pre><code>ALGORITHM IterativeFibonacci(n)
+    IF n ≤ 1
+        RETURN n
+
+    previous ← 0
+    current ← 1
+
+    FOR i ← 2 TO n
+        next ← previous + current
+        previous ← current
+        current ← next
+
+    RETURN current</code></pre>
+<p>The iterative version is O(n) time and O(1) extra space.</p>
+
+<h3>Memoisation</h3>
+<p>A recursive solution can avoid repeated subproblems by remembering results.</p>
+<pre><code>ALGORITHM MemoFibonacci(n, memo)
+    IF n ≤ 1
+        RETURN n
+
+    IF memo contains n
+        RETURN memo[n]
+
+    memo[n] ← MemoFibonacci(n - 1, memo)
+             + MemoFibonacci(n - 2, memo)
+
+    RETURN memo[n]</code></pre>
+<p>With memoisation, Fibonacci becomes O(n) time with O(n) stored results.</p>
+
+<h2>5.13 Tail recursion</h2>
+<img src="media/topic5/tail_recursion.svg" alt="Tail recursion">
+<p>Tail recursion moves unfinished state into parameters so the recursive call becomes the final operation.</p>
+<pre><code>ALGORITHM FactorialTail(n, accumulator)
+    IF n = 0
+        RETURN accumulator
+
+    RETURN FactorialTail(n - 1, n × accumulator)
+
+ALGORITHM Factorial(n)
+    RETURN FactorialTail(n, 1)</code></pre>
+
+<h2>5.14 Tail-call optimisation</h2>
+<p>Some languages or compilers can reuse a stack frame for a tail call, preventing stack growth. This is called <strong>tail-call optimisation</strong> or <strong>tail-call elimination</strong>.</p>
+<p><strong>Important:</strong> tail recursion does not automatically imply O(1) stack space. The runtime must perform the optimisation. Java does not guarantee general tail-call optimisation, so deeply tail-recursive Java methods can still overflow the call stack.</p>
+
+<h2>5.15 Converting recursion to iteration</h2>
+<p>Many recursive algorithms can be converted by storing explicitly the state that recursion would otherwise keep in call frames.</p>
+<pre><code>ALGORITHM IterativeCountdown(n)
+    WHILE n > 0
+        print n
+        n ← n - 1</code></pre>
+<p>More complicated recursion can be replaced with an explicit Stack ADT. This will matter later for tree and graph traversal.</p>
+
+<h2>5.16 When recursion is a natural fit</h2>
+<ul><li><strong>Tree traversal:</strong> every subtree is itself a tree.</li><li><strong>Divide and conquer:</strong> merge sort and quicksort solve smaller subproblems.</li><li><strong>Backtracking:</strong> maze solving and constraint search.</li><li><strong>Recursive data structures:</strong> trees and nested syntax.</li><li><strong>Mathematical definitions:</strong> factorial and recursively defined sequences.</li></ul>
+
+<h2>5.17 When iteration may be preferable</h2>
+<ul><li>simple counting or scanning;</li><li>very deep repetition where stack growth is risky;</li><li>performance-sensitive loops with straightforward state;</li><li>languages/runtimes without tail-call optimisation;</li><li>situations where explicit state is easier to debug.</li></ul>
+
+<h2>5.18 Advantages of recursion</h2>
+<ul><li>mirrors recursive problem structure directly;</li><li>can produce concise and expressive solutions;</li><li>natural for trees, divide-and-conquer and backtracking;</li><li>can support clear correctness reasoning when the problem itself is recursive.</li></ul>
+
+<h2>5.19 Limitations of recursion</h2>
+<ul><li>each active call consumes stack space;</li><li>deep recursion can cause stack overflow;</li><li>function-call overhead may exceed a simple loop;</li><li>poor recursive design can duplicate work;</li><li>incorrect base cases cause non-termination;</li><li>traces can be harder for beginners to follow.</li></ul>
+
+<h2>5.20 Recursion versus iteration comparison</h2>
+<table><thead><tr><th>Concern</th><th>Recursion</th><th>Iteration</th></tr></thead><tbody>
+<tr><td>Repetition mechanism</td><td>Function calls</td><td>Loops</td></tr>
+<tr><td>Stopping mechanism</td><td>Base case</td><td>Loop condition</td></tr>
+<tr><td>State</td><td>Parameters/local variables in frames</td><td>Explicit variables</td></tr>
+<tr><td>Extra memory</td><td>Often proportional to recursion depth</td><td>Often constant for simple loops</td></tr>
+<tr><td>Natural for</td><td>Trees, divide-and-conquer, backtracking</td><td>Linear scans, counters, repeated updates</td></tr>
+<tr><td>Main risk</td><td>Stack overflow / repeated work</td><td>Incorrect loop condition / update</td></tr>
+</tbody></table>
+
+<h2>5.21 Common misconceptions</h2>
+<ul><li><strong>“Recursion is always slower.”</strong> Not always; it depends on the algorithm, language and optimisation.</li><li><strong>“A base case guarantees termination.”</strong> Calls must also move toward it.</li><li><strong>“Tail recursion always saves stack space.”</strong> Only if the runtime optimises it.</li><li><strong>“Recursion and iteration always have different Big-O time.”</strong> They can have the same time complexity but different space use.</li><li><strong>“Naive Fibonacci is an efficient recursive algorithm.”</strong> It is elegant but repeats work extensively.</li></ul>
+
+<h2>5.22 Connection to the next topic</h2>
+<p>Topic 6 returns to algorithms in depth: searching, sorting and performance analysis. Recursion will reappear in <strong>binary search, merge sort and quicksort</strong>, while iteration will appear in alternatives and lower-level loops.</p>
+
+<h2>Topic summary</h2>
+<ul><li>Recursion solves smaller instances of the same problem; iteration uses explicit loops.</li><li>Correct recursion needs a reachable base case and guaranteed progress.</li><li>Recursive calls use the call stack and return in LIFO order.</li><li>Direct, indirect, tail, non-tail and multiple recursion are useful patterns.</li><li>Tail recursion can sometimes be optimised, but this depends on the runtime.</li><li>Naive Fibonacci repeats work; memoisation removes duplication.</li><li>Recursion is natural for recursive structures and divide-and-conquer algorithms.</li><li>Iteration is often preferable for simple repetition and when stack depth is a concern.</li></ul>
+</body></html>

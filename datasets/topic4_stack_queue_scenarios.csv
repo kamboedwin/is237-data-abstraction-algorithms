@@ -1,0 +1,11 @@
+case_id,scenario,recommended_adt,reason
+1,Undo recent editor actions,Stack,most recent action should be reversed first
+2,Check nested brackets in source code,Stack,latest unmatched opener must be matched first
+3,Explore a graph depth first,Stack,most recently discovered branch is explored next
+4,Process print jobs in arrival order,Queue,earliest submitted job should normally run first
+5,Breadth first search,Queue,nodes are explored in discovery order by level
+6,Process support requests fairly,Queue,arrival order should be preserved
+7,Maintain sliding window maximum candidates,Deque,both ends are used to discard old and dominated candidates
+8,Fixed size reusable request buffer,Circular Queue,freed array positions should be reused without shifting
+9,Worker task stealing,Deque,owner and other workers may use different ends
+10,Function calls,Stack,nested calls return in reverse order

@@ -1,0 +1,428 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IS 237 Topic 3 Notes</title><link rel="stylesheet" href="notes.css"></head><body>
+<header class="note-header"><div><div class="eyebrow">IS 237 · Topic 3</div><h1>Arrays and Linked Lists</h1><p class="lead">Two foundational representations of ordered collections, their basic operations, and how singly, doubly and circular linked lists differ.</p></div><button class="print-btn" onclick="window.print()">Print / Save as PDF</button></header>
+
+<section class="callout"><strong>Central question.</strong> If an ADT tells us <em>what</em> operations are required, how should we organise the underlying data so those operations are practical?</section>
+
+<h2>3.1 From abstraction to representation</h2>
+<p>In Topic 2 we separated an Abstract Data Type from its implementation. We now examine two concrete ways of representing ordered collections: <strong>arrays</strong> and <strong>linked lists</strong>. Both can represent a sequence, but their internal organisation changes the cost of access, update, insertion, deletion and traversal.</p>
+<p>The aim is not to memorise that one structure is “better”. The aim is to connect <strong>representation → operation → cost → application</strong>.</p>
+
+<h2>3.2 What is an array?</h2>
+<p>An <strong>array</strong> is an indexed collection of elements arranged in a sequence of logical positions. Each element is associated with an index, commonly beginning at 0 in many programming languages.</p>
+<img src="media/topic3/array_memory.svg" alt="Array indexed positions">
+
+<h3>Where the idea came from</h3>
+<p>Indexed tables have long mathematical roots, and arrays became a standard programming abstraction in early scientific languages. FORTRAN, introduced in the 1950s, helped popularise indexed array processing for numerical and scientific computation. Arrays remain central in matrices, images, numerical vectors, tensors and machine-learning data.</p>
+
+<h2>3.3 Basic array operations</h2>
+<p>The most important basic operations are <strong>access, update, traversal, search, insertion, deletion and append</strong>. Their cost depends on what must move or be examined.</p>
+
+<h3>3.3.1 Access an element by index</h3>
+<pre><code>ALGORITHM ArrayAccess(A, index)
+    IF index &lt; 0 OR index ≥ length(A)
+        RETURN "invalid index"
+    RETURN A[index]</code></pre>
+<p>If the index is known, access is typically <strong>O(1)</strong>.</p>
+
+<h3>3.3.2 Update an element</h3>
+<pre><code>ALGORITHM ArrayUpdate(A, index, newValue)
+    IF index &lt; 0 OR index ≥ length(A)
+        RETURN "invalid index"
+    A[index] ← newValue
+    RETURN A</code></pre>
+<p>Updating a known index is also typically <strong>O(1)</strong>.</p>
+
+<h3>3.3.3 Traverse all elements</h3>
+<pre><code>ALGORITHM ArrayTraverse(A)
+    FOR i ← 0 TO length(A) - 1
+        process A[i]</code></pre>
+<p>Every element is visited once, so traversal is <strong>O(n)</strong>.</p>
+
+<h3>3.3.4 Linear search in an unsorted array</h3>
+<pre><code>ALGORITHM ArrayLinearSearch(A, target)
+    FOR i ← 0 TO length(A) - 1
+        IF A[i] = target
+            RETURN i
+    RETURN NOT_FOUND</code></pre>
+<p>In the worst case, every element may be inspected: <strong>O(n)</strong>. Later, when arrays are sorted, we will see how binary search can reduce search growth dramatically.</p>
+
+<h3>3.3.5 Insert at a given index</h3>
+<pre><code>ALGORITHM ArrayInsert(A, size, capacity, index, value)
+    IF size = capacity
+        RETURN "no free capacity"
+    IF index &lt; 0 OR index &gt; size
+        RETURN "invalid index"
+
+    FOR i ← size - 1 DOWNTO index
+        A[i + 1] ← A[i]
+
+    A[index] ← value
+    size ← size + 1
+    RETURN size</code></pre>
+<p>The right-to-left movement prevents an existing value from being overwritten before it is copied. Inserting near the beginning can shift many elements: worst case <strong>O(n)</strong>.</p>
+
+<h3>3.3.6 Delete from a given index</h3>
+<pre><code>ALGORITHM ArrayDelete(A, size, index)
+    IF index &lt; 0 OR index ≥ size
+        RETURN "invalid index"
+
+    deletedValue ← A[index]
+
+    FOR i ← index TO size - 2
+        A[i] ← A[i + 1]
+
+    size ← size - 1
+    RETURN deletedValue, size</code></pre>
+<p>Deleting near the beginning can require many left shifts: worst case <strong>O(n)</strong>.</p>
+
+<h3>3.3.7 Append at the end</h3>
+<pre><code>ALGORITHM ArrayAppend(A, size, capacity, value)
+    IF size = capacity
+        RETURN "resize required"
+    A[size] ← value
+    size ← size + 1
+    RETURN size</code></pre>
+<p>When free capacity exists, append is O(1). A dynamic array occasionally resizes, so its long-run append behaviour is usually discussed using <strong>amortised O(1)</strong>.</p>
+
+<h2>3.4 Fixed-size and dynamic arrays</h2>
+<img src="media/topic3/dynamic_static.svg" alt="Static and dynamic organisation">
+<p>A classic fixed-size array has a capacity chosen when it is created. A <strong>dynamic array</strong> preserves array-style indexing while allowing growth by allocating a larger backing array and copying elements when the old capacity is exhausted.</p>
+<pre><code>ALGORITHM DynamicArrayAppend(A, size, capacity, value)
+    IF size = capacity
+        newCapacity ← max(1, 2 × capacity)
+        B ← new array with newCapacity slots
+
+        FOR i ← 0 TO size - 1
+            B[i] ← A[i]
+
+        A ← B
+        capacity ← newCapacity
+
+    A[size] ← value
+    size ← size + 1
+    RETURN A, size, capacity</code></pre>
+<p>Most appends do not resize; occasional expensive copies are spread across many appends. This is the intuition behind amortised analysis.</p>
+
+<h2>3.5 What is a linked list?</h2>
+<p>A <strong>linked list</strong> stores data in nodes. Each node contains a value and reference information connecting it to other nodes. Unlike array positions, linked nodes need not occupy neighbouring storage locations.</p>
+<img src="media/topic3/linked_list.svg" alt="Singly linked list">
+
+<h3>Where linked lists came from</h3>
+<p>Linked list techniques emerged in early symbolic and artificial-intelligence computing in the 1950s, where programmes needed flexible structures that could grow and be rearranged. Early list-processing systems such as IPL used linked structures, and later Lisp made list-based symbolic processing especially influential.</p>
+
+<h2>3.6 Three common types of linked list</h2>
+<img src="media/topic3/linked_list_types.svg" alt="Singly doubly and circular linked lists">
+
+<table><thead><tr><th>Type</th><th>References per node</th><th>Traversal</th><th>End condition</th><th>Main advantage</th></tr></thead><tbody>
+<tr><td><strong>Singly linked list</strong></td><td>next</td><td>Forward only</td><td>Last.next = null</td><td>Simpler and lower reference overhead</td></tr>
+<tr><td><strong>Doubly linked list</strong></td><td>previous + next</td><td>Forward and backward</td><td>Ends normally use null</td><td>Easier backward movement and local deletion when node is known</td></tr>
+<tr><td><strong>Circular linked list</strong></td><td>next, or previous + next for doubly circular</td><td>Cycles around structure</td><td>Last links back to head</td><td>Natural repeated/cyclic processing</td></tr>
+</tbody></table>
+
+<h2>3.7 Basic operations on a singly linked list</h2>
+
+<h3>3.7.1 Traverse</h3>
+<pre><code>ALGORITHM SinglyTraverse(head)
+    current ← head
+
+    WHILE current ≠ null
+        process current.data
+        current ← current.next</code></pre>
+<p>Traversal is O(n).</p>
+
+<h3>3.7.2 Search</h3>
+<pre><code>ALGORITHM SinglySearch(head, target)
+    current ← head
+    position ← 0
+
+    WHILE current ≠ null
+        IF current.data = target
+            RETURN current, position
+        current ← current.next
+        position ← position + 1
+
+    RETURN NOT_FOUND</code></pre>
+<p>Search is O(n) in the general case.</p>
+
+<h3>3.7.3 Access by position</h3>
+<pre><code>ALGORITHM SinglyGet(head, index)
+    IF index &lt; 0
+        RETURN "invalid index"
+
+    current ← head
+    position ← 0
+
+    WHILE current ≠ null AND position &lt; index
+        current ← current.next
+        position ← position + 1
+
+    IF current = null
+        RETURN "invalid index"
+
+    RETURN current.data</code></pre>
+<p>Unlike an array, reaching an arbitrary position normally requires traversal: O(n).</p>
+
+<h3>3.7.4 Insert at the beginning</h3>
+<pre><code>ALGORITHM SinglyInsertFront(head, value)
+    newNode ← Node(value)
+    newNode.next ← head
+    head ← newNode
+    RETURN head</code></pre>
+<p>O(1) when head is available.</p>
+
+<h3>3.7.5 Insert after a known node</h3>
+<pre><code>ALGORITHM SinglyInsertAfter(current, value)
+    IF current = null
+        RETURN "invalid node"
+
+    newNode ← Node(value)
+    newNode.next ← current.next
+    current.next ← newNode</code></pre>
+<p>The relinking is O(1), but locating <code>current</code> may have cost O(n).</p>
+
+<h3>3.7.6 Insert at the end</h3>
+<pre><code>ALGORITHM SinglyInsertEnd(head, value)
+    newNode ← Node(value)
+    newNode.next ← null
+
+    IF head = null
+        RETURN newNode
+
+    current ← head
+    WHILE current.next ≠ null
+        current ← current.next
+
+    current.next ← newNode
+    RETURN head</code></pre>
+<p>Without a stored tail reference, this is O(n). With a maintained tail reference, appending can be O(1).</p>
+
+<h3>3.7.7 Delete from the beginning</h3>
+<pre><code>ALGORITHM SinglyDeleteFront(head)
+    IF head = null
+        RETURN "empty list"
+
+    deletedValue ← head.data
+    head ← head.next
+    RETURN head, deletedValue</code></pre>
+<p>O(1).</p>
+
+<h3>3.7.8 Delete after a known predecessor</h3>
+<pre><code>ALGORITHM SinglyDeleteAfter(previous)
+    IF previous = null OR previous.next = null
+        RETURN "nothing to delete"
+
+    target ← previous.next
+    previous.next ← target.next
+    RETURN target.data</code></pre>
+<p>The link change is O(1) once the predecessor is known.</p>
+
+<h3>3.7.9 Delete a target value</h3>
+<pre><code>ALGORITHM SinglyDeleteValue(head, target)
+    IF head = null
+        RETURN head
+
+    IF head.data = target
+        RETURN head.next
+
+    previous ← head
+    current ← head.next
+
+    WHILE current ≠ null
+        IF current.data = target
+            previous.next ← current.next
+            RETURN head
+        previous ← current
+        current ← current.next
+
+    RETURN head</code></pre>
+<p>Searching for the target makes the overall operation O(n).</p>
+
+<h2>3.8 Basic operations on a doubly linked list</h2>
+<p>A doubly linked node contains:</p>
+<pre><code>Node
+    previous
+    data
+    next</code></pre>
+<p>The extra <code>previous</code> reference changes several operations.</p>
+
+<h3>3.8.1 Traverse forward</h3>
+<pre><code>ALGORITHM DoublyTraverseForward(head)
+    current ← head
+    WHILE current ≠ null
+        process current.data
+        current ← current.next</code></pre>
+
+<h3>3.8.2 Traverse backward</h3>
+<pre><code>ALGORITHM DoublyTraverseBackward(tail)
+    current ← tail
+    WHILE current ≠ null
+        process current.data
+        current ← current.previous</code></pre>
+<p>Backward traversal is a key capability that singly linked lists do not directly provide.</p>
+
+<h3>3.8.3 Insert at the beginning</h3>
+<pre><code>ALGORITHM DoublyInsertFront(head, value)
+    newNode ← Node(value)
+    newNode.previous ← null
+    newNode.next ← head
+
+    IF head ≠ null
+        head.previous ← newNode
+
+    head ← newNode
+    RETURN head</code></pre>
+<p>Compared with a singly linked list, one additional backward reference must be maintained.</p>
+
+<h3>3.8.4 Insert after a known node</h3>
+<pre><code>ALGORITHM DoublyInsertAfter(current, value)
+    IF current = null
+        RETURN "invalid node"
+
+    newNode ← Node(value)
+    newNode.previous ← current
+    newNode.next ← current.next
+
+    IF current.next ≠ null
+        current.next.previous ← newNode
+
+    current.next ← newNode</code></pre>
+
+<h3>3.8.5 Delete a known node</h3>
+<pre><code>ALGORITHM DoublyDeleteNode(head, tail, target)
+    IF target = null
+        RETURN head, tail
+
+    IF target.previous ≠ null
+        target.previous.next ← target.next
+    ELSE
+        head ← target.next
+
+    IF target.next ≠ null
+        target.next.previous ← target.previous
+    ELSE
+        tail ← target.previous
+
+    RETURN head, tail</code></pre>
+<p>If the target node reference is already known, deletion is O(1) because the node itself tells us both neighbours. This is an important difference from a singly linked list, where deleting a known node often still requires knowledge of its predecessor.</p>
+
+<h2>3.9 Basic operations on a circular singly linked list</h2>
+<p>In a circular singly linked list, the final node's <code>next</code> reference points back to the head. There is no <code>null</code> at the end, so traversal must stop when we return to the starting node.</p>
+
+<h3>3.9.1 Traverse a circular list</h3>
+<pre><code>ALGORITHM CircularTraverse(head)
+    IF head = null
+        RETURN
+
+    current ← head
+
+    REPEAT
+        process current.data
+        current ← current.next
+    UNTIL current = head</code></pre>
+<p>Using the wrong stopping condition can create an infinite loop.</p>
+
+<h3>3.9.2 Insert at the beginning when a tail reference is kept</h3>
+<pre><code>ALGORITHM CircularInsertFront(head, tail, value)
+    newNode ← Node(value)
+
+    IF head = null
+        newNode.next ← newNode
+        head ← newNode
+        tail ← newNode
+        RETURN head, tail
+
+    newNode.next ← head
+    tail.next ← newNode
+    head ← newNode
+    RETURN head, tail</code></pre>
+<p>The tail link must also be updated so the circle still points to the new head.</p>
+
+<h3>3.9.3 Insert at the end with a tail reference</h3>
+<pre><code>ALGORITHM CircularInsertEnd(head, tail, value)
+    newNode ← Node(value)
+
+    IF head = null
+        newNode.next ← newNode
+        head ← newNode
+        tail ← newNode
+        RETURN head, tail
+
+    newNode.next ← head
+    tail.next ← newNode
+    tail ← newNode
+    RETURN head, tail</code></pre>
+<p>With both head and tail available, end insertion can be O(1).</p>
+
+<h3>3.9.4 Delete from the beginning</h3>
+<pre><code>ALGORITHM CircularDeleteFront(head, tail)
+    IF head = null
+        RETURN head, tail
+
+    IF head = tail
+        RETURN null, null
+
+    head ← head.next
+    tail.next ← head
+    RETURN head, tail</code></pre>
+<p>The circular link must be restored after the head changes.</p>
+
+<h2>3.10 How the operations change across linked-list types</h2>
+<table><thead><tr><th>Operation</th><th>Singly</th><th>Doubly</th><th>Circular singly</th></tr></thead><tbody>
+<tr><td>Move forward</td><td>Yes</td><td>Yes</td><td>Yes, repeatedly around cycle</td></tr>
+<tr><td>Move backward directly</td><td>No</td><td>Yes</td><td>No</td></tr>
+<tr><td>End marker</td><td>null</td><td>null at ends</td><td>returns to head</td></tr>
+<tr><td>Insert at front</td><td>Change head</td><td>Change head + old head.previous</td><td>Change head + tail.next</td></tr>
+<tr><td>Delete known node</td><td>Need predecessor unless deleting head</td><td>Node gives previous and next</td><td>Need predecessor and preserve circle</td></tr>
+<tr><td>Memory per node</td><td>One link</td><td>Two links</td><td>Usually one link</td></tr>
+<tr><td>Natural application</td><td>Simple forward sequence</td><td>Two-way navigation</td><td>Repeated cyclic processing</td></tr>
+</tbody></table>
+
+<h2>3.11 Arrays versus linked lists</h2>
+<img src="media/topic3/array_vs_linked.svg" alt="Array versus linked list">
+<table><thead><tr><th>Operation / property</th><th>Array</th><th>Singly linked list</th></tr></thead><tbody>
+<tr><td>Access by known index</td><td>Typically O(1)</td><td>Typically O(n)</td></tr>
+<tr><td>Update at known index/node</td><td>O(1)</td><td>O(1) if node is already known</td></tr>
+<tr><td>Traverse all</td><td>O(n)</td><td>O(n)</td></tr>
+<tr><td>Insert at beginning</td><td>Typically O(n)</td><td>O(1)</td></tr>
+<tr><td>Insert after known position/node</td><td>May require shifting O(n)</td><td>Relinking O(1)</td></tr>
+<tr><td>Delete from beginning</td><td>Typically O(n)</td><td>O(1)</td></tr>
+<tr><td>Memory overhead</td><td>Usually lower per item</td><td>Extra reference per node</td></tr>
+<tr><td>Locality</td><td>Often strong</td><td>Nodes may be scattered</td></tr>
+</tbody></table>
+
+<h2>3.12 Common misconceptions</h2>
+<ul>
+<li><strong>“Linked lists make every insertion O(1).”</strong> Only local relinking can be O(1); finding the insertion point may be O(n).</li>
+<li><strong>“Arrays are always fixed-size.”</strong> Raw arrays may be fixed-capacity, while dynamic arrays provide a resizable abstraction.</li>
+<li><strong>“A doubly linked list is always better than a singly linked list.”</strong> It provides more navigation but requires more memory and more link maintenance.</li>
+<li><strong>“Circular lists end at null.”</strong> They do not; traversal must explicitly detect return to the start.</li>
+<li><strong>“O(1) means instant.”</strong> It describes growth, not literal elapsed time.</li>
+</ul>
+
+<h2>3.13 Real applications</h2>
+<ul>
+<li><strong>Arrays:</strong> images, matrices, model parameters, numerical vectors, buffers and lookup tables.</li>
+<li><strong>Dynamic arrays:</strong> general-purpose resizable collections.</li>
+<li><strong>Singly linked lists:</strong> simple dynamic sequences and internal free lists.</li>
+<li><strong>Doubly linked lists:</strong> previous/next navigation, some cache structures and histories.</li>
+<li><strong>Circular lists:</strong> round-robin scheduling, cyclic resource allocation and repeated turn-taking.</li>
+</ul>
+
+<h2>3.14 Choosing between them</h2>
+<p>Ask which operations dominate the problem. If fast positional access is central, an array-like representation is often attractive. If structural insertion/deletion occurs at already-known nodes, a linked structure can be useful. If both forward and backward traversal are required, a doubly linked list may justify its extra memory. If processing repeatedly cycles through elements, a circular structure can express the problem naturally.</p>
+
+<h2>3.15 Connection to the next topic</h2>
+<p>Stacks and queues are ADTs defined by restrictions on how values enter and leave. In Topic 4, we will implement those behaviours using array-like and linked representations and compare the consequences.</p>
+
+<h2>Topic summary</h2>
+<ul>
+<li>Arrays support direct indexed access and simple updates.</li>
+<li>Array insertion/deletion can require element shifting.</li>
+<li>Dynamic arrays use occasional resizing to support growth.</li>
+<li>Singly linked lists support forward traversal through next references.</li>
+<li>Doubly linked lists add previous references for two-way movement and easier local deletion.</li>
+<li>Circular linked lists connect the final node back to the head and suit cyclic processing.</li>
+<li>The pseudocode for the same conceptual operation changes because each representation has different invariants that must be preserved.</li>
+<li>The best structure depends on the operations and constraints of the application.</li>
+</ul>
+</body></html>

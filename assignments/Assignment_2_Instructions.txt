@@ -1,0 +1,45 @@
+IS 237 — Assignment 2
+Design an Abstract Data Type
+
+Purpose
+Show that you can separate logical behaviour from concrete implementation.
+
+Task
+Choose ONE real-world or computing problem that would benefit from its own abstraction.
+
+Your report must include:
+1. Problem context — what need does the abstraction address?
+2. ADT name and purpose.
+3. Logical state — what information does it represent?
+4. At least five public operations.
+5. For each operation: description and, where appropriate, precondition, postcondition, return value and invalid case.
+6. At least three representation invariants.
+7. Public interface versus hidden/private responsibilities.
+8. Two possible data-structure implementations. Do not fully implement them; explain how both could satisfy the same ADT.
+9. A short comparison of when one implementation might be preferable.
+10. A diagram: Client → ADT Interface → Hidden Implementation.
+11. A reflection on how abstraction, encapsulation and modular design improve the proposed system.
+
+Expected length
+3–5 pages excluding cover page.
+
+The focus is behavioural design, not programming syntax. Code is optional.
+
+Suggested filename
+IS237_A2_RegistrationNumber.pdf
+
+Due date
+See current course announcements or instructions provided for your class.
+
+Submission
+Submit your completed assignment using the official IS 237 Assignment Submission Form:
+https://forms.gle/7BcZyLDVx41vRTUg8
+
+Before submitting:
+- confirm that you selected the correct assignment/topic;
+- use the required filename format where specified;
+- attach all required files;
+- follow the current deadline announced for the course.
+
+The "Mark Task Complete" button on the learning site records progress only and does not submit your work.
+

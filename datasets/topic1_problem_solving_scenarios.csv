@@ -1,0 +1,9 @@
+scenario_id,problem,input_size_hint,main_challenge,suggested_strategy
+1,Find largest score in a class list,small_to_large,scan_all_values,linear_scan
+2,Find a name in an unsorted attendance list,medium,search_unknown_position,linear_search
+3,Find a registration number in a sorted list,large,reduce_search_space,binary_search
+4,Arrange exam scores from lowest to highest,medium,ordering,sorting
+5,Choose a route through a road network,large,path_selection,graph_search
+6,Solve a maze,medium,explore_alternatives,backtracking_or_search
+7,Schedule tasks by urgency,medium,priority_decisions,greedy_or_priority_structure
+8,Check every pair of students for duplicated IDs,medium,pairwise_comparison,brute_force_then_improve

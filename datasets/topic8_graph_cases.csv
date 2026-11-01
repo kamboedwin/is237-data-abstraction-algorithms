@@ -1,0 +1,11 @@
+case_id,scenario,graph_type,representation_or_algorithm,reason
+1,Find degrees of separation in a social network,unweighted undirected,BFS,BFS finds shortest edge-count paths
+2,Explore all pages reachable by hyperlinks,directed,DFS or BFS,both traverse reachable vertices
+3,Find cheapest route with non-negative road costs,weighted,Dijkstra,weights differ and are non-negative
+4,Store a sparse friendship network,undirected sparse,Adjacency List,uses O(V+E) space
+5,Store a dense small graph with frequent edge-existence queries,dense,Adjacency Matrix,direct edge lookup is O(1)
+6,Identify connected groups in an undirected network,undirected,DFS or BFS,restart traversal from unvisited vertices
+7,Explore a maze deeply before backtracking,unweighted,DFS,depth-first behaviour matches backtracking
+8,Find the fewest hops in a network,unweighted,BFS,each edge counts equally
+9,Select next closest tentative vertex in shortest path,weighted,Min Heap Priority Queue,efficient minimum-priority extraction
+10,Represent one-way prerequisite dependencies,directed,Adjacency List,direction is essential

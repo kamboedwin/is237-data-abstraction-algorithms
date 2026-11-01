@@ -1,0 +1,75 @@
+IS 237 — Assignment 5
+Recursion and Iteration: Trace, Compare and Redesign
+
+Purpose
+Demonstrate that you understand recursive structure, call-stack behaviour, iterative equivalents and implementation trade-offs.
+
+Part A — Call-stack trace
+For RecursiveFactorial(5):
+1. Show every recursive call in order.
+2. Draw the call stack at maximum depth.
+3. Show the unwinding order.
+4. State the final result.
+5. Give time and extra-space complexity.
+
+Part B — Recursive and iterative versions
+For EACH of the following, provide both recursive and iterative pseudocode:
+1. factorial
+2. sum of an array
+3. linear search
+4. binary search
+
+For each pair, compare:
+- stopping condition
+- state representation
+- time complexity
+- extra-space complexity
+- which version you prefer and why
+
+Part C — Recursion patterns
+Give a short example or pseudocode for:
+1. direct recursion
+2. indirect/mutual recursion
+3. tail recursion
+4. non-tail recursion
+5. multiple/tree recursion
+
+Part D — Fibonacci investigation
+1. Draw the recursive call tree for Fibonacci(5).
+2. Identify repeated subproblems.
+3. Explain why naive recursion is inefficient.
+4. Provide iterative Fibonacci pseudocode.
+5. Provide memoised recursive pseudocode.
+6. Compare their time and space behaviour.
+
+Part E — Tail recursion
+1. Convert ordinary recursive factorial to a tail-recursive version using an accumulator.
+2. Explain tail-call optimisation.
+3. Explain why tail recursion does not guarantee constant stack space in every language/runtime.
+
+Part F — Application decision
+Choose TWO realistic computing problems. For each, decide whether recursion or iteration is more appropriate and justify the choice using correctness, clarity, time and space considerations.
+
+Expected length
+6–8 pages excluding cover page.
+
+Programming code is optional; pseudocode, traces and explanations are compulsory.
+
+Suggested filename
+IS237_A5_RegistrationNumber.pdf
+
+Due date
+See current course announcements or instructions provided for your class.
+
+Submission
+Submit your completed assignment using the official IS 237 Assignment Submission Form:
+https://forms.gle/7BcZyLDVx41vRTUg8
+
+Before submitting:
+- confirm that you selected the correct assignment/topic;
+- use the required filename format where specified;
+- attach all required files;
+- follow the current deadline announced for the course.
+
+The "Mark Task Complete" button on the learning site records progress only and does not submit your work.
+

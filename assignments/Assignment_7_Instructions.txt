@@ -1,0 +1,82 @@
+IS 237 — Assignment 7
+Trees, Binary Search Trees, Heaps and Hash Tables
+
+Purpose
+Demonstrate understanding of hierarchical structures, ordered search, priority structures and hashing.
+
+Part A — Tree terminology and traversal
+Use a binary tree with at least 9 nodes.
+1. Label root, parent, child, sibling, leaf, depth and height.
+2. Give preorder, inorder, postorder and level-order sequences.
+3. Explain one application for each traversal.
+
+Part B — Binary Search Tree
+Insert in this order:
+50, 30, 70, 20, 40, 60, 80, 35, 65
+
+1. Draw the BST after every insertion.
+2. Trace searches for 35 and 75.
+3. Delete:
+   a) 20 (leaf)
+   b) 60 after constructing a suitable one-child case
+   c) 50 (two-child case)
+4. Show the tree after each deletion.
+5. State the tree height and explain how height affects complexity.
+6. Give pseudocode for BST search, insert and delete.
+
+Part C — Heap
+Using a max-heap:
+1. Insert 35, 20, 50, 10, 45, 60, 30 one at a time.
+2. Show the array and tree after each insertion.
+3. Perform ExtractMax twice.
+4. Show every heapify-down step.
+5. Give pseudocode for insert, peek, extract and heapify.
+6. Explain why a heap is suitable for a priority queue but not for fast arbitrary-key search.
+
+Part D — Hash Table
+Use table size 7 and h(k) = k mod 7.
+Insert:
+10, 17, 24, 31, 18, 25
+
+1. Demonstrate separate chaining.
+2. Demonstrate linear probing.
+3. Search for 31 and 99 in each method.
+4. Delete one key from the linear-probing table and explain why a DELETED marker is needed.
+5. Compute the load factor.
+6. Give pseudocode for insert, search and delete for one collision strategy.
+
+Part E — Structure selection
+For THREE real applications, choose among:
+- balanced BST
+- heap
+- hash table
+
+Justify each choice using:
+- dominant operation
+- ordering requirement
+- expected time complexity
+- memory/implementation trade-offs
+
+Expected length
+8–11 pages excluding cover page.
+
+Programming code is optional. Clear diagrams, operation traces and pseudocode are compulsory.
+
+Suggested filename
+IS237_A7_RegistrationNumber.pdf
+
+Due date
+See current course announcements or instructions provided for your class.
+
+Submission
+Submit your completed assignment using the official IS 237 Assignment Submission Form:
+https://forms.gle/7BcZyLDVx41vRTUg8
+
+Before submitting:
+- confirm that you selected the correct assignment/topic;
+- use the required filename format where specified;
+- attach all required files;
+- follow the current deadline announced for the course.
+
+The "Mark Task Complete" button on the learning site records progress only and does not submit your work.
+

@@ -1,0 +1,11 @@
+case_id,scenario,dominant_need,suggested_structure,reason
+1,Maintain student IDs in sorted order and support ordered traversal,ordered search,Balanced BST,inorder traversal is sorted and balanced lookup is logarithmic
+2,Always process the highest-priority emergency request first,priority access,Max Heap,maximum is available at the root
+3,Map registration number to student record,exact key lookup,Hash Table,average direct key lookup is constant time
+4,Repeatedly retrieve the smallest scheduled event time,priority access,Min Heap,minimum is stored at the root
+5,Support range queries over ordered keys,ordered search,Balanced BST,tree order supports ordered navigation
+6,Store a dictionary from word to definition,exact key lookup,Hash Table,fast average lookup without natural ordering requirement
+7,Implement a priority queue for jobs,priority access,Heap,insert and extract priority are logarithmic
+8,Print all stored numeric keys in sorted order,sorted traversal,BST,inorder traversal produces sorted keys
+9,Fast membership testing for usernames,exact key lookup,Hash Table,expected constant-time membership test
+10,Represent folder hierarchy,hierarchy,Tree,parent-child structure matches the domain

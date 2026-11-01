@@ -1,0 +1,11 @@
+case_id,scenario,input_condition,main_goal,suggested_algorithm,reason
+1,Find one student registration number in an unsorted small list,unsorted small,search once,Linear Search,no sorting setup is needed
+2,Repeatedly search a large sorted array,sorted large,many searches,Binary Search,logarithmic search is worthwhile
+3,Sort a nearly sorted small set of marks,nearly sorted small,stable simple sorting,Insertion Sort,it adapts well to existing order
+4,Sort a large array with guaranteed predictable time,large,stable O(n log n),Merge Sort,reliable n log n behaviour
+5,Sort a large in-memory array with good average speed,large,fast general sort,Quick Sort,good partitions give n log n average time
+6,Teach adjacent comparison and swap behaviour,small teaching example,visual understanding,Bubble Sort,adjacent swaps are easy to trace
+7,Minimise swaps on a small array,small,reduce writes,Selection Sort,few swaps despite quadratic comparisons
+8,Search a linked list,unsorted linked,locate target,Linear Search,binary search loses its indexing advantage
+9,Preserve previous order among equal grade records,records with equal keys,stable sorting,Merge Sort or Insertion Sort,stable algorithms preserve equal-key order
+10,Sort data too large for convenient in-memory temporary arrays,memory constrained,limit extra memory,Quick Sort or in-place method,standard merge sort needs extra array storage

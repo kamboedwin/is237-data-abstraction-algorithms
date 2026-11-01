@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 310">
+<rect width="1000" height="310" rx="28" fill="#f7fafc"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3457a4"/></marker></defs>
+<g font-family="Arial, sans-serif" text-anchor="middle">
+<g fill="#fff" stroke="#3457a4" stroke-width="3">
+<rect x="35" y="90" width="170" height="105" rx="18"/><rect x="260" y="90" width="170" height="105" rx="18"/>
+<rect x="485" y="90" width="170" height="105" rx="18"/><rect x="710" y="90" width="255" height="105" rx="18"/>
+</g>
+<g font-size="21" font-weight="700" fill="#17233c">
+<text x="120" y="130">REAL-WORLD</text><text x="120" y="158">PROBLEM</text>
+<text x="345" y="130">MODEL &amp;</text><text x="345" y="158">CONSTRAINTS</text>
+<text x="570" y="130">ALGORITHM</text><text x="570" y="158">DESIGN</text>
+<text x="837" y="130">VERIFY • ANALYSE</text><text x="837" y="158">• IMPROVE</text>
+</g>
+<g stroke="#3457a4" stroke-width="4" marker-end="url(#a)">
+<line x1="210" y1="142" x2="252" y2="142"/><line x1="435" y1="142" x2="477" y2="142"/><line x1="660" y1="142" x2="702" y2="142"/>
+</g>
+<text x="500" y="255" font-size="18" fill="#55637a">Good problem solving is a cycle: understand → design → test → refine.</text>
+</g></svg>

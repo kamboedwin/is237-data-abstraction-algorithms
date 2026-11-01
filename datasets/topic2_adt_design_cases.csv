@@ -1,0 +1,9 @@
+case_id,system_need,candidate_adt,important_operations,likely_hidden_detail
+1,Maintain unique course codes,Set,add remove contains size,storage and duplicate detection
+2,Store student records by registration number,Map,put get remove containsKey,lookup representation
+3,Keep ordered observations,List,add remove get set size,index storage
+4,Process help-desk requests in arrival order,Queue,enqueue dequeue front isEmpty,internal links or array positions
+5,Undo recent editing actions,Stack,push pop top isEmpty,internal storage and resize logic
+6,Track tasks by urgency,Priority Queue,insert removeHighest peekHighest,heap or other priority representation
+7,Represent model configuration options,Map,put get remove keys,key-value storage
+8,Maintain selected unique features,Set,add remove contains iterate,hashing or tree organisation

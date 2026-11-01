@@ -1,0 +1,57 @@
+IS 237 — Assignment 4
+Stacks, Queues and Deques: Behaviour, Implementation and Application
+
+Purpose
+Demonstrate understanding of ADT behaviour, pseudocode and implementation trade-offs.
+
+Part A — Stack
+Trace: PUSH 12, PUSH 7, PUSH 25, POP, PUSH 9, PEEK.
+Show the stack after every operation and state returned values.
+Write pseudocode for push/pop using:
+a) an array
+b) a linked list
+Compare the implementations.
+
+Part B — Queue
+Trace: ENQUEUE A, ENQUEUE B, ENQUEUE C, DEQUEUE, ENQUEUE D, FRONT.
+Show front and rear after every operation.
+Write pseudocode for linked enqueue/dequeue.
+
+Part C — Circular queue
+Use capacity 5.
+Perform enough enqueue/dequeue operations to demonstrate wrap-around.
+Record front, rear, count and contents after every operation.
+Explain why this avoids false overflow.
+Write pseudocode for circular enqueue/dequeue.
+
+Part D — Deque
+Demonstrate insertFront, insertRear, deleteFront and deleteRear.
+Explain input-restricted and output-restricted variants.
+
+Part E — Application decision
+Choose TWO real computing problems.
+For each, choose Stack, Queue or Deque; justify the behavioural choice; state a suitable implementation; explain one trade-off.
+
+Expected length
+5–7 pages excluding cover page.
+
+Programming code is optional; clear operation traces and pseudocode are compulsory.
+
+Suggested filename
+IS237_A4_RegistrationNumber.pdf
+
+Due date
+See current course announcements or instructions provided for your class.
+
+Submission
+Submit your completed assignment using the official IS 237 Assignment Submission Form:
+https://forms.gle/7BcZyLDVx41vRTUg8
+
+Before submitting:
+- confirm that you selected the correct assignment/topic;
+- use the required filename format where specified;
+- attach all required files;
+- follow the current deadline announced for the course.
+
+The "Mark Task Complete" button on the learning site records progress only and does not submit your work.
+
