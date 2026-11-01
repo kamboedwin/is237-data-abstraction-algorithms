@@ -55,3 +55,8 @@ html,body{margin:0;padding:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:v
 .directed-mini{padding:16px;border:1px dashed #b9c8dc;border-radius:10px;background:#f9fbfe;margin:12px 0;font-weight:800;line-height:1.9}
 .matrix8{border-collapse:collapse;margin:10px auto}.matrix8 th,.matrix8 td{border:1px solid #b9c8dc;padding:6px 9px;text-align:center}.matrix8 th{background:#eef5ff}.adj-list8{display:grid;gap:5px;max-width:520px;margin:10px auto}.adj-row8{padding:7px 10px;border:1px solid #d9e2ef;border-radius:8px;background:#fff}
 @media(max-width:800px){.distance-grid{grid-template-columns:repeat(2,minmax(100px,1fr))}}
+
+/* Topic 1 best/average/worst case explorer */
+.cell.case-checked{opacity:.45;background:#eef2f6;border-color:#a7b3c3;transform:scale(.94)}
+.cell.case-found{background:#e4f6ef;border-color:#21765b;box-shadow:0 7px 16px rgba(33,118,91,.18);transform:translateY(-6px) scale(1.05)}
+#caseArray .cell{transition:opacity .3s ease,background .3s ease,border-color .3s ease,transform .3s ease,box-shadow .3s ease}
