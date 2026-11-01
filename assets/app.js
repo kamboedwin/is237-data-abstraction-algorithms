@@ -1,4 +1,4 @@
-const quizData=[{"q": "Which activity should normally happen before programming begins?", "opts": ["Selecting a programming language", "Understanding the problem and requirements", "Optimising machine code", "Choosing a compiler"], "a": 1}, {"q": "Which description best defines an algorithm?", "opts": ["Any source code that compiles", "A finite, well-defined procedure for solving a class of problems", "A computer hardware component", "A diagram that always contains loops"], "a": 1}, {"q": "Which is the clearest distinction between an algorithm and a programme?", "opts": ["Algorithms are only mathematical; programmes are not", "Algorithms express logic; programmes implement that logic in a language", "Programmes are always faster", "There is no difference"], "a": 1}, {"q": "What is the main purpose of decomposition?", "opts": ["Make the programme longer", "Break a complex problem into manageable subproblems", "Remove all constraints", "Avoid verification"], "a": 1}, {"q": "Which test is a boundary case for finding the maximum of a non-empty list?", "opts": ["A list with one element", "A random list of 100 items", "A list copied twice", "A list displayed on screen"], "a": 0}, {"q": "What does an invariant help explain?", "opts": ["Why a property remains true during repeated steps", "Which programming language is best", "How to draw a user interface", "How many seconds a programme will always take"], "a": 0}, {"q": "Which strategy splits a problem into smaller parts, solves them, and combines the results?", "opts": ["Brute force", "Divide and conquer", "Guessing", "Compilation"], "a": 1}, {"q": "What does O(n) communicate at an introductory level?", "opts": ["Exactly n seconds of runtime", "Work grows roughly in proportion to input size", "The algorithm uses no memory", "The result is always correct"], "a": 1}, {"q": "Why is Big-O not the same as runtime in seconds?", "opts": ["Big-O ignores input size", "Seconds depend on machine and implementation while Big-O focuses on growth", "Big-O measures only memory", "Seconds cannot be measured"], "a": 1}, {"q": "Which statement best summarises the course relationship?", "opts": ["Algorithm + syntax = hardware", "Data structure + algorithm = solution", "Input + output = compiler", "Memory + CPU = pseudocode"], "a": 1}];
+const quizData=[{"q":"Which activity should normally happen before programming begins?","opts":["Selecting a programming language","Understanding the problem and requirements","Optimising machine code","Choosing a compiler"],"a":1},{"q":"Which description best defines an algorithm?","opts":["Any source code that compiles","A finite, well-defined procedure for solving a class of problems","A computer hardware component","A diagram that always contains loops"],"a":1},{"q":"Which is a required characteristic of a useful algorithm?","opts":["It must use Python","It must terminate after a finite number of steps","It must contain recursion","It must use an array"],"a":1},{"q":"Why might one problem have several acceptable algorithms?","opts":["Every algorithm must use different hardware","Different procedures can produce the same correct result with different costs or trade-offs","Only syntax changes","Correctness is optional"],"a":1},{"q":"What is a priori analysis?","opts":["Measuring an implementation after deployment","Theoretical analysis before or independently of a specific implementation","Deleting test results","Choosing a user interface"],"a":1},{"q":"What is a posteriori analysis?","opts":["Empirical measurement of an implemented algorithm on a target system","A proof that ignores implementation","Only counting input values","Writing pseudocode before implementation"],"a":0},{"q":"What does input size n represent?","opts":["Always the number of source-code lines","A relevant measure of problem size","Processor speed","The final answer"],"a":1},{"q":"For linear search, what is the best case?","opts":["The target is absent","The target is the first inspected element","The target is always in the middle","The array is very large"],"a":1},{"q":"Why must average-case analysis state an assumption?","opts":["Because average cost depends on how likely different inputs are","Because worst case is unknown","Because Big-O cannot be used","Because memory has no units"],"a":0},{"q":"Which statement best distinguishes time and space complexity?","opts":["Time concerns growth in work; space concerns growth in memory","Time means seconds only; space means disk only","They are exactly the same","Space is never relevant"],"a":0},{"q":"Which statement about Big-O is most accurate?","opts":["It always means exact runtime in seconds","It is an asymptotic upper bound; worst-case cost is often expressed using it","It is identical to average case","It proves correctness"],"a":1},{"q":"Which statement best summarises the course relationship?","opts":["Algorithm + syntax = hardware","Data structure + algorithm = solution","Input + output = compiler","Memory + CPU = pseudocode"],"a":1}];
 const $=s=>document.querySelector(s); const $$=s=>[...document.querySelectorAll(s)];
 function showView(name){$$(".view").forEach(v=>v.classList.remove("active")); const t=$("#view-"+name); if(t)t.classList.add("active"); $$(".nav-link").forEach(b=>b.classList.toggle("active",b.dataset.view===name)); $("#topTitle").textContent={home:"Course Home",overview:"Course Roadmap",topic1:"Topic 1",topic2:"Topic 2",topic3:"Topic 3",topic4:"Topic 4",topic5:"Topic 5",topic6:"Topic 6",topic7:"Topic 7",topic8:"Topic 8",future:"Course Complete"}[name]||"IS 237"; window.scrollTo(0,0)}
 $$(".nav-link").forEach(b=>b.onclick=()=>showView(b.dataset.view)); $$("[data-go]").forEach(b=>b.onclick=()=>showView(b.dataset.go));
@@ -27,16 +27,73 @@ $("#verifyBtn").onclick=()=>{const vals=$$(".verifyCase:checked").map(x=>x.value
 // Growth
 function growth(){const n=+$("#nSlider").value; $("#nVal").textContent=n; const vals=[1,n,n*n]; const max=2500; [$("#bar1"),$("#barN"),$("#barN2")].forEach((b,i)=>b.style.height=Math.max(4,175*vals[i]/max)+"px"); $("#op1").textContent="1";$("#opN").textContent=n;$("#opN2").textContent=n*n} $("#nSlider").oninput=growth;growth();
 
+// Best / average / worst case explorer
+const caseValues=[4,9,2,7,5]; let caseIndex=0,caseDone=false;
+function drawCaseExplorer(msg){
+  const target=+$("#caseTarget").value;
+  $("#caseArray").innerHTML=caseValues.map((v,i)=>{
+    let cls="";
+    if(i<caseIndex) cls=v===target?"case-found":"case-checked";
+    if(!caseDone&&i===caseIndex) cls=v===target?"case-found":"current";
+    return `<div class="cell ${cls}">${v}</div>`;
+  }).join("");
+  const targetPos=caseValues.indexOf(target);
+  const label=targetPos===0?"best-case example":(targetPos===-1||targetPos===caseValues.length-1?"worst-case example":"an intermediate successful case");
+  $("#caseTrace").innerHTML=msg||`Target = <strong>${target}</strong>. This is <strong>${label}</strong>. Start at the first item.`;
+}
+function resetCaseExplorer(){caseIndex=0;caseDone=false;drawCaseExplorer()}
+$("#caseTarget").onchange=resetCaseExplorer;
+$("#caseNext").onclick=()=>{
+  if(caseDone)return resetCaseExplorer();
+  const target=+$("#caseTarget").value,v=caseValues[caseIndex];
+  if(v===target){
+    caseDone=true;caseIndex++;
+    drawCaseExplorer(`Comparison ${caseIndex}: ${v} = ${target}. <strong>Found.</strong> Search stops after ${caseIndex} comparison${caseIndex===1?"":"s"}.`);
+    return;
+  }
+  caseIndex++;
+  if(caseIndex>=caseValues.length){
+    caseDone=true;
+    drawCaseExplorer(`All ${caseValues.length} items were compared and ${target} was not found. This requires <strong>n comparisons</strong> — a worst-case linear-search outcome.`);
+  }else{
+    drawCaseExplorer(`Comparison ${caseIndex}: ${v} ≠ ${target}. Continue to the next item.`);
+  }
+};
+$("#caseReset").onclick=resetCaseExplorer;resetCaseExplorer();
+
 // Quick checks
 $$(".qc").forEach(b=>b.onclick=()=>{const f=b.nextElementSibling;f.textContent=b.dataset.answer;f.className="feedback ok"});
 
 // Quiz
 $("#quizContainer").innerHTML=quizData.map((q,i)=>`<div class="quiz-q"><strong>${i+1}. ${q.q}</strong>${q.opts.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")}</div>`).join("");
-$("#gradeQuiz").onclick=()=>{let score=0;quizData.forEach((q,i)=>{const s=document.querySelector(`input[name=q${i}]:checked`);if(s&&+s.value===q.a)score++});localStorage.setItem(quizKey,score);const r=$("#quizResult");r.className="result "+(score>=7?"good":"");r.textContent=`Score: ${score}/10. ${score>=7?"Good foundation — review any missed concepts.":"Review the notes and animations, then try again."}`};
+$("#gradeQuiz").onclick=()=>{let score=0;quizData.forEach((q,i)=>{const s=document.querySelector(`input[name=q${i}]:checked`);if(s&&+s.value===q.a)score++});localStorage.setItem(quizKey,score);const r=$("#quizResult");r.className="result "+(score>=9?"good":"");r.textContent=`Score: ${score}/12. ${score>=9?"Good foundation — review any missed concepts.":"Review the notes and animations, then try again."}`};
 
 // Presentation
 let si=0; const slides=window.IS237_TOPIC1_SLIDES||[];
-function renderSlide(){const s=slides[si]||{}; let visual=""; if(s.visual==="pipeline") visual='<div class="mini-flow"><span>Problem</span><b>→</b><span>Design</span><b>→</b><span>Algorithm</span><b>→</b><span>Verify</span></div>'; if(s.visual==="cycle") visual='<div class="mini-flow"><span>Understand</span><b>→</b><span>Model</span><b>→</b><span>Design</span><b>→</b><span>Test</span><b>→</b><span>Refine</span></div>'; if(s.visual==="compare") visual='<div class="grid"><div class="card"><h3>Algorithm</h3><p>Language-independent logic</p></div><div class="card"><h3>Programme</h3><p>Implementation in a language</p></div></div>'; if(s.visual==="max") visual='<div class="big-formula">[4, 9, 2, 7, 5] → remember the best seen so far → 9</div>'; if(s.visual==="verify") visual='<div class="mini-flow"><span>Specify</span><b>→</b><span>Trace</span><b>→</b><span>Test</span><b>→</b><span>Justify</span></div>'; if(s.visual==="bigo") visual='<div class="big-formula">O(1) &nbsp;&nbsp; O(n) &nbsp;&nbsp; O(n²)</div>'; if(s.visual==="formula") visual='<div class="big-formula">Data Structure + Algorithm → Solution</div>'; $("#slideContent").innerHTML=`${s.kicker?`<div class="kicker">${s.kicker}</div>`:""}<h1>${s.title||""}</h1>${s.body?`<p>${s.body}</p>`:""}${s.points?`<ul>${s.points.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}${visual}`;$("#slideCount").textContent=`${si+1} / ${slides.length}`}
+function renderSlide(){
+  const s=slides[si]||{}; let visual="";
+  if(s.visual==="pipeline") visual='<div class="mini-flow"><span>Problem</span><b>→</b><span>Design</span><b>→</b><span>Algorithm</span><b>→</b><span>Verify</span><b>→</b><span>Analyse</span></div>';
+  if(s.visual==="cycle") visual='<div class="mini-flow"><span>Understand</span><b>→</b><span>Model</span><b>→</b><span>Design</span><b>→</b><span>Test</span><b>→</b><span>Analyse</span><b>→</b><span>Refine</span></div>';
+  if(s.visual==="characteristics") visual='<div class="grid"><div class="card"><h3>Clear</h3><p>unambiguous steps</p></div><div class="card"><h3>Finite</h3><p>must terminate</p></div><div class="card"><h3>Feasible</h3><p>steps can be executed</p></div></div>';
+  if(s.visual==="operations") visual='<div class="mini-flow"><span>Traverse</span><span>Search</span><span>Sort</span><span>Insert</span><span>Update</span><span>Delete</span><span>Merge</span></div>';
+  if(s.visual==="compare") visual='<div class="grid"><div class="card"><h3>Algorithm</h3><p>Language-independent logic</p></div><div class="card"><h3>Programme</h3><p>Implementation in a language</p></div></div>';
+  if(s.visual==="multiple") visual='<div class="grid"><div class="card"><h3>Algorithm A</h3><p>correct · lower memory · more work</p></div><div class="card"><h3>Algorithm B</h3><p>correct · more memory · less work</p></div></div>';
+  if(s.visual==="max") visual='<div class="big-formula">[4, 9, 2, 7, 5] → remember the best seen so far → 9</div>';
+  if(s.visual==="verify") visual='<div class="mini-flow"><span>Specify</span><b>→</b><span>Trace</span><b>→</b><span>Test</span><b>→</b><span>Justify</span></div>';
+  if(s.visual==="analysis") visual='<div class="mini-flow"><span>Several correct solutions</span><b>→ compare</b><span>time · space · constraints</span><b>→ choose</b><span>suitable algorithm</span></div>';
+  if(s.visual==="priorposterior") visual='<div class="grid"><div class="card"><h3>A priori</h3><p>Theoretical · before implementation · operation/growth analysis</p></div><div class="card"><h3>A posteriori</h3><p>Empirical · after implementation · measured runtime/memory</p></div></div>';
+  if(s.visual==="inputsize") visual='<div class="big-formula">input size n + key operation → cost function T(n)</div>';
+  if(s.visual==="timespace") visual='<div class="grid"><div class="card"><h3>Time</h3><p>How does computational work grow?</p></div><div class="card"><h3>Space</h3><p>How does memory requirement grow?</p></div></div>';
+  if(s.visual==="cases") visual='<div class="grid"><div class="card"><h3>Best</h3><p>minimum work</p></div><div class="card"><h3>Average</h3><p>expected work under assumptions</p></div><div class="card"><h3>Worst</h3><p>maximum work</p></div></div>';
+  if(s.visual==="linearcases") visual='<div class="big-formula">first → 1 comparison &nbsp; | &nbsp; typical successful position → about n/2 &nbsp; | &nbsp; last/absent → n</div>';
+  if(s.visual==="asymptotic") visual='<div class="mini-flow"><span>exact seconds</span><b>depend on machine</b><span>growth with n</span><b>reveals scalability</b></div>';
+  if(s.visual==="growth5") visual='<div class="big-formula">O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²)</div>';
+  if(s.visual==="bounds") visual='<div class="grid"><div class="card"><h3>O</h3><p>upper bound</p></div><div class="card"><h3>Ω</h3><p>lower bound</p></div><div class="card"><h3>Θ</h3><p>tight bound</p></div></div>';
+  if(s.visual==="structureops") visual='<div class="mini-flow"><span>frequent operations</span><b>→</b><span>choose structure</span><b>→</b><span>algorithm cost</span></div>';
+  if(s.visual==="formula") visual='<div class="big-formula">Data Structure + Algorithm → Solution</div>';
+  $("#slideContent").innerHTML=`${s.kicker?`<div class="kicker">${s.kicker}</div>`:""}<h1>${s.title||""}</h1>${s.body?`<p>${s.body}</p>`:""}${s.points?`<ul>${s.points.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}${visual}`;
+  $("#slideCount").textContent=`${si+1} / ${slides.length}`;
+}
 $("#present1").onclick=()=>{si=0;renderSlide();$("#slideOverlay").classList.add("open")};$("#closeSlide").onclick=()=>$("#slideOverlay").classList.remove("open");$("#prevSlide").onclick=()=>{si=(si-1+slides.length)%slides.length;renderSlide()};$("#nextSlide").onclick=()=>{si=(si+1)%slides.length;renderSlide()};document.addEventListener("keydown",e=>{if(!$("#slideOverlay").classList.contains("open"))return;if(e.key==="Escape")$("#closeSlide").click();if(e.key==="ArrowRight")$("#nextSlide").click();if(e.key==="ArrowLeft")$("#prevSlide").click()});
 
 // ---------------- Topic 2 ----------------
