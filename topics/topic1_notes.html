@@ -39,8 +39,33 @@
 <tr><td>Can be expressed using pseudocode or diagrams.</td><td>Must obey the rules of the chosen programming language.</td></tr>
 </tbody></table>
 <p>This distinction matters because good algorithmic thinking lets you reason about a solution before implementation details distract you.</p>
+<h2>1.3 What makes a procedure a good algorithm?</h2>
+<p>Not every list of instructions is a useful algorithm. A well-designed algorithm should have properties that make it possible to understand, execute, test and compare it.</p>
+<table><thead><tr><th>Characteristic</th><th>Meaning</th><th>Question to ask</th></tr></thead><tbody>
+<tr><td><strong>Unambiguous / definite</strong></td><td>Every step has one clear interpretation.</td><td>Could two people follow the same step and do different things?</td></tr>
+<tr><td><strong>Input</strong></td><td>The procedure accepts zero or more clearly defined inputs.</td><td>What information must be available before execution starts?</td></tr>
+<tr><td><strong>Output</strong></td><td>It produces at least one clearly defined result.</td><td>How will we recognise the required answer?</td></tr>
+<tr><td><strong>Finiteness</strong></td><td>It terminates after a finite number of steps.</td><td>What guarantees that repetition eventually stops?</td></tr>
+<tr><td><strong>Feasibility / effectiveness</strong></td><td>Its steps can actually be carried out using available operations and resources.</td><td>Is every instruction executable in practice?</td></tr>
+<tr><td><strong>Language independence</strong></td><td>The logical procedure is not tied to one programming language.</td><td>Could the same method be implemented in Python, Java, C or another language?</td></tr>
+<tr><td><strong>Correctness</strong></td><td>For valid inputs, the algorithm should satisfy its specification.</td><td>Does it solve the problem it claims to solve?</td></tr>
+</tbody></table>
 
-<h2>1.3 Solution design: from idea to procedure</h2>
+<h2>1.4 Common operations performed by algorithms</h2>
+<p>From a data-structure point of view, many algorithms perform a small set of recurring operations. Recognising these operations helps explain why the organisation of data matters.</p>
+<ul>
+<li><strong>Traversal</strong> — visit elements systematically.</li>
+<li><strong>Search</strong> — locate an item or determine whether it exists.</li>
+<li><strong>Sort</strong> — arrange items according to an ordering rule.</li>
+<li><strong>Insert</strong> — add a new item.</li>
+<li><strong>Update</strong> — change an existing item.</li>
+<li><strong>Delete</strong> — remove an item.</li>
+<li><strong>Merge</strong> — combine two collections or structures.</li>
+</ul>
+<p>The important question is not simply “Which data structure is famous?” but “Which operations will this application perform most frequently?” A representation that is excellent for one operation may be poor for another.</p>
+
+
+<h2>1.5 Solution design: from idea to procedure</h2>
 <p>Solution design is the process of organising the reasoning that connects the problem to an implementable procedure. A common mistake is to start coding immediately. A stronger approach is to first create an abstract plan.</p>
 
 <h3>Example: finding the largest value</h3>
@@ -60,7 +85,7 @@
 <h3>Pattern recognition and reuse</h3>
 <p>Experienced problem solvers recognise recurring patterns. “Keep the best item seen so far” appears in maximum/minimum problems. “Repeat until the target is found” appears in search problems. “Divide a problem into smaller instances” appears in recursive algorithms and divide-and-conquer methods. Recognising a pattern reduces the amount of reasoning needed for a new problem.</p>
 
-<h2>1.4 Representing an algorithm</h2>
+<h2>1.6 Representing an algorithm</h2>
 <p>There is no single mandatory representation. The best representation depends on the audience and the stage of design.</p>
 <table><thead><tr><th>Representation</th><th>Useful when…</th><th>Limitation</th></tr></thead><tbody>
 <tr><td>Natural language</td><td>Explaining an idea to beginners or non-programmers.</td><td>Can become ambiguous.</td></tr>
@@ -69,7 +94,7 @@
 <tr><td>Programme code</td><td>Executing and testing the solution on a computer.</td><td>Implementation details can hide the main idea.</td></tr>
 </tbody></table>
 
-<h2>1.5 Programme verification and correctness</h2>
+<h2>1.7 Programme verification and correctness</h2>
 <p>An algorithm should not merely produce the correct answer for one example. We need confidence that it produces the correct result for the whole class of valid inputs for which it was designed.</p>
 <img src="media/topic1/verification_cycle.svg" alt="Verification cycle">
 
@@ -91,7 +116,7 @@
 <h3>Testing is evidence, not a proof</h3>
 <p>Passing several tests increases confidence but does not prove that every possible case is correct. For important algorithms, reasoning about an <strong>invariant</strong> can help. An invariant is a statement that remains true throughout a repeated process. In the maximum-finding algorithm, after each comparison, the variable <code>maximum</code> stores the largest value among all elements examined so far. When every element has been examined, this invariant explains why the final result is the maximum of the whole array.</p>
 
-<h2>1.6 Problem-solving strategies</h2>
+<h2>1.8 Problem-solving strategies</h2>
 <p>Different problems favour different strategies. At this stage we focus on recognising the ideas; later topics will develop them formally.</p>
 <div class="cards">
 <div><h3>Brute force</h3><p>Try a direct or exhaustive approach. It may be simple and reliable but can become expensive for large inputs.</p></div>
@@ -102,23 +127,75 @@
 <div><h3>Transform and conquer</h3><p>Change the representation or organisation of data so the problem becomes easier to solve.</p></div>
 </div>
 
-<h2>1.7 Why algorithm efficiency matters</h2>
-<p>Two algorithms may produce exactly the same correct answer but require very different amounts of time or memory. With five values, the difference may be invisible. With five million values, it may determine whether a system responds immediately or takes hours.</p>
-<p>Instead of relying only on seconds measured on one computer, algorithm analysis studies how the required work grows as the input size <code>n</code> grows. This gives us a machine-independent way to compare the <em>shape of growth</em>.</p>
-<img src="media/topic1/growth_rates.svg" alt="Growth rates O1 On On2">
 
-<h3>First intuition for Big-O</h3>
-<table><thead><tr><th>Growth</th><th>Intuition</th><th>Example idea</th></tr></thead><tbody>
-<tr><td><strong>O(1)</strong></td><td>Work remains roughly constant even when the input grows.</td><td>Access an array item by a known index.</td></tr>
-<tr><td><strong>O(n)</strong></td><td>Work grows roughly in proportion to the number of items.</td><td>Scan every item once to find a maximum.</td></tr>
-<tr><td><strong>O(n²)</strong></td><td>Work can grow like all-pairs comparisons.</td><td>A nested loop comparing many pairs.</td></tr>
+<h2>1.9 Why compare algorithms?</h2>
+<p>A single problem can often be solved by several algorithms. If two algorithms are both correct, we still need a reason for choosing one of them. The “best” algorithm is therefore not necessarily the shortest pseudocode or the one that runs fastest on one small example.</p>
+<p>A suitable algorithm should be judged against the needs of the problem. Important criteria include correctness, termination, clarity, time efficiency, space efficiency, suitability to the data and practical constraints.</p>
+<p>Algorithm analysis is therefore a decision tool: it helps us compare alternative correct solutions and choose the one that is most appropriate for the intended environment.</p>
+
+<h2>1.10 Two stages of algorithm analysis: a priori and a posteriori</h2>
+<p>Algorithm efficiency can be studied <strong>before implementation</strong> or <strong>after implementation</strong>. These approaches answer different questions and are most useful when used together.</p>
+<table><thead><tr><th></th><th>A priori (prior) analysis</th><th>A posteriori (posterior) analysis</th></tr></thead><tbody>
+<tr><td><strong>When?</strong></td><td>Before or independently of a specific implementation.</td><td>After the algorithm has been implemented.</td></tr>
+<tr><td><strong>Method</strong></td><td>Reason theoretically about operations, input size and memory growth.</td><td>Run the programme and collect measurements.</td></tr>
+<tr><td><strong>Evidence</strong></td><td>Comparison counts, loop iterations, recurrences and asymptotic growth.</td><td>Elapsed time, CPU time, memory usage and benchmark results.</td></tr>
+<tr><td><strong>Machine dependence</strong></td><td>Abstracts away processor speed, compiler and machine details.</td><td>Depends on hardware, language, compiler, operating system and test data.</td></tr>
+<tr><td><strong>Main value</strong></td><td>Compare algorithm designs before implementation.</td><td>Validate how an implementation behaves in practice.</td></tr>
 </tbody></table>
-<p><strong>Important:</strong> Big-O is not “how many seconds the algorithm takes”. It describes the long-run growth of resource use as the input grows. We will study time and space complexity, best/worst/average cases, searching and sorting much more deeply later.</p>
+<section class="callout"><strong>Use both.</strong> A priori analysis tells us how an algorithm should scale; a posteriori benchmarking tells us how a particular implementation actually behaves.</section>
 
-<h2>1.8 Time and space</h2>
-<p><strong>Time complexity</strong> estimates how the number of basic operations grows with input size. <strong>Space complexity</strong> estimates how extra memory requirements grow. Sometimes an algorithm saves time by using more memory, or saves memory by doing more work. Choosing an algorithm therefore involves trade-offs.</p>
+<h2>1.11 Input size, key operations and the cost function</h2>
+<p>To analyse an algorithm theoretically, first decide what <code>n</code> means. It may be the number of array elements, records, characters, vertices, edges or another quantity representing problem size.</p>
+<p>Next identify a <strong>key operation</strong> whose repetition captures much of the work, such as a comparison, swap, assignment, node visit or recursive call. The amount of work can then be described by a function such as <code>T(n)</code>.</p>
 
-<h2>1.9 How this applies in real systems</h2>
+<h2>1.12 Time complexity and space complexity</h2>
+<p><strong>Time complexity</strong> describes how computational work grows with input size. <strong>Space complexity</strong> describes how memory requirements grow.</p>
+<p>Space can be viewed conceptually as a <strong>fixed part</strong> that does not depend on input size and a <strong>variable part</strong> that changes with the problem, such as temporary arrays, dynamic storage or recursion-stack frames.</p>
+<p>An algorithm may trade one resource for another. Efficiency is therefore a set of trade-offs, not one universal score.</p>
+
+<h2>1.13 Best, average and worst cases</h2>
+<p>Inputs of the same size <code>n</code> can cause different amounts of work.</p>
+<table><thead><tr><th>Case</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><strong>Best case</strong></td><td>The minimum amount of work among valid inputs of size <code>n</code>.</td></tr>
+<tr><td><strong>Average case</strong></td><td>The expected amount of work under a stated probability assumption about inputs.</td></tr>
+<tr><td><strong>Worst case</strong></td><td>The maximum amount of work among valid inputs of size <code>n</code>.</td></tr>
+</tbody></table>
+<p><strong>Average case needs an assumption.</strong> We cannot simply call a middle-looking example “the average case”; expected cost depends on how likely different inputs are.</p>
+
+<h3>Example: linear search</h3>
+<pre><code>ALGORITHM LinearSearch(A, target)
+    FOR i ← 0 TO length(A) - 1
+        IF A[i] = target
+            RETURN i
+    RETURN NOT_FOUND</code></pre>
+<table><thead><tr><th>Situation</th><th>Comparisons</th><th>Interpretation</th></tr></thead><tbody>
+<tr><td>Target is first</td><td>1</td><td>Best case</td></tr>
+<tr><td>Target is equally likely at any successful position</td><td>about (n + 1) / 2</td><td>Average successful case under that assumption</td></tr>
+<tr><td>Target is last or absent</td><td>n</td><td>Worst case</td></tr>
+</tbody></table>
+
+<h2>1.14 Asymptotic analysis: focus on growth</h2>
+<p>Actual running time depends on hardware, language, compiler, operating system and implementation details. <strong>Asymptotic analysis</strong> looks beyond those details and studies how a cost function grows as <code>n</code> becomes large.</p>
+<p>For example, <code>3n + 5</code> and <code>100n + 20</code> are both linear-growth functions. Their constants differ, but both grow in proportion to <code>n</code>.</p>
+<img src="media/topic1/growth_rates.svg" alt="Growth rates O1 On On2">
+<table><thead><tr><th>Growth</th><th>Name</th><th>Intuition</th></tr></thead><tbody>
+<tr><td><strong>O(1)</strong></td><td>Constant</td><td>Work does not grow with input size.</td></tr>
+<tr><td><strong>O(log n)</strong></td><td>Logarithmic</td><td>The remaining problem is repeatedly reduced by a large fraction.</td></tr>
+<tr><td><strong>O(n)</strong></td><td>Linear</td><td>Work grows roughly with the number of items.</td></tr>
+<tr><td><strong>O(n log n)</strong></td><td>Linearithmic</td><td>Common in efficient divide-and-conquer sorting.</td></tr>
+<tr><td><strong>O(n²)</strong></td><td>Quadratic</td><td>Often appears with nested passes or many pairwise comparisons.</td></tr>
+</tbody></table>
+
+<h2>1.15 Big-O, Big-Omega and Big-Theta: an accurate first view</h2>
+<ul>
+<li><strong>Big-O, O(g(n))</strong> — an asymptotic upper bound.</li>
+<li><strong>Big-Omega, Ω(g(n))</strong> — an asymptotic lower bound.</li>
+<li><strong>Big-Theta, Θ(g(n))</strong> — a tight bound when the same growth rate bounds a function above and below.</li>
+</ul>
+<section class="callout"><strong>Important distinction.</strong> Best, average and worst cases describe which execution scenario is being analysed. O, Ω and Θ describe mathematical bounds on a cost function. Introductory examples often report worst-case cost using Big-O, but Big-O is not itself a synonym for “worst case”.</section>
+<p>Topic 6 develops these ideas formally. Here, the main goal is to understand theoretical versus measured analysis, case analysis and growth.</p>
+
+<h2>1.16 How this applies in real systems</h2>
 <ul>
 <li><strong>Search engines:</strong> algorithms organise and retrieve relevant information efficiently.</li>
 <li><strong>Navigation:</strong> route-finding procedures operate on graph-like representations of roads.</li>
@@ -128,11 +205,18 @@
 <li><strong>AI:</strong> search, optimisation and learning procedures often operate over specialised data structures.</li>
 </ul>
 
-<h2>1.10 Data structures and algorithms belong together</h2>
+<h2>1.17 Data structures and algorithms belong together</h2>
 <p>A major theme of IS 237 is:</p>
 <div class="formula">Data Structure + Algorithm → Solution</div>
 <p>A data structure determines how information is organised; an algorithm determines the operations performed on it. The best algorithm can depend on the data structure, and the best data structure can depend on the operations that are most important. This is why the rest of the course alternates between structures and the algorithms that use them.</p>
 
+
+<h2>Further reading</h2>
+<ul>
+<li><a href="https://www.tutorialspoint.com/data_structures_algorithms/algorithms_basics.htm" target="_blank" rel="noopener">Tutorialspoint — Algorithms Basics</a></li>
+<li><a href="https://www.tutorialspoint.com/data_structures_algorithms/asymptotic_analysis.htm" target="_blank" rel="noopener">Tutorialspoint — Asymptotic Analysis</a></li>
+<li><a href="https://www.tutorialspoint.com/data_structures_algorithms/data_structures_basics.htm" target="_blank" rel="noopener">Tutorialspoint — Data Structure Basics</a></li>
+</ul>
 <h2>Topic summary</h2>
 <ul>
 <li>Problem solving begins before programming.</li>
@@ -140,7 +224,7 @@
 <li>Good solution design considers input, output, constraints, representation and verification.</li>
 <li>Correctness requires more than one successful example; tracing, tests and invariants build confidence.</li>
 <li>Problem-solving strategies provide reusable ways of thinking.</li>
-<li>Efficiency concerns how resource use grows as input size grows.</li>
+<li>Algorithm analysis can be a priori (theoretical) or a posteriori (empirical).</li><li>Time and space are two major efficiency factors.</li><li>Best, average and worst cases describe different execution scenarios for inputs of the same size.</li><li>Asymptotic analysis focuses on growth as input size becomes large.</li><li>Efficiency concerns how resource use grows as input size grows.</li>
 <li>Data structures organise information; algorithms operate on that organisation.</li>
 </ul>
 </body></html>
