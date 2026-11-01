@@ -2,7 +2,7 @@ window.IS237_TOPIC1_SLIDES = [
   {
     "title": "Problem Solving and Introduction to Algorithms",
     "kicker": "IS 237 · Topic 1",
-    "body": "Before code comes a problem. Before an efficient programme comes a clear procedure.",
+    "body": "Before code comes a problem. Before choosing an efficient programme comes a clear, correct and analysable procedure.",
     "visual": "pipeline"
   },
   {
@@ -11,25 +11,33 @@ window.IS237_TOPIC1_SLIDES = [
     "points": [
       "Understand the need",
       "Identify input and output",
-      "State constraints",
+      "State assumptions and constraints",
       "Design before coding"
     ]
   },
   {
     "title": "From problem to algorithm",
-    "body": "Good problem solving is a cycle, not a one-way trip.",
+    "body": "Good problem solving is iterative: understand, model, design, verify, analyse and refine.",
     "visual": "cycle"
   },
   {
     "title": "What is an algorithm?",
     "body": "A finite, well-defined sequence of steps for solving a class of problems or performing a computation.",
     "points": [
-      "Definite",
-      "Finite",
-      "Effective",
-      "Input → Output",
-      "Correct for intended cases"
+      "Precise procedure",
+      "Input → processing → output",
+      "Independent of programming-language syntax"
     ]
+  },
+  {
+    "title": "Characteristics of a good algorithm",
+    "body": "A procedure must be precise enough to execute, test and analyse.",
+    "visual": "characteristics"
+  },
+  {
+    "title": "Common algorithm operations",
+    "body": "Many data-structure algorithms repeatedly perform a familiar set of operations.",
+    "visual": "operations"
   },
   {
     "title": "Where did the word come from?",
@@ -43,6 +51,11 @@ window.IS237_TOPIC1_SLIDES = [
     "title": "Algorithm ≠ Programme",
     "body": "The algorithm is the logic; the programme is an implementation of that logic in a specific language.",
     "visual": "compare"
+  },
+  {
+    "title": "One problem, several algorithms",
+    "body": "Correctness is necessary, but several correct algorithms may differ in speed, memory, clarity and suitability.",
+    "visual": "multiple"
   },
   {
     "title": "Worked idea: find the maximum",
@@ -75,18 +88,74 @@ window.IS237_TOPIC1_SLIDES = [
     ]
   },
   {
-    "title": "Why efficiency matters",
-    "body": "Two correct algorithms may behave very differently when the input becomes large.",
+    "title": "Why analyse an algorithm?",
+    "body": "When several correct solutions exist, analysis helps us choose the most suitable one for the problem and environment.",
+    "visual": "analysis"
+  },
+  {
+    "title": "Two stages of analysis",
+    "body": "We can reason about an algorithm before implementation and measure it after implementation.",
+    "visual": "priorposterior"
+  },
+  {
+    "title": "A priori analysis",
+    "body": "Theoretical analysis abstracts away a specific machine and studies operations, input size, memory and growth.",
     "points": [
-      "Time is a resource",
-      "Memory is a resource",
-      "Scale changes what is practical"
+      "Before / independent of implementation",
+      "Count key operations",
+      "Compare designs",
+      "Machine-independent reasoning"
     ]
   },
   {
-    "title": "First Big-O intuition",
-    "body": "Big-O describes how resource use grows with input size; it is not a stopwatch measurement.",
-    "visual": "bigo"
+    "title": "A posteriori analysis",
+    "body": "Empirical analysis implements the algorithm and measures actual behaviour on a target system.",
+    "points": [
+      "Elapsed or CPU time",
+      "Memory measurements",
+      "Depends on language, compiler, hardware and data",
+      "Useful for benchmarking"
+    ]
+  },
+  {
+    "title": "What does n mean?",
+    "body": "n represents the relevant input size. We then count a key operation such as comparisons, swaps, visits or recursive calls.",
+    "visual": "inputsize"
+  },
+  {
+    "title": "Time and space factors",
+    "body": "Efficiency is not only speed. An algorithm can trade execution work for additional memory or vice versa.",
+    "visual": "timespace"
+  },
+  {
+    "title": "Best, average and worst cases",
+    "body": "Inputs of the same size can require different amounts of work.",
+    "visual": "cases"
+  },
+  {
+    "title": "Linear search makes the cases visible",
+    "body": "Searching from left to right may stop immediately, stop somewhere later, or inspect every item.",
+    "visual": "linearcases"
+  },
+  {
+    "title": "Asymptotic analysis",
+    "body": "Instead of predicting exact seconds, compare how the cost grows as input size becomes large.",
+    "visual": "asymptotic"
+  },
+  {
+    "title": "Common growth classes",
+    "body": "The shape of growth becomes more important as n increases.",
+    "visual": "growth5"
+  },
+  {
+    "title": "O, Ω and Θ — first view",
+    "body": "O is an upper bound, Ω a lower bound, and Θ a tight bound. These are mathematical bounds, not synonyms for worst, best and average cases.",
+    "visual": "bounds"
+  },
+  {
+    "title": "Why the data structure matters",
+    "body": "The structure should support the operations the application performs most often.",
+    "visual": "structureops"
   },
   {
     "title": "Data structures and algorithms",
@@ -95,11 +164,12 @@ window.IS237_TOPIC1_SLIDES = [
   },
   {
     "title": "Topic 1 takeaway",
-    "body": "Understand the problem → design the procedure → verify correctness → analyse growth → refine the solution.",
+    "body": "Understand the problem → design a correct procedure → compare alternatives → analyse time/space and cases → refine the solution.",
     "points": [
-      "See the process",
-      "Trace it",
+      "See it",
+      "Manipulate it",
       "Explain it",
+      "Trace it",
       "Then formalise it"
     ]
   }
