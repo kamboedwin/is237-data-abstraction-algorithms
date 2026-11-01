@@ -31,7 +31,15 @@ window.IS237_TOPIC1_SLIDES = [
   },
   {
     "title": "Characteristics of a good algorithm",
-    "body": "A procedure must be precise enough to execute, test and analyse.",
+    "body": "A good algorithm should satisfy six core characteristics.",
+    "points": [
+      "Unambiguous — every step has one clear meaning",
+      "Input — accepts zero or more clearly defined inputs",
+      "Output — produces at least one clearly defined result",
+      "Finite — terminates after a finite number of steps",
+      "Feasible — every step can be carried out in practice",
+      "Independent — the logic is not tied to a particular programming language"
+    ],
     "visual": "characteristics"
   },
   {
