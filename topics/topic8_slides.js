@@ -6,6 +6,16 @@ window.IS237_TOPIC8_SLIDES = [
     "visual": "opening"
   },
   {
+    "title": "The final running problem: a campus and road network",
+    "body": "Represent buildings or towns as vertices and connections as edges. From this one model we can ask increasingly difficult questions.",
+    "points": [
+      "Which places are connected?",
+      "Can we visit every reachable place?",
+      "What is the fewest-edge route?",
+      "What is the lowest-cost route when roads have different distances?"
+    ]
+  },
+  {
     "title": "Why graphs?",
     "body": "Many systems contain multiple connections, alternative routes and cycles that are not naturally linear or hierarchical.",
     "points": [
@@ -25,6 +35,16 @@ window.IS237_TOPIC8_SLIDES = [
     "title": "Graph notation",
     "body": "A graph is written G = (V,E): vertices plus edges.",
     "visual": "ge"
+  },
+  {
+    "title": "Step 1: turn the real network into a graph model",
+    "body": "The graph keeps the relationships that matter and ignores details that do not. Once the model is clear, algorithms can operate on it.",
+    "points": [
+      "Vertex → place or entity",
+      "Edge → relationship or connection",
+      "Direction → one-way relationship",
+      "Weight → distance, time or cost"
+    ]
   },
   {
     "title": "Core terminology",
@@ -75,9 +95,27 @@ window.IS237_TOPIC8_SLIDES = [
     ]
   },
   {
+    "title": "Checkpoint: representation should match the network",
+    "body": "An adjacency matrix gives direct edge lookup but reserves space for every possible pair. An adjacency list stores only actual neighbours and is often attractive for sparse graphs.",
+    "points": [
+      "Dense network → matrix may be reasonable",
+      "Sparse network → list saves space",
+      "Representation affects traversal cost"
+    ]
+  },
+  {
     "title": "Why traversal needs visited tracking",
     "body": "Graphs can contain cycles and multiple paths to the same vertex.",
     "visual": "visited"
+  },
+  {
+    "title": "Step 2: explore the network systematically",
+    "body": "Graphs can contain branches and cycles, so traversal needs both a frontier of places still to explore and a visited set to prevent repeated work.",
+    "points": [
+      "BFS uses a queue frontier",
+      "DFS uses a stack or recursion",
+      "Visited tracking prevents endless cycling"
+    ]
   },
   {
     "title": "Breadth-First Search",
@@ -106,6 +144,15 @@ window.IS237_TOPIC8_SLIDES = [
     "title": "BFS shortest paths",
     "body": "In an unweighted graph, the first discovery gives a shortest path by number of edges.",
     "visual": "shortest"
+  },
+  {
+    "title": "BFS checkpoint: fewest edges is not always shortest distance",
+    "body": "In an unweighted graph every edge is treated equally, so BFS finds a route with the fewest edges. Real roads may have different lengths or travel times.",
+    "points": [
+      "Unweighted → number of edges matters",
+      "Weighted → edge cost matters",
+      "This distinction motivates Dijkstra later"
+    ]
   },
   {
     "title": "Predecessor map",
@@ -138,6 +185,15 @@ window.IS237_TOPIC8_SLIDES = [
     "visual": "bfsdfs"
   },
   {
+    "title": "Choose traversal from the question",
+    "body": "BFS and DFS visit the same reachable structure differently. Neither is universally better; the question determines which exploration order is useful.",
+    "points": [
+      "BFS → layers and minimum-edge distance",
+      "DFS → deep exploration and structural analysis",
+      "Both need representation plus visited tracking"
+    ]
+  },
+  {
     "title": "Disconnected graphs",
     "body": "One traversal reaches only one component. Restart from every unvisited vertex to cover the whole graph.",
     "visual": "components"
@@ -158,6 +214,15 @@ window.IS237_TOPIC8_SLIDES = [
     "visual": "weightedpath"
   },
   {
+    "title": "Step 3: roads now have different costs",
+    "body": "If one road is 2 km and another is 20 km, counting edges is no longer enough. We need an algorithm that compares accumulated path costs.",
+    "points": [
+      "Maintain best known distance",
+      "Improve it when a cheaper route is discovered",
+      "Repeatedly process the most promising unsettled vertex"
+    ]
+  },
+  {
     "title": "Dijkstra's algorithm",
     "body": "For non-negative weights, repeatedly settle the unsettled vertex with smallest tentative distance.",
     "visual": "dijkstra"
@@ -176,6 +241,15 @@ window.IS237_TOPIC8_SLIDES = [
     "title": "Why a heap appears",
     "body": "A min-priority queue efficiently selects the next smallest tentative distance.",
     "visual": "heap"
+  },
+  {
+    "title": "A previous topic reappears for a reason",
+    "body": "Dijkstra repeatedly needs the unsettled vertex with the smallest tentative distance. That is a priority-queue problem, so the heap from Topic 7 becomes useful inside a graph algorithm.",
+    "points": [
+      "Graph stores relationships",
+      "Priority queue selects the next candidate",
+      "Data structures and algorithms combine into one solution"
+    ]
   },
   {
     "title": "Dijkstra complexity",
@@ -205,6 +279,16 @@ window.IS237_TOPIC8_SLIDES = [
     "title": "How the course connects",
     "body": "Queue → BFS; Stack/recursion → DFS; Heap → Dijkstra; Big-O → graph complexity.",
     "visual": "course"
+  },
+  {
+    "title": "The entire course is now visible in one problem",
+    "body": "A graph solution uses nearly every idea studied earlier: abstraction, representation, queues/stacks, recursion, complexity, heaps and careful algorithm choice.",
+    "points": [
+      "Representation controls available operations",
+      "Traversal uses Stack/Queue behaviour",
+      "Dijkstra can use a Heap",
+      "Complexity helps compare implementations"
+    ]
   },
   {
     "title": "Choosing an algorithm",
