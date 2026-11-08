@@ -6,6 +6,15 @@ window.IS237_TOPIC4_SLIDES = [
     "visual": "opening"
   },
   {
+    "title": "The question this topic answers",
+    "body": "Sometimes a collection is useful precisely because we restrict how items enter and leave. Those restrictions encode important real-world rules.",
+    "points": [
+      "Browser history needs most-recent-first behaviour",
+      "A service line needs first-arrival-first-service behaviour",
+      "Some applications need controlled access from both ends"
+    ]
+  },
+  {
     "title": "Why restrict operations?",
     "body": "A structure becomes easier to reason about when we control where values enter and leave.",
     "points": [
@@ -65,6 +74,15 @@ window.IS237_TOPIC4_SLIDES = [
       "Bracket matching",
       "Expression evaluation",
       "DFS"
+    ]
+  },
+  {
+    "title": "From 'most recent first' to 'first come first served'",
+    "body": "A stack is ideal when the newest item should be handled first. But a printer queue or service desk needs the oldest waiting item first. That different rule motivates the Queue ADT.",
+    "points": [
+      "Stack → LIFO",
+      "Queue → FIFO",
+      "Same idea of restricted access, different rule"
     ]
   },
   {
@@ -132,9 +150,27 @@ window.IS237_TOPIC4_SLIDES = [
     "visual": "linkedqueue"
   },
   {
+    "title": "Checkpoint: a queue controls two different ends",
+    "body": "Enqueue adds at the rear and dequeue removes at the front. Circular arrays and linked implementations are two ways to preserve the same FIFO behaviour.",
+    "points": [
+      "ADT behaviour stays the same",
+      "Implementation can change",
+      "Circular storage solves wasted-slot problems in arrays"
+    ]
+  },
+  {
     "title": "Deque",
     "body": "A double-ended queue permits insertion and deletion at both ends.",
     "visual": "deque"
+  },
+  {
+    "title": "What if the application needs both ends?",
+    "body": "Some problems do not fit strict FIFO or LIFO. A deque generalises the idea by allowing controlled insertion and removal at both the front and rear.",
+    "points": [
+      "Can behave like a queue",
+      "Can behave like a stack",
+      "Can support sliding-window and scheduling problems"
+    ]
   },
   {
     "title": "Deque variants",
@@ -174,6 +210,15 @@ window.IS237_TOPIC4_SLIDES = [
     "title": "Implementation choice",
     "body": "The ADT remains the same even when the underlying representation changes.",
     "visual": "implement"
+  },
+  {
+    "title": "Choose the ADT first, then choose its representation",
+    "body": "First decide the access rule the problem requires. Only then decide whether an array, circular array or linked representation best implements that rule.",
+    "points": [
+      "Behaviour first",
+      "Representation second",
+      "Performance and capacity guide implementation"
+    ]
   },
   {
     "title": "Connection to recursion",
