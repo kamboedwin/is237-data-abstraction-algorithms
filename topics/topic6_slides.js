@@ -6,6 +6,16 @@ window.IS237_TOPIC6_SLIDES = [
     "visual": "opening"
   },
   {
+    "title": "One dataset, two different questions",
+    "kicker": "Running example · Student records",
+    "body": "Suppose the university has thousands of student records. Sometimes we need to find one student; other times we need to arrange the entire collection.",
+    "points": [
+      "Find ST/2026/014 → searching problem",
+      "Order students by GPA → sorting problem",
+      "The best algorithm depends on the task and data state"
+    ]
+  },
+  {
     "title": "Why efficiency matters",
     "body": "Algorithms that feel equally fast on ten values can behave very differently on a million.",
     "points": [
@@ -54,6 +64,15 @@ window.IS237_TOPIC6_SLIDES = [
     ]
   },
   {
+    "title": "Step 1: find one record",
+    "body": "Searching asks whether a target exists and where it is. The organisation of the data determines which search strategies are possible.",
+    "points": [
+      "Unsorted data → linear search is always available",
+      "Sorted data → binary search becomes possible",
+      "Preconditions matter"
+    ]
+  },
+  {
     "title": "Searching problem",
     "body": "Find whether a target exists and often return its position.",
     "visual": "search"
@@ -94,6 +113,26 @@ window.IS237_TOPIC6_SLIDES = [
     "title": "Search comparison",
     "body": "Binary search is faster asymptotically, but only when its preconditions are worthwhile.",
     "visual": "searchcompare"
+  },
+  {
+    "title": "Checkpoint: sorting can make future searches cheaper",
+    "body": "Binary search is fast, but it requires ordered data. This creates a new design question: when is it worth paying the cost of sorting so later operations become easier?",
+    "points": [
+      "One search may not justify sorting",
+      "Repeated searches may benefit from ordered data",
+      "Preparation cost and future savings must both be considered"
+    ]
+  },
+  {
+    "title": "Step 2: arrange the whole collection",
+    "body": "Sorting algorithms all produce an ordered result, but they reach it using different strategies and resource trade-offs.",
+    "points": [
+      "Simple repeated swapping",
+      "Repeatedly selecting the next item",
+      "Growing a sorted region",
+      "Divide, sort and merge",
+      "Partition around a pivot"
+    ]
   },
   {
     "title": "Why sort?",
@@ -154,6 +193,15 @@ window.IS237_TOPIC6_SLIDES = [
     ]
   },
   {
+    "title": "Checkpoint: the simple sorts teach different ideas",
+    "body": "Bubble, selection and insertion sort are valuable because their mechanics are easy to trace. They also reveal that input arrangement can affect algorithms differently.",
+    "points": [
+      "Bubble → exchange neighbours",
+      "Selection → choose the next minimum",
+      "Insertion → place each item into a growing sorted region"
+    ]
+  },
+  {
     "title": "Merge sort",
     "body": "Divide into halves, sort each half, then merge.",
     "visual": "merge"
@@ -172,6 +220,15 @@ window.IS237_TOPIC6_SLIDES = [
     ]
   },
   {
+    "title": "Why move to divide-and-conquer sorting?",
+    "body": "For large inputs, quadratic growth becomes costly. Merge sort reduces the growth rate by dividing the problem, but usually needs additional memory.",
+    "points": [
+      "Better asymptotic growth",
+      "Extra storage for merging",
+      "Trade time against space"
+    ]
+  },
+  {
     "title": "Quick sort",
     "body": "Partition around a pivot; recursively sort each side.",
     "visual": "quick"
@@ -187,6 +244,15 @@ window.IS237_TOPIC6_SLIDES = [
     "points": [
       "Usually in-place apart from recursion",
       "Standard form not stable"
+    ]
+  },
+  {
+    "title": "Why quicksort needs careful partitioning",
+    "body": "Quicksort can be extremely effective when partitions are reasonably balanced, but poor pivots can create highly unbalanced subproblems.",
+    "points": [
+      "Average behaviour can be excellent",
+      "Worst case can degrade to O(n²)",
+      "Input structure and pivot strategy matter"
     ]
   },
   {
@@ -231,6 +297,15 @@ window.IS237_TOPIC6_SLIDES = [
       "Sort: quadratic vs n log n",
       "Consider stability/memory",
       "Prepare for trees, heaps and hashing"
+    ]
+  },
+  {
+    "title": "Where Topic 6 leads next",
+    "body": "Searching and sorting showed that organisation controls algorithm cost. Topic 7 introduces structures that maintain useful organisation continuously so important operations can be faster.",
+    "points": [
+      "BST → ordered search structure",
+      "Heap → priority access",
+      "Hash table → key-based lookup"
     ]
   }
 ];
