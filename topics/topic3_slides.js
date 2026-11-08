@@ -6,6 +6,16 @@ window.IS237_TOPIC3_SLIDES = [
     "visual": "opening"
   },
   {
+    "title": "Continue the Student Registry story",
+    "kicker": "From Topic 2 behaviour to Topic 3 representation",
+    "body": "In Topic 2 we defined what a Student Registry should do. Now we must decide how the records are actually organised in memory.",
+    "points": [
+      "Need to store many student records",
+      "Need to access, search, insert and delete",
+      "Different representations make these operations cost differently"
+    ]
+  },
+  {
     "title": "From ADT to representation",
     "body": "Topic 2 defined behaviour. Topic 3 asks how the data should actually be organised.",
     "points": [
@@ -59,6 +69,25 @@ window.IS237_TOPIC3_SLIDES = [
     "visual": "dynamic"
   },
   {
+    "title": "Checkpoint: arrays are convenient, but what happens when the collection changes often?",
+    "body": "Arrays give direct indexed access, but inserting or deleting in the middle may require shifting elements. A fixed array also needs capacity chosen in advance.",
+    "points": [
+      "Fast indexed access",
+      "Contiguous organisation",
+      "Insertion/deletion may move many values",
+      "Capacity decisions matter"
+    ]
+  },
+  {
+    "title": "A different idea: store records as connected nodes",
+    "body": "Instead of keeping every record in one contiguous block, each record can store a reference to another record. This leads naturally to linked lists.",
+    "points": [
+      "No need for one contiguous block",
+      "Links describe the sequence",
+      "Growing or shrinking can be more flexible"
+    ]
+  },
+  {
     "title": "What is a linked list?",
     "body": "A sequence of nodes connected by references rather than neighbouring indexed positions.",
     "visual": "linked"
@@ -67,6 +96,15 @@ window.IS237_TOPIC3_SLIDES = [
     "title": "Three linked-list types",
     "body": "Singly, doubly and circular lists differ in what references each node stores and how traversal terminates.",
     "visual": "types"
+  },
+  {
+    "title": "Why more than one linked-list type?",
+    "body": "The direction and shape of the links determine what movements are easy. We therefore choose singly, doubly or circular linking according to the operations the application needs.",
+    "points": [
+      "Singly: move forward",
+      "Doubly: move forward and backward",
+      "Circular: last connects back to first"
+    ]
   },
   {
     "title": "Singly linked list",
@@ -132,6 +170,16 @@ window.IS237_TOPIC3_SLIDES = [
     "visual": "compare"
   },
   {
+    "title": "Return to the Student Registry: which representation should we choose?",
+    "body": "There is no universal winner. The choice depends on which operations dominate and what constraints the registry has.",
+    "points": [
+      "Frequent indexed access → array is attractive",
+      "Frequent local insertion/deletion → linked representation may help",
+      "Unknown growth → flexible storage may matter",
+      "Always include the cost of locating the position"
+    ]
+  },
+  {
     "title": "Common misconceptions",
     "body": "Complexity statements must include the conditions under which they are true.",
     "points": [
@@ -158,6 +206,15 @@ window.IS237_TOPIC3_SLIDES = [
       "Singly operations preserve next links",
       "Doubly operations preserve previous + next",
       "Circular operations preserve the cycle"
+    ]
+  },
+  {
+    "title": "Where Topic 3 leads next",
+    "body": "Arrays and linked lists are general-purpose representations. Topic 4 asks a different question: what if we deliberately restrict where insertion and removal are allowed?",
+    "points": [
+      "Restrict one end → Stack",
+      "Use opposite ends → Queue",
+      "Allow both ends → Deque"
     ]
   }
 ];
