@@ -6,6 +6,18 @@ window.IS237_TOPIC1_SLIDES = [
     "visual": "pipeline"
   },
   {
+    "title": "The question this topic answers",
+    "kicker": "A simple learning journey",
+    "body": "How do we move from a real problem to a procedure that is correct, clear and efficient enough to use?",
+    "points": [
+      "Understand the problem before coding",
+      "Turn the solution idea into an algorithm",
+      "Check that the algorithm is correct",
+      "Compare alternatives and analyse efficiency",
+      "Use what we learn to choose suitable data structures later"
+    ]
+  },
+  {
     "title": "Why start with the problem?",
     "body": "Programming implements a solution. Problem solving decides what the solution must achieve, what information it receives, what constraints matter and how success will be checked.",
     "points": [
@@ -96,6 +108,15 @@ window.IS237_TOPIC1_SLIDES = [
     ]
   },
   {
+    "title": "Checkpoint: we can design a solution — now how do we choose among several?",
+    "body": "Different strategies can solve the same problem. The next step is to compare their resource requirements rather than judging them only by whether they produce the right answer.",
+    "points": [
+      "Correctness answers: Does it work?",
+      "Analysis answers: How well does it scale?",
+      "Both questions matter"
+    ]
+  },
+  {
     "title": "Why analyse an algorithm?",
     "body": "When several correct solutions exist, analysis helps us choose the most suitable one for the problem and environment.",
     "visual": "analysis"
@@ -169,6 +190,15 @@ window.IS237_TOPIC1_SLIDES = [
     "title": "Data structures and algorithms",
     "body": "A structure organises data. An algorithm operates on it. Good solutions depend on matching the two.",
     "visual": "formula"
+  },
+  {
+    "title": "Where Topic 1 leads next",
+    "body": "Once we know that representation affects algorithm cost, the next question is how to describe useful behaviour without committing too early to one representation. That is the role of abstraction and ADTs in Topic 2.",
+    "points": [
+      "Topic 1: design and analyse procedures",
+      "Topic 2: separate behaviour from implementation",
+      "Topic 3 onward: study concrete representations"
+    ]
   },
   {
     "title": "Topic 1 takeaway",
