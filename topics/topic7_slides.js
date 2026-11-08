@@ -6,12 +6,31 @@ window.IS237_TOPIC7_SLIDES = [
     "visual": "opening"
   },
   {
+    "title": "One system, three different needs",
+    "kicker": "Running example · University information system",
+    "body": "Imagine the same university system now has three performance-critical tasks. Each task suggests a different advanced structure.",
+    "points": [
+      "Keep student IDs in searchable order → BST",
+      "Always process the highest-priority request next → Heap / Priority Queue",
+      "Find a record quickly from an exact key → Hash Table"
+    ]
+  },
+  {
     "title": "Why non-linear structures?",
     "body": "Some relationships are hierarchical; some applications need priority; others need exact-key lookup without scanning.",
     "points": [
       "Tree → hierarchy",
       "Heap → priority",
       "Hash table → key lookup"
+    ]
+  },
+  {
+    "title": "Step 1: when a simple line is no longer enough",
+    "body": "Arrays and linked lists organise data sequentially. Trees introduce hierarchy, allowing one element to lead to several substructures.",
+    "points": [
+      "Hierarchy is natural in folders and organisations",
+      "Search decisions can eliminate whole subtrees",
+      "Shape affects performance"
     ]
   },
   {
@@ -103,11 +122,29 @@ window.IS237_TOPIC7_SLIDES = [
     "visual": "balanced"
   },
   {
+    "title": "BST checkpoint: ordering helps only when the shape remains useful",
+    "body": "A BST can provide efficient search, insertion and deletion when its height stays small. A skewed tree can behave much like a linked list.",
+    "points": [
+      "Ordering property enables directed search",
+      "Height controls cost",
+      "Balancing exists to protect that advantage"
+    ]
+  },
+  {
     "title": "Why balancing exists",
     "body": "AVL and Red-Black trees restructure updates to keep height logarithmic.",
     "points": [
       "Concept only in this topic",
       "Goal: preserve O(log n) operations"
+    ]
+  },
+  {
+    "title": "Step 2: what if we do not need full ordering — only the highest priority?",
+    "body": "A hospital request queue or job scheduler often needs one operation above all: repeatedly access the highest- or lowest-priority item. Maintaining a full BST ordering may be more than we need.",
+    "points": [
+      "Need: best-priority item quickly",
+      "Heap keeps only the ordering necessary for that task",
+      "This motivates the Priority Queue implementation"
     ]
   },
   {
@@ -163,6 +200,15 @@ window.IS237_TOPIC7_SLIDES = [
     ]
   },
   {
+    "title": "Heap checkpoint: partial order is enough for priority",
+    "body": "A heap does not keep every value globally sorted. It guarantees that the root has the highest or lowest priority, which is exactly what a priority queue needs.",
+    "points": [
+      "Peek root efficiently",
+      "Insert while restoring heap order",
+      "Extract root then heapify"
+    ]
+  },
+  {
     "title": "Heap sort",
     "body": "Build a max-heap, repeatedly move root to the end, restore heap.",
     "visual": "heapsort"
@@ -173,6 +219,15 @@ window.IS237_TOPIC7_SLIDES = [
     "points": [
       "Arbitrary heap search can be O(n)",
       "Inorder heap traversal is not sorted"
+    ]
+  },
+  {
+    "title": "Step 3: what if the dominant task is exact key lookup?",
+    "body": "Suppose we usually know a student's registration number and simply want the matching record. We may not need hierarchy or priority at all.",
+    "points": [
+      "Input: exact key",
+      "Goal: map key directly toward a storage location",
+      "This motivates hashing"
     ]
   },
   {
@@ -189,6 +244,15 @@ window.IS237_TOPIC7_SLIDES = [
     "title": "Collisions are normal",
     "body": "Different keys may map to the same initial index. The design must resolve them.",
     "visual": "collision"
+  },
+  {
+    "title": "Hash-table checkpoint: fast lookup needs collision management",
+    "body": "A hash function compresses many possible keys into a limited table. Different keys can therefore map to the same location, so collision handling is part of the design rather than an exceptional failure.",
+    "points": [
+      "Separate chaining stores multiple entries per bucket",
+      "Open addressing searches for another slot",
+      "Load factor influences performance"
+    ]
   },
   {
     "title": "Separate chaining",
@@ -235,6 +299,16 @@ window.IS237_TOPIC7_SLIDES = [
     "visual": "compare"
   },
   {
+    "title": "Return to the three university tasks",
+    "body": "The structures are not competitors trying to win the same contest. Each preserves a different kind of organisation because each serves a different dominant operation.",
+    "points": [
+      "BST → ordered search and traversal",
+      "Heap → repeated priority access",
+      "Hash table → exact key lookup",
+      "Choose from the operation, not from popularity"
+    ]
+  },
+  {
     "title": "Application decisions",
     "body": "Ordered traversal → BST; highest priority → Heap; exact-key lookup → Hash Table.",
     "visual": "decide"
@@ -256,6 +330,15 @@ window.IS237_TOPIC7_SLIDES = [
       "Hash: exact key lookup",
       "All trade order, memory and update behaviour differently",
       "Prepare for graphs"
+    ]
+  },
+  {
+    "title": "Where Topic 7 leads next",
+    "body": "Trees model hierarchy, but many real systems are not hierarchical: a place, person or device may connect to many others. Topic 8 generalises this idea using graphs.",
+    "points": [
+      "Tree → constrained connections",
+      "Graph → arbitrary network connections",
+      "Traversal ideas reappear as BFS and DFS"
     ]
   }
 ];
