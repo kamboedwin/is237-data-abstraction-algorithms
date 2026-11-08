@@ -6,9 +6,27 @@ window.IS237_TOPIC5_SLIDES = [
     "visual": "opening"
   },
   {
+    "title": "The question this topic answers",
+    "body": "How can a problem be solved by repeatedly applying the same idea to a smaller version of itself, and what is the computer actually doing while those calls wait to finish?",
+    "points": [
+      "Recursion expresses self-similar problems",
+      "Iteration repeats using loops",
+      "The call stack explains recursive execution"
+    ]
+  },
+  {
     "title": "Why this topic follows stacks",
     "body": "Recursive calls are stored in a call stack. Topic 4 gives us the mechanism needed to see recursion clearly.",
     "visual": "stack"
+  },
+  {
+    "title": "A function call is a stack story",
+    "body": "Each unfinished function call must remember where to return and its local state. When a function calls itself, those frames accumulate exactly like items pushed onto a stack.",
+    "points": [
+      "Call → push a frame",
+      "Return → pop a frame",
+      "Deep recursion → deeper stack"
+    ]
   },
   {
     "title": "Recursion vs iteration",
@@ -57,6 +75,15 @@ window.IS237_TOPIC5_SLIDES = [
     ]
   },
   {
+    "title": "Checkpoint: every recursive solution needs two promises",
+    "body": "A recursive method must know when to stop and must make the problem smaller or closer to that stopping condition.",
+    "points": [
+      "Base case → termination condition",
+      "Recursive step → progress",
+      "Without either one, recursion fails"
+    ]
+  },
+  {
     "title": "Recursive array sum",
     "body": "sum(n) = last element + sum(n−1). A simple recursive definition, but iteration is often more practical for a linear scan.",
     "visual": "sum"
@@ -81,6 +108,15 @@ window.IS237_TOPIC5_SLIDES = [
     "points": [
       "Same algorithmic idea",
       "Different representation of control state"
+    ]
+  },
+  {
+    "title": "Same algorithmic idea, different control mechanism",
+    "body": "Binary search can be expressed recursively or iteratively. The search strategy is the same; what changes is how repetition and state are managed.",
+    "points": [
+      "Recursion uses call frames",
+      "Iteration uses loop variables",
+      "Compare clarity, memory and implementation needs"
     ]
   },
   {
@@ -117,6 +153,15 @@ window.IS237_TOPIC5_SLIDES = [
       "fib(3) is recomputed",
       "fib(2) is recomputed many times",
       "approximately O(2^n) time"
+    ]
+  },
+  {
+    "title": "Recursion can be elegant and still be inefficient",
+    "body": "The Fibonacci example shows why readable recursive structure is not enough. If subproblems are repeated, the amount of work can grow dramatically.",
+    "points": [
+      "Trace repeated calls",
+      "Identify overlapping subproblems",
+      "Memoisation stores results to avoid recomputation"
     ]
   },
   {
@@ -182,6 +227,15 @@ window.IS237_TOPIC5_SLIDES = [
       "Choose the clearer representation",
       "Watch both time and space",
       "Prepare for recursive sorting"
+    ]
+  },
+  {
+    "title": "Where Topic 5 leads next",
+    "body": "Now that we can express repeated procedures recursively or iteratively, Topic 6 focuses on comparing the efficiency of searching and sorting algorithms at scale.",
+    "points": [
+      "Different expressions can implement the same idea",
+      "Efficiency determines practical suitability",
+      "Searching and sorting provide concrete comparisons"
     ]
   }
 ];
